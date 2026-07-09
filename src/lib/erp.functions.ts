@@ -488,7 +488,7 @@ export const updateLeadDates = createServerFn({ method: "POST" })
     const { id, ...dates } = data;
     const { error } = await context.supabase
       .from("leads")
-      .update(dates)
+      .update(dates as any)
       .eq("id", id);
     if (error) throw new Error(error.message);
     return { ok: true };
