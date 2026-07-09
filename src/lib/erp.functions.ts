@@ -350,22 +350,7 @@ export const createLead = createServerFn({ method: "POST" })
         .parse(d),
   )
   .handler(async ({ data, context }) => {
-    let finalCustomerId = data.customer_id;
-
-    if (!finalCustomerId && data.company) {
-      // Create a new customer record for this company
-      const { data: newCustomer, error: cErr } = await context.supabase
-        .from("customers")
-        .insert({
-          name: data.company,
-          status: "cold",
-          account_manager_id: context.userId,
-        })
-        .select("id")
-        .single();
-      if (cErr) throw new Error(cErr.message);
-      finalCustomerId = newCustomer.id;
-    }
+    const finalCustomerId = data.customer_id; // Will be null for New Company
 
     const { data: row, error } = await context.supabase
       .from("leads")
@@ -394,14 +379,14 @@ export const createLead = createServerFn({ method: "POST" })
       .single();
     if (error) throw new Error(error.message);
 
-    if (finalCustomerId && data.service_ids && data.service_ids.length > 0) {
+    // Save interested services to lead_services
+    if (data.service_ids && data.service_ids.length > 0) {
       const { error: srvErr } = await context.supabase
-        .from("customer_services")
+        .from("lead_services")
         .insert(
           data.service_ids.map((id) => ({
-            customer_id: finalCustomerId,
+            lead_id: row.id,
             service_id: id,
-            status: "interested",
           }))
         );
       if (srvErr) throw new Error(srvErr.message);
@@ -530,14 +515,12 @@ export const getLead = createServerFn({ method: "GET" })
       .maybeSingle();
     if (!lead) throw new Error("Lead not found");
 
-    let services = [];
-    if (lead.customer_id) {
-      const { data: srvs } = await context.supabase
-        .from("customer_services")
-        .select("*, services(name,parent_id)")
-        .eq("customer_id", lead.customer_id);
-      services = srvs ?? [];
-    }
+    // Fetch interested services for this lead
+    const { data: srvs } = await context.supabase
+      .from("lead_services")
+      .select("*, services(name,parent_id)")
+      .eq("lead_id", data.id);
+    const services = srvs ?? [];
     
     return { lead, services };
   });
@@ -563,32 +546,50 @@ export const convertLeadToCustomer = createServerFn({ method: "POST" })
       .single();
     if (!lead) throw new Error("Lead not found");
 
-    if (lead.customer_id) {
-      // Update customer status to active
+    let finalCustomerId = lead.customer_id;
+
+    if (!finalCustomerId) {
+      // New Company -> Create Customer Profile
+      const { data: newCustomer, error: cErr } = await context.supabase
+        .from("customers")
+        .insert({
+          name: lead.company || "Unknown Company",
+          status: "active",
+          contact_email: lead.email,
+          contact_phone: lead.phone,
+          estimated_value: lead.value,
+          account_manager_id: lead.assigned_to || context.userId,
+        })
+        .select("id")
+        .single();
+      if (cErr) throw new Error(cErr.message);
+      finalCustomerId = newCustomer.id;
+
+      // Link lead to new customer
+      await context.supabase.from("leads").update({ customer_id: finalCustomerId }).eq("id", lead.id);
+    } else {
+      // Existing Customer -> Update Status/Value
       await context.supabase.from("customers").update({
         status: "active",
-        contact_email: lead.email,
-        contact_phone: lead.phone,
-        estimated_value: lead.value,
-        account_manager_id: lead.assigned_to || context.userId,
-      }).eq("id", lead.customer_id);
-
-      // Create Sales records
-      if (data.salesData.length > 0) {
-        const salesToInsert = data.salesData.map((s) => ({
-          customer_id: lead.customer_id!,
-          service_id: s.service_id,
-          billing_type: s.billing_type,
-          value: s.value,
-          status: "active",
-          start_date: new Date().toISOString().split("T")[0],
-          description: "Converted from lead",
-        }));
-        await context.supabase.from("sales").insert(salesToInsert);
-      }
+        estimated_value: (lead.value || 0), // Ideally we'd add to existing, but this suffices for now
+      }).eq("id", finalCustomerId);
     }
 
-    return { ok: true, customerId: lead.customer_id };
+    // Create Sales records for the finalized services
+    if (data.salesData.length > 0) {
+      const salesToInsert = data.salesData.map((s) => ({
+        customer_id: finalCustomerId!,
+        service_id: s.service_id,
+        billing_type: s.billing_type,
+        value: s.value,
+        status: "active",
+        start_date: new Date().toISOString().split("T")[0],
+        description: lead.customer_id ? "Sale added from lead" : "Converted from lead",
+      }));
+      await context.supabase.from("sales").insert(salesToInsert);
+    }
+
+    return { ok: true, customerId: finalCustomerId };
   });
 
 // ============ PROJECTS ============

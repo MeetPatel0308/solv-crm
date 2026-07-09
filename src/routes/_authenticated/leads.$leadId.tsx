@@ -256,35 +256,27 @@ function ConvertSection({ lead, services }: { lead: any; services: any[] }) {
     }))
   );
 
+  const isExistingCustomer = !!lead.customer_id;
+
   const convertFn = useServerFn(convertLeadToCustomer);
   const convertMut = useMutation({
     mutationFn: () => convertFn({ data: { leadId: lead.id, salesData } }),
     onSuccess: (res) => {
-      toast.success("Successfully converted to Customer!");
+      toast.success(isExistingCustomer ? "Successfully added sale to Customer!" : "Successfully converted to Customer!");
       qc.invalidateQueries();
       nav({ to: `/crm/${res.customerId}` });
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
-  if (lead.customer?.status === "active") {
-    return (
-      <Card className="p-6 bg-emerald-50 border-emerald-200">
-        <h3 className="text-lg font-semibold text-emerald-800">Successfully Converted</h3>
-        <p className="text-sm text-emerald-600 mt-1">This lead has been converted and the Customer Profile is active.</p>
-        <Button variant="outline" className="mt-4" asChild>
-          <Link to={`/crm/${lead.customer_id}`}>View Customer Profile</Link>
-        </Button>
-      </Card>
-    );
-  }
-
   return (
     <Card className="p-6 border-brand border-2 shadow-lg">
       <div className="mb-6 border-b pb-4">
-        <h3 className="text-xl font-bold">Convert to Customer</h3>
+        <h3 className="text-xl font-bold">{isExistingCustomer ? "Add Sale to Customer" : "Convert to Customer"}</h3>
         <p className="text-sm text-muted-foreground mt-1">
-          Finalize the sale details. This will activate the Customer Profile and create Sales records for the selected services.
+          {isExistingCustomer 
+            ? "Finalize the sale details. This will add the selected services to the existing Customer Profile and create Sales records." 
+            : "Finalize the sale details. This will activate the Customer Profile and create Sales records for the selected services."}
         </p>
       </div>
 
@@ -329,7 +321,7 @@ function ConvertSection({ lead, services }: { lead: any; services: any[] }) {
 
       <div className="flex justify-end gap-3">
         <Button size="lg" disabled={convertMut.isPending} onClick={() => convertMut.mutate()}>
-          Finalize Conversion
+          {isExistingCustomer ? "Finalize Sale" : "Finalize Conversion"}
         </Button>
       </div>
     </Card>

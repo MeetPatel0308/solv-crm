@@ -131,6 +131,7 @@ function CustomerDialog({ onClose }: { onClose: () => void }) {
 function LeadDialog({ onClose }: { onClose: () => void }) {
   const qc = useQueryClient();
   const [name, setName] = useState("");
+  const [leadType, setLeadType] = useState<"new" | "existing">("new");
   const [company, setCompany] = useState("");
   const [customerId, setCustomerId] = useState("");
   const [email, setEmail] = useState("");
@@ -197,38 +198,61 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
             <Label>Name</Label>
             <Input value={name} onChange={(e) => setName(e.target.value)} />
           </div>
-          <div className="space-y-1">
-            <Label>Company (Select existing or type new)</Label>
-            <div className="flex gap-2">
+          <div className="space-y-2">
+            <Label>Lead Type</Label>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 text-sm">
+                <input 
+                  type="radio" 
+                  checked={leadType === "new"} 
+                  onChange={() => {
+                    setLeadType("new");
+                    setCustomerId("");
+                  }} 
+                />
+                New Company
+              </label>
+              <label className="flex items-center gap-2 text-sm">
+                <input 
+                  type="radio" 
+                  checked={leadType === "existing"} 
+                  onChange={() => {
+                    setLeadType("existing");
+                    setCompany("");
+                  }} 
+                />
+                Existing Customer
+              </label>
+            </div>
+          </div>
+
+          {leadType === "new" ? (
+            <div className="space-y-1">
+              <Label>Company Name</Label>
+              <Input 
+                value={company} 
+                onChange={(e) => setCompany(e.target.value)} 
+                placeholder="Company Name..."
+              />
+            </div>
+          ) : (
+            <div className="space-y-1">
+              <Label>Select Customer</Label>
               <select
                 value={customerId}
-                onChange={(e) => {
-                  setCustomerId(e.target.value);
-                  if (e.target.value) {
-                    setCompany(""); // Clear typed company if existing selected
-                  }
-                }}
-                className="w-1/2 h-9 rounded-md border bg-background px-3 text-sm"
+                onChange={(e) => setCustomerId(e.target.value)}
+                className="w-full h-9 rounded-md border bg-background px-3 text-sm"
               >
-                <option value="">-- New Company --</option>
+                <option value="" disabled>-- Select Customer --</option>
                 {customers.map((c: any) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
                   </option>
                 ))}
               </select>
-              <Input 
-                value={company} 
-                onChange={(e) => {
-                  setCompany(e.target.value);
-                  setCustomerId(""); // Clear selected customer if typing new
-                }} 
-                placeholder="New Company Name..."
-                disabled={!!customerId}
-                className="w-1/2"
-              />
             </div>
-          </div>
+          )}
+          
           <div className="space-y-1">
             <Label>Interested Services</Label>
             <select

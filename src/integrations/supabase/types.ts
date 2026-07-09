@@ -205,6 +205,42 @@ export type Database = {
           },
         ]
       }
+      lead_services: {
+        Row: {
+          id: string
+          lead_id: string
+          service_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          lead_id: string
+          service_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          lead_id?: string
+          service_id?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_services_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_services_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       leads: {
         Row: {
           assigned_to: string | null
