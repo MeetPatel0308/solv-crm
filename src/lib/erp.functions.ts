@@ -472,25 +472,38 @@ export const updateLeadDates = createServerFn({ method: "POST" })
     converted_at?: string | null; 
     lost_at?: string | null; 
     stage?: string;
-  }) => 
-    z.object({
+  }) => {
+    const dateValue = z.preprocess(
+      (value) => (value === "" ? null : value),
+      z
+        .string()
+        .nullable()
+        .refine((value) => {
+          if (value === null) return true;
+          const date = new Date(value);
+          const year = date.getUTCFullYear();
+          return !Number.isNaN(date.getTime()) && year >= 1900 && year <= 2999;
+        }, "Enter a valid date between 1900 and 2999"),
+    );
+
+    return z.object({
       id: z.string().uuid(),
-      lead_created_at: z.string().nullable().optional(),
-      cold_at: z.string().nullable().optional(),
-      warm_at: z.string().nullable().optional(),
-      hot_at: z.string().nullable().optional(),
-      proposal_at: z.string().nullable().optional(),
-      negotiation_at: z.string().nullable().optional(),
-      converted_at: z.string().nullable().optional(),
-      lost_at: z.string().nullable().optional(),
+      lead_created_at: dateValue.optional(),
+      cold_at: dateValue.optional(),
+      warm_at: dateValue.optional(),
+      hot_at: dateValue.optional(),
+      proposal_at: dateValue.optional(),
+      negotiation_at: dateValue.optional(),
+      converted_at: dateValue.optional(),
+      lost_at: dateValue.optional(),
       stage: z.string().optional(),
-    }).parse(d)
-  )
+    }).parse(d);
+  })
   .handler(async ({ data, context }) => {
     const { id, ...dates } = data;
     const { error } = await context.supabase
       .from("leads")
-      .update(dates)
+      .update(dates as any)
       .eq("id", id);
     if (error) throw new Error(error.message);
     return { ok: true };

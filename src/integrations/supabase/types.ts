@@ -207,22 +207,22 @@ export type Database = {
       }
       lead_services: {
         Row: {
+          created_at: string
           id: string
           lead_id: string
           service_id: string
-          created_at: string
         }
         Insert: {
+          created_at?: string
           id?: string
           lead_id: string
           service_id: string
-          created_at?: string
         }
         Update: {
+          created_at?: string
           id?: string
           lead_id?: string
           service_id?: string
-          created_at?: string
         }
         Relationships: [
           {
@@ -238,7 +238,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "services"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       leads: {
@@ -266,6 +266,7 @@ export type Database = {
           stage: Database["public"]["Enums"]["lead_stage"]
           updated_at: string
           value: number | null
+          warm_at: string | null
         }
         Insert: {
           assigned_to?: string | null
@@ -291,6 +292,7 @@ export type Database = {
           stage?: Database["public"]["Enums"]["lead_stage"]
           updated_at?: string
           value?: number | null
+          warm_at?: string | null
         }
         Update: {
           assigned_to?: string | null
@@ -315,6 +317,7 @@ export type Database = {
           stage?: Database["public"]["Enums"]["lead_stage"]
           updated_at?: string
           value?: number | null
+          warm_at?: string | null
         }
         Relationships: [
           {

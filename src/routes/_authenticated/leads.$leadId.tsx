@@ -9,9 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, User, Building, Mail, Phone, Handshake, DollarSign, Target } from "lucide-react";
+import { ArrowLeft, User, Building, Mail, Phone, Handshake, DollarSign, Target, CalendarIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/leads/$leadId")({
   head: () => ({ meta: [{ title: "Lead Profile — solv." }] }),
@@ -27,6 +29,36 @@ const STAGES = [
   { key: "negotiation", label: "Negotiation", dateField: "negotiation_at" },
   { key: "converted", label: "Converted", dateField: "converted_at" },
 ];
+
+const DATE_INPUT_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+const parseDateInput = (value: string) => {
+  const match = DATE_INPUT_PATTERN.exec(value);
+  if (!match) return null;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  if (year < 1900 || year > 2999 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+
+  return date;
+};
+
+const dateToInputValue = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 function LeadProfile() {
   const { leadId } = Route.useParams();
@@ -77,14 +109,27 @@ function LeadProfile() {
 
   const handleDateChange = (field: string, value: string, stageKey: string) => {
     if (isLocked) return;
-    if (value) {
-      m.mutate({ field, value: new Date(value).toISOString(), stage: stageKey });
+    if (!value) {
+      m.mutate({ field, value: "", stage: stageKey });
+      return;
     }
+
+    const parsedDate = parseDateInput(value);
+    if (!parsedDate) {
+      toast.error("Enter a valid date between 1900 and 2999");
+      return;
+    }
+
+    m.mutate({ field, value: parsedDate.toISOString(), stage: stageKey });
   };
 
   const formatDateForInput = (iso?: string | null) => {
     if (!iso) return "";
-    return new Date(iso).toISOString().split("T")[0];
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return "";
+    const year = date.getUTCFullYear();
+    if (year < 1900 || year > 2999) return "";
+    return date.toISOString().split("T")[0];
   };
 
   return (
@@ -120,7 +165,7 @@ function LeadProfile() {
 
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between overflow-x-auto pb-4">
           {stages.map((st, i) => {
-            const val = lead[st.dateField];
+            const val = (lead as any)[st.dateField];
             const isActive = lead.stage === st.key;
             const hasPassed = !!val;
             return (
@@ -140,12 +185,10 @@ function LeadProfile() {
                 <Label className={`text-[10px] uppercase mb-2 font-semibold ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
                   {st.label}
                 </Label>
-                <Input
-                  type="date"
-                  className="h-8 text-[11px] px-2 w-[120px]"
+                <LeadDatePicker
                   value={formatDateForInput(val)}
                   disabled={isLocked || m.isPending}
-                  onChange={(e) => handleDateChange(st.dateField, e.target.value, st.key)}
+                  onChange={(value) => handleDateChange(st.dateField, value, st.key)}
                 />
               </div>
             );
@@ -241,6 +284,58 @@ function LeadProfile() {
       {lead.stage === "converted" && (
         <ConvertSection lead={lead} services={services} />
       )}
+    </div>
+  );
+}
+
+function LeadDatePicker({
+  value,
+  disabled,
+  onChange,
+}: {
+  value: string;
+  disabled: boolean;
+  onChange: (value: string) => void;
+}) {
+  const selectedDate = value ? parseDateInput(value) : undefined;
+
+  return (
+    <div className="flex w-[150px] items-center gap-1">
+      <Input
+        type="date"
+        min="1900-01-01"
+        max="2999-12-31"
+        className="h-8 min-w-0 text-[11px] px-2"
+        value={value}
+        disabled={disabled}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 shrink-0"
+            disabled={disabled}
+            aria-label="Open calendar"
+          >
+            <CalendarIcon className="h-3.5 w-3.5" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={selectedDate ?? undefined}
+            onSelect={(date) => {
+              if (date) onChange(dateToInputValue(date));
+            }}
+            disabled={{ before: new Date(1900, 0, 1), after: new Date(2999, 11, 31) }}
+            captionLayout="dropdown"
+            className="p-3 pointer-events-auto"
+          />
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }
