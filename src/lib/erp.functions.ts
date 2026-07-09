@@ -316,7 +316,14 @@ export const createLead = createServerFn({ method: "POST" })
         .object({
           name: z.string().min(1),
           company: z.string().nullable(),
-          email: z.preprocess((val) => (val === "" ? null : val), z.string().email().nullable()),
+          email: z.preprocess(
+            (val) => {
+              if (val == null || val === "") return null;
+              const s = String(val).trim();
+              return z.string().email().safeParse(s).success ? s : null;
+            },
+            z.string().email().nullable(),
+          ),
           phone: z.string().nullable(),
           value: z.number().nonnegative(),
           stage: leadStageEnum,
@@ -335,7 +342,7 @@ export const createLead = createServerFn({ method: "POST" })
         .from("customers")
         .insert({
           name: data.company,
-          status: "lead",
+          status: "lead" as any,
           account_manager_id: context.userId,
         })
         .select("id")
