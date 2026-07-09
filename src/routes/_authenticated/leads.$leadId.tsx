@@ -163,13 +163,13 @@ function LeadProfile() {
           <Badge variant="outline" className="capitalize px-4 py-1 text-sm">{lead.stage.replace("_", " ")}</Badge>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between overflow-x-auto pb-4">
+        <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between overflow-x-auto pb-6">
           {stages.map((st, i) => {
             const val = (lead as any)[st.dateField];
             const isActive = lead.stage === st.key;
             const hasPassed = !!val;
             return (
-              <div key={st.key} className="flex-1 flex flex-col relative min-w-[110px]">
+              <div key={st.key} className="flex-1 flex flex-col relative min-w-[160px] shrink-0">
                 <div className="flex items-center mb-3">
                   <div className={`h-4 w-4 rounded-full border-2 z-10 ${
                     isActive || hasPassed 
