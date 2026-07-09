@@ -2,6 +2,8 @@
 ALTER TYPE public.lead_stage RENAME TO lead_stage_old;
 CREATE TYPE public.lead_stage AS ENUM ('cold', 'warm', 'hot', 'converted', 'lost');
 
+ALTER TABLE public.leads ALTER COLUMN stage DROP DEFAULT;
+
 ALTER TABLE public.leads 
   ALTER COLUMN stage TYPE public.lead_stage 
   USING (
@@ -15,6 +17,8 @@ ALTER TABLE public.leads
       ELSE 'cold'::public.lead_stage
     END
   );
+
+ALTER TABLE public.leads ALTER COLUMN stage SET DEFAULT 'cold'::public.lead_stage;
 
 DROP TYPE public.lead_stage_old;
 
