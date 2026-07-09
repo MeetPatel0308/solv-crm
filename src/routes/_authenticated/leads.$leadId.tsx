@@ -127,6 +127,8 @@ function LeadProfile() {
     if (!iso) return "";
     const date = new Date(iso);
     if (Number.isNaN(date.getTime())) return "";
+    const year = date.getUTCFullYear();
+    if (year < 1900 || year > 2999) return "";
     return date.toISOString().split("T")[0];
   };
 
