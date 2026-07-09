@@ -188,11 +188,11 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
   });
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>New Lead</DialogTitle>
         </DialogHeader>
-        <div className="space-y-3">
+        <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-4">
           <div className="space-y-1">
             <Label>Name</Label>
             <Input value={name} onChange={(e) => setName(e.target.value)} />
@@ -248,62 +248,71 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
             </select>
             <p className="text-[10px] text-muted-foreground mt-1">Hold Ctrl/Cmd to select multiple</p>
           </div>
-          <div className="space-y-1">
-            <Label>Email</Label>
-            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <Label>Email</Label>
+              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Phone</Label>
+              <Input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            </div>
           </div>
-          <div className="space-y-1">
-            <Label>Estimated Value</Label>
-            <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} />
+          
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <Label>Estimated Value</Label>
+              <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Status</Label>
+              <select
+                value={stage}
+                onChange={(e) => setStage(e.target.value)}
+                className="w-full h-9 rounded-md border bg-background px-3 text-sm"
+              >
+                <option value="lead_created">Lead Created</option>
+                <option value="cold">Cold</option>
+                <option value="warm">Warm</option>
+                <option value="hot">Hot</option>
+                <option value="proposal">Proposal</option>
+                <option value="negotiation">Negotiation</option>
+                <option value="converted">Converted</option>
+                <option value="lost">Lost</option>
+              </select>
+            </div>
           </div>
-          <div className="space-y-1">
-            <Label>Status</Label>
-            <select
-              value={stage}
-              onChange={(e) => setStage(e.target.value)}
-              className="w-full h-9 rounded-md border bg-background px-3 text-sm"
-            >
-              <option value="lead_created">Lead Created</option>
-              <option value="cold">Cold</option>
-              <option value="warm">Warm</option>
-              <option value="hot">Hot</option>
-              <option value="proposal">Proposal</option>
-              <option value="negotiation">Negotiation</option>
-              <option value="converted">Converted</option>
-              <option value="lost">Lost</option>
-            </select>
-          </div>
-          <div className="space-y-1">
-            <Label>Phone</Label>
-            <Input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          </div>
-          <div className="space-y-1">
-            <Label>Where did this lead come from?</Label>
-            <select
-              value={source}
-              onChange={(e) => setSource(e.target.value)}
-              className="w-full h-9 rounded-md border bg-background px-3 text-sm"
-            >
-              <option value="" disabled>Select a source…</option>
-              <option value="email">Email</option>
-              <option value="ads">Ads</option>
-              <option value="referral">Referral</option>
-            </select>
-          </div>
-          <div className="space-y-1">
-            <Label>Assigned Team Member</Label>
-            <select
-              value={assignedTo}
-              onChange={(e) => setAssignedTo(e.target.value)}
-              className="w-full h-9 rounded-md border bg-background px-3 text-sm"
-            >
-              <option value="">-- Unassigned --</option>
-              {team.map((t: any) => (
-                <option key={t.id} value={t.id}>
-                  {t.full_name || t.email}
-                </option>
-              ))}
-            </select>
+          
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <Label>Where did this lead come from?</Label>
+              <select
+                value={source}
+                onChange={(e) => setSource(e.target.value)}
+                className="w-full h-9 rounded-md border bg-background px-3 text-sm"
+              >
+                <option value="" disabled>Select a source…</option>
+                <option value="email">Email</option>
+                <option value="ads">Ads</option>
+                <option value="referral">Referral</option>
+              </select>
+            </div>
+            <div className="space-y-1">
+              <Label>Assigned Team Member</Label>
+              <select
+                value={assignedTo}
+                onChange={(e) => setAssignedTo(e.target.value)}
+                className="w-full h-9 rounded-md border bg-background px-3 text-sm"
+              >
+                <option value="">-- Unassigned --</option>
+                {team.map((t: any) => (
+                  <option key={t.id} value={t.id}>
+                    {t.full_name || t.email}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="space-y-1">
             <Label>Notes</Label>
