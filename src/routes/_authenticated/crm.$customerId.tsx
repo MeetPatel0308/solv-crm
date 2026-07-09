@@ -7,7 +7,10 @@ import {
   deleteCustomer,
   updateCustomerServices,
   listServices,
+  listServices,
   createSale,
+  updateLeadDates,
+  getMyRoles,
 } from "@/lib/erp.functions";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -46,7 +49,16 @@ function CustomerDetail() {
     queryKey: ["customer", customerId],
     queryFn: () => fn({ data: { id: customerId } }),
   });
-  const { customer, timeline, services, openTickets, sales = [] } = data;
+  const { customer, timeline, services, openTickets, sales = [], leads = [] } = data;
+
+  const rolesFn = useServerFn(getMyRoles);
+  const { data: rolesData } = useQuery({
+    queryKey: ["my-roles"],
+    queryFn: () => rolesFn(),
+  });
+  const isAdmin = rolesData?.roles?.includes("admin") ?? false;
+  
+  const lead = leads[0]; // Most recent lead
 
   const [assigningServices, setAssigningServices] = useState(false);
   const [addingSale, setAddingSale] = useState(false);
@@ -146,6 +158,15 @@ function CustomerDetail() {
         </div>
       </Card>
 
+      {lead && (
+        <LeadTimeline 
+          lead={lead} 
+          isAdmin={isAdmin} 
+          customerId={customerId} 
+        />
+      )}
+
+      {/* Main Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="p-6">
           <div className="flex justify-between items-center mb-4">
@@ -329,6 +350,105 @@ function AddSaleDialog({
   );
 }
 
+function LeadTimeline({ lead, isAdmin, customerId }: { lead: any; isAdmin: boolean; customerId: string }) {
+  const qc = useQueryClient();
+  const fn = useServerFn(updateLeadDates);
+
+  const m = useMutation({
+    mutationFn: (vars: { field: string; value: string }) =>
+      fn({
+        data: {
+          id: lead.id,
+          [vars.field]: vars.value,
+        },
+      }),
+    onSuccess: () => {
+      toast.success("Lead date updated");
+      qc.invalidateQueries({ queryKey: ["customer", customerId] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const isLocked = lead.stage === "converted" && !isAdmin;
+  const isLost = lead.stage === "lost";
+
+  const stages = [
+    { key: "cold", label: "Cold", dateField: "cold_at" },
+    { key: "warm", label: "Warm", dateField: "warm_at" },
+    { key: "hot", label: "Hot", dateField: "hot_at" },
+    { key: "converted", label: "Converted", dateField: "converted_at" },
+  ];
+
+  if (isLost) {
+    stages[3] = { key: "lost", label: "Lost", dateField: "lost_at" };
+  }
+
+  const handleDateChange = (field: string, value: string) => {
+    if (isLocked) return;
+    if (value) {
+      m.mutate({ field, value: new Date(value).toISOString() });
+    } else {
+      // Clear date (if we supported null in the mutation we'd pass null, but we'll leave as is for now)
+    }
+  };
+
+  const formatDateForInput = (iso?: string | null) => {
+    if (!iso) return "";
+    return new Date(iso).toISOString().split("T")[0];
+  };
+
+  return (
+    <Card className={`p-6 border-l-4 ${isLost ? "border-l-red-500" : lead.stage === "converted" ? "border-l-emerald-500" : "border-l-brand"}`}>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h3 className="text-lg font-semibold">Lead Pipeline</h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            {lead.stage === "converted" 
+              ? (isAdmin ? "Converted (Admin Override Enabled)" : "Converted (Locked)")
+              : isLost 
+                ? "Lead Lost" 
+                : "Active Lead"}
+          </p>
+        </div>
+        <Badge variant="outline" className="capitalize">{lead.stage}</Badge>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+        {stages.map((st, i) => {
+          const val = lead[st.dateField];
+          const isActive = lead.stage === st.key;
+          const hasPassed = !!val;
+          return (
+            <div key={st.key} className="flex-1 flex flex-col relative min-w-[120px]">
+              <div className="flex items-center mb-2">
+                <div className={`h-4 w-4 rounded-full border-2 z-10 ${
+                  isActive || hasPassed 
+                    ? st.key === "lost" ? "bg-red-500 border-red-500" : "bg-brand border-brand" 
+                    : "bg-background border-muted"
+                }`} />
+                {i < stages.length - 1 && (
+                  <div className={`absolute top-2 left-4 right-[-10px] h-[2px] -z-0 ${
+                    hasPassed ? (st.key === "lost" ? "bg-red-500" : "bg-brand") : "bg-muted"
+                  }`} style={{ width: 'calc(100% - 10px)' }} />
+                )}
+              </div>
+              <Label className={`text-xs uppercase mb-1 font-semibold ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
+                {st.label}
+              </Label>
+              <Input
+                type="date"
+                className="h-8 text-xs px-2 w-[130px]"
+                value={formatDateForInput(val)}
+                disabled={isLocked || m.isPending}
+                onChange={(e) => handleDateChange(st.dateField, e.target.value)}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </Card>
+  );
+}
 
 function AssignServicesDialog({
   customerId,

@@ -255,6 +255,7 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
               <option value="warm">Warm</option>
               <option value="hot">Hot</option>
               <option value="converted">Converted</option>
+              <option value="lost">Lost</option>
             </select>
           </div>
           <div className="space-y-1">

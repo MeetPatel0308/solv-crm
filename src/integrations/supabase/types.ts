@@ -208,6 +208,7 @@ export type Database = {
       leads: {
         Row: {
           assigned_to: string | null
+          cold_at: string | null
           company: string | null
           converted_at: string | null
           created_at: string
@@ -215,7 +216,9 @@ export type Database = {
           customer_id: string | null
           deleted_at: string | null
           email: string | null
+          hot_at: string | null
           id: string
+          lost_at: string | null
           name: string
           notes: string | null
           phone: string | null
@@ -226,6 +229,7 @@ export type Database = {
         }
         Insert: {
           assigned_to?: string | null
+          cold_at?: string | null
           company?: string | null
           converted_at?: string | null
           created_at?: string
@@ -233,7 +237,9 @@ export type Database = {
           customer_id?: string | null
           deleted_at?: string | null
           email?: string | null
+          hot_at?: string | null
           id?: string
+          lost_at?: string | null
           name: string
           notes?: string | null
           phone?: string | null
@@ -244,6 +250,7 @@ export type Database = {
         }
         Update: {
           assigned_to?: string | null
+          cold_at?: string | null
           company?: string | null
           converted_at?: string | null
           created_at?: string
@@ -251,7 +258,9 @@ export type Database = {
           customer_id?: string | null
           deleted_at?: string | null
           email?: string | null
+          hot_at?: string | null
           id?: string
+          lost_at?: string | null
           name?: string
           notes?: string | null
           phone?: string | null
@@ -838,11 +847,10 @@ export type Database = {
       app_role: "admin" | "sales" | "project_manager" | "support" | "hr"
       customer_status: "cold" | "warm" | "hot" | "converted" | "lost" | "active"
       lead_stage:
-        | "lead"
-        | "qualified"
-        | "proposal"
-        | "negotiation"
-        | "won"
+        | "cold"
+        | "warm"
+        | "hot"
+        | "converted"
         | "lost"
       project_status:
         | "planning"
@@ -989,11 +997,10 @@ export const Constants = {
       app_role: ["admin", "sales", "project_manager", "support", "hr"],
       customer_status: ["cold", "warm", "hot", "converted", "lost", "active"],
       lead_stage: [
-        "lead",
-        "qualified",
-        "proposal",
-        "negotiation",
-        "won",
+        "cold",
+        "warm",
+        "hot",
+        "converted",
         "lost",
       ],
       project_status: [

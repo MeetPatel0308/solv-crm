@@ -124,7 +124,7 @@ export const getCustomer = createServerFn({ method: "GET" })
       .eq("id", data.id)
       .maybeSingle();
     if (!customer) throw new Error("Customer not found");
-    const [{ data: services }, { data: openTickets }, { data: allTickets }, { data: projects }, { data: sales }] = await Promise.all([
+    const [{ data: services }, { data: openTickets }, { data: allTickets }, { data: projects }, { data: sales }, { data: leads }] = await Promise.all([
       context.supabase
         .from("customer_services")
         .select("*, services(name,parent_id)")
@@ -147,6 +147,11 @@ export const getCustomer = createServerFn({ method: "GET" })
         .is("deleted_at", null),
       context.supabase
         .from("sales")
+        .select("*")
+        .eq("customer_id", data.id)
+        .order("created_at", { ascending: false }),
+      context.supabase
+        .from("leads")
         .select("*")
         .eq("customer_id", data.id)
         .order("created_at", { ascending: false }),
@@ -239,6 +244,7 @@ export const getCustomer = createServerFn({ method: "GET" })
       services: services ?? [],
       openTickets: openTickets ?? [],
       sales: sales ?? [],
+      leads: leads ?? [],
     };
   });
 
@@ -295,7 +301,7 @@ export const listLeads = createServerFn({ method: "GET" })
     return data ?? [];
   });
 
-const leadStageEnum = z.enum(["cold", "warm", "hot", "converted"]);
+const leadStageEnum = z.enum(["cold", "warm", "hot", "converted", "lost"]);
 const leadSourceEnum = z.enum(["email", "ads", "referral"]);
 
 export const createLead = createServerFn({ method: "POST" })
@@ -363,6 +369,10 @@ export const createLead = createServerFn({ method: "POST" })
         source: data.source as never,
         customer_id: finalCustomerId,
         created_by: context.userId,
+        cold_at: data.stage === "cold" ? new Date().toISOString() : null,
+        warm_at: data.stage === "warm" ? new Date().toISOString() : null,
+        hot_at: data.stage === "hot" ? new Date().toISOString() : null,
+        lost_at: data.stage === "lost" ? new Date().toISOString() : null,
         converted_at: data.stage === "converted" ? new Date().toISOString() : null,
       })
       .select("id")
@@ -415,11 +425,13 @@ export const updateLead = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { data: existing } = await context.supabase
       .from("leads")
-      .select("stage,converted_at")
+      .select("stage,cold_at,warm_at,hot_at,lost_at,converted_at")
       .eq("id", data.id)
       .maybeSingle();
-    const becomingConverted =
-      (data.stage as string) === "converted" && (existing?.stage as string) !== "converted";
+
+    const isNewStage = (stage: string) => data.stage === stage && existing?.stage !== stage;
+    const now = new Date().toISOString();
+
     const { error } = await context.supabase
       .from("leads")
       .update({
@@ -431,14 +443,42 @@ export const updateLead = createServerFn({ method: "POST" })
         stage: data.stage as never,
         source: data.source as never,
         notes: data.notes,
-        converted_at:
-          data.stage === "converted"
-            ? becomingConverted
-              ? new Date().toISOString()
-              : existing?.converted_at
-            : null,
+        cold_at: isNewStage("cold") ? now : existing?.cold_at,
+        warm_at: isNewStage("warm") ? now : existing?.warm_at,
+        hot_at: isNewStage("hot") ? now : existing?.hot_at,
+        lost_at: isNewStage("lost") ? now : existing?.lost_at,
+        converted_at: isNewStage("converted") ? now : existing?.converted_at,
       })
       .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const updateLeadDates = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { 
+    id: string; 
+    cold_at?: string | null; 
+    warm_at?: string | null; 
+    hot_at?: string | null; 
+    converted_at?: string | null; 
+    lost_at?: string | null; 
+  }) => 
+    z.object({
+      id: z.string().uuid(),
+      cold_at: z.string().nullable().optional(),
+      warm_at: z.string().nullable().optional(),
+      hot_at: z.string().nullable().optional(),
+      converted_at: z.string().nullable().optional(),
+      lost_at: z.string().nullable().optional(),
+    }).parse(d)
+  )
+  .handler(async ({ data, context }) => {
+    const { id, ...dates } = data;
+    const { error } = await context.supabase
+      .from("leads")
+      .update(dates)
+      .eq("id", id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

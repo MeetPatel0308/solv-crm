@@ -37,7 +37,8 @@ const STAGE_STYLES: Record<string, string> = {
   cold: "bg-slate-100 text-slate-700",
   warm: "bg-amber-100 text-amber-700",
   hot: "bg-orange-100 text-orange-700",
-  converted: "bg-brand/10 text-brand",
+  converted: "bg-emerald-100 text-emerald-700",
+  lost: "bg-red-100 text-red-700",
 };
 
 const SOURCE_LABELS: Record<string, string> = {
@@ -222,6 +223,7 @@ function EditLeadDialog({ lead, onClose }: { lead: any; onClose: () => void }) {
                 <option value="warm">Warm</option>
                 <option value="hot">Hot</option>
                 <option value="converted">Converted</option>
+                <option value="lost">Lost</option>
               </select>
             </div>
             <div className="space-y-1">
