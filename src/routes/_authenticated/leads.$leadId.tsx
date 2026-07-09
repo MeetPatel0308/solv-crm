@@ -77,9 +77,15 @@ function LeadProfile() {
 
   const handleDateChange = (field: string, value: string, stageKey: string) => {
     if (isLocked) return;
-    if (value) {
-      m.mutate({ field, value: new Date(value).toISOString(), stage: stageKey });
-    }
+    if (!value) return;
+    // Guard against intermediate/invalid values from date input (e.g., year > 9999)
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+    if (!match) return;
+    const year = Number(match[1]);
+    if (year < 1900 || year > 2999) return;
+    const d = new Date(`${value}T00:00:00.000Z`);
+    if (isNaN(d.getTime())) return;
+    m.mutate({ field, value: d.toISOString(), stage: stageKey });
   };
 
   const formatDateForInput = (iso?: string | null) => {
