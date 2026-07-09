@@ -23,6 +23,7 @@ import { Route as AuthenticatedLeadsIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedCrmIndexRouteImport } from './routes/_authenticated/crm.index'
 import { Route as AuthenticatedTicketsTicketIdRouteImport } from './routes/_authenticated/tickets.$ticketId'
 import { Route as AuthenticatedProjectsProjectIdRouteImport } from './routes/_authenticated/projects.$projectId'
+import { Route as AuthenticatedLeadsLeadIdRouteImport } from './routes/_authenticated/leads.$leadId'
 import { Route as AuthenticatedCrmCustomerIdRouteImport } from './routes/_authenticated/crm.$customerId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -98,6 +99,12 @@ const AuthenticatedProjectsProjectIdRoute =
     path: '/projects/$projectId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedLeadsLeadIdRoute =
+  AuthenticatedLeadsLeadIdRouteImport.update({
+    id: '/leads/$leadId',
+    path: '/leads/$leadId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedCrmCustomerIdRoute =
   AuthenticatedCrmCustomerIdRouteImport.update({
     id: '/crm/$customerId',
@@ -114,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/crm/$customerId': typeof AuthenticatedCrmCustomerIdRoute
+  '/leads/$leadId': typeof AuthenticatedLeadsLeadIdRoute
   '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
   '/tickets/$ticketId': typeof AuthenticatedTicketsTicketIdRoute
   '/crm/': typeof AuthenticatedCrmIndexRoute
@@ -130,6 +138,7 @@ export interface FileRoutesByTo {
   '/reports': typeof AuthenticatedReportsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/crm/$customerId': typeof AuthenticatedCrmCustomerIdRoute
+  '/leads/$leadId': typeof AuthenticatedLeadsLeadIdRoute
   '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
   '/tickets/$ticketId': typeof AuthenticatedTicketsTicketIdRoute
   '/crm': typeof AuthenticatedCrmIndexRoute
@@ -148,6 +157,7 @@ export interface FileRoutesById {
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/crm/$customerId': typeof AuthenticatedCrmCustomerIdRoute
+  '/_authenticated/leads/$leadId': typeof AuthenticatedLeadsLeadIdRoute
   '/_authenticated/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
   '/_authenticated/tickets/$ticketId': typeof AuthenticatedTicketsTicketIdRoute
   '/_authenticated/crm/': typeof AuthenticatedCrmIndexRoute
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/crm/$customerId'
+    | '/leads/$leadId'
     | '/projects/$projectId'
     | '/tickets/$ticketId'
     | '/crm/'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/settings'
     | '/crm/$customerId'
+    | '/leads/$leadId'
     | '/projects/$projectId'
     | '/tickets/$ticketId'
     | '/crm'
@@ -199,6 +211,7 @@ export interface FileRouteTypes {
     | '/_authenticated/reports'
     | '/_authenticated/settings'
     | '/_authenticated/crm/$customerId'
+    | '/_authenticated/leads/$leadId'
     | '/_authenticated/projects/$projectId'
     | '/_authenticated/tickets/$ticketId'
     | '/_authenticated/crm/'
@@ -314,6 +327,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectsProjectIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/leads/$leadId': {
+      id: '/_authenticated/leads/$leadId'
+      path: '/leads/$leadId'
+      fullPath: '/leads/$leadId'
+      preLoaderRoute: typeof AuthenticatedLeadsLeadIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/crm/$customerId': {
       id: '/_authenticated/crm/$customerId'
       path: '/crm/$customerId'
@@ -330,6 +350,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedCrmCustomerIdRoute: typeof AuthenticatedCrmCustomerIdRoute
+  AuthenticatedLeadsLeadIdRoute: typeof AuthenticatedLeadsLeadIdRoute
   AuthenticatedProjectsProjectIdRoute: typeof AuthenticatedProjectsProjectIdRoute
   AuthenticatedTicketsTicketIdRoute: typeof AuthenticatedTicketsTicketIdRoute
   AuthenticatedCrmIndexRoute: typeof AuthenticatedCrmIndexRoute
@@ -344,6 +365,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedCrmCustomerIdRoute: AuthenticatedCrmCustomerIdRoute,
+  AuthenticatedLeadsLeadIdRoute: AuthenticatedLeadsLeadIdRoute,
   AuthenticatedProjectsProjectIdRoute: AuthenticatedProjectsProjectIdRoute,
   AuthenticatedTicketsTicketIdRoute: AuthenticatedTicketsTicketIdRoute,
   AuthenticatedCrmIndexRoute: AuthenticatedCrmIndexRoute,
