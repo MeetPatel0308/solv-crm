@@ -42,7 +42,12 @@ function CrmList() {
 
   const totalCustomers = data.length;
   const activeCustomers = data.filter((c: any) => c.status === "active").length;
-  const totalValue = data.reduce((sum: number, c: any) => sum + Number(c.estimated_value || 0), 0);
+  
+  const totalValue = data.reduce((sum: number, c: any) => {
+    const cVal = c.sales ? c.sales.reduce((sSum: number, s: any) => sSum + Number(s.value || 0), 0) : 0;
+    return sum + cVal;
+  }, 0);
+  
   const avgValue = totalCustomers ? Math.round(totalValue / totalCustomers) : 0;
 
   return (
@@ -56,7 +61,7 @@ function CrmList() {
         <KpiCard label="Total Customers" value={totalCustomers} icon={Users} />
         <KpiCard label="Active Customers" value={activeCustomers} icon={UserCheck} />
         <KpiCard
-          label="Total Pipeline Value"
+          label="Total Actual Value"
           value={`$${totalValue.toLocaleString()}`}
           icon={DollarSign}
         />
@@ -108,7 +113,7 @@ function CrmList() {
                     {c.account_manager?.full_name ?? "—"}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    ${Number(c.estimated_value || 0).toLocaleString()}
+                    ${(c.sales ? c.sales.reduce((sSum: number, s: any) => sSum + Number(s.value || 0), 0) : 0).toLocaleString()}
                   </TableCell>
                   <TableCell className="text-right">
                     <ConfirmDeleteButton

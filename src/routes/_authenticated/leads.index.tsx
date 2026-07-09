@@ -107,7 +107,8 @@ function LeadsList() {
   const conversionRate = data.length === 0 ? 0 : Math.round((convertedCount / data.length) * 100);
 
   const serviceCounts: Record<string, number> = {};
-  activeLeads.forEach((l: any) => {
+  const summaryLeads = data.filter((l: any) => l.stage !== "lost");
+  summaryLeads.forEach((l: any) => {
     l.lead_services?.forEach((ls: any) => {
       const name = ls.services?.name;
       if (name) {

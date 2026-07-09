@@ -107,7 +107,7 @@ export const listCustomers = createServerFn({ method: "GET" })
     const { data } = await context.supabase
       .from("customers")
       .select(
-        "id,name,industry,status,last_contact_at,estimated_value,account_manager_id, account_manager:profiles!account_manager_id(full_name)",
+        "id,name,industry,status,last_contact_at,estimated_value,account_manager_id, account_manager:profiles!account_manager_id(full_name), sales(value)",
       )
       .is("deleted_at", null)
       .order("created_at", { ascending: false });
