@@ -469,6 +469,7 @@ export const updateLeadDates = createServerFn({ method: "POST" })
     negotiation_at?: string | null;
     converted_at?: string | null; 
     lost_at?: string | null; 
+    stage?: string;
   }) => 
     z.object({
       id: z.string().uuid(),
@@ -480,6 +481,7 @@ export const updateLeadDates = createServerFn({ method: "POST" })
       negotiation_at: z.string().nullable().optional(),
       converted_at: z.string().nullable().optional(),
       lost_at: z.string().nullable().optional(),
+      stage: z.string().optional(),
     }).parse(d)
   )
   .handler(async ({ data, context }) => {

@@ -47,11 +47,12 @@ function LeadProfile() {
 
   const updateFn = useServerFn(updateLeadDates);
   const m = useMutation({
-    mutationFn: (vars: { field: string; value: string }) =>
+    mutationFn: (vars: { field: string; value: string; stage: string }) =>
       updateFn({
         data: {
           id: leadId,
           [vars.field]: vars.value,
+          stage: vars.stage,
         },
       }),
     onSuccess: () => {
@@ -74,10 +75,10 @@ function LeadProfile() {
     stages[6] = { key: "lost", label: "Lost", dateField: "lost_at" };
   }
 
-  const handleDateChange = (field: string, value: string) => {
+  const handleDateChange = (field: string, value: string, stageKey: string) => {
     if (isLocked) return;
     if (value) {
-      m.mutate({ field, value: new Date(value).toISOString() });
+      m.mutate({ field, value: new Date(value).toISOString(), stage: stageKey });
     }
   };
 
@@ -144,7 +145,7 @@ function LeadProfile() {
                   className="h-8 text-[11px] px-2 w-[120px]"
                   value={formatDateForInput(val)}
                   disabled={isLocked || m.isPending}
-                  onChange={(e) => handleDateChange(st.dateField, e.target.value)}
+                  onChange={(e) => handleDateChange(st.dateField, e.target.value, st.key)}
                 />
               </div>
             );
