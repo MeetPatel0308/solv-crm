@@ -104,7 +104,7 @@ function LeadsList() {
 
   const convertedCount = data.filter((l: any) => l.stage === "converted").length;
   const lostCount = data.filter((l: any) => l.stage === "lost").length;
-  const conversionRate = (convertedCount + lostCount) === 0 ? 0 : Math.round((convertedCount / (convertedCount + lostCount)) * 100);
+  const conversionRate = data.length === 0 ? 0 : Math.round((convertedCount / data.length) * 100);
 
   const serviceCounts: Record<string, number> = {};
   activeLeads.forEach((l: any) => {
