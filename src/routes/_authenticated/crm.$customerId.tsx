@@ -9,6 +9,7 @@ import {
   listServices,
   createSale,
   getMyRoles,
+  createCustomService,
 } from "@/lib/erp.functions";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -221,6 +222,7 @@ function CustomerDetail() {
       {addingSale && (
         <AddSaleDialog
           customerId={customerId}
+          currentServiceIds={services.map((s: any) => s.service_id)}
           onClose={() => setAddingSale(false)}
         />
       )}
@@ -230,31 +232,66 @@ function CustomerDetail() {
 
 function AddSaleDialog({
   customerId,
+  currentServiceIds,
   onClose,
 }: {
   customerId: string;
+  currentServiceIds: string[];
   onClose: () => void;
 }) {
   const qc = useQueryClient();
-  const [description, setDescription] = useState("");
+  const getSrvs = useServerFn(listServices);
+  const { data: availableServices = [] } = useQuery({
+    queryKey: ["services"],
+    queryFn: () => getSrvs(),
+  });
+  
+  const customSrvFn = useServerFn(createCustomService);
+  const updateServicesFn = useServerFn(updateCustomerServices);
+  const fn = useServerFn(createSale);
+
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [showCustom, setShowCustom] = useState(false);
+  const [customService, setCustomService] = useState("");
+  
   const [billingType, setBillingType] = useState<"retainer" | "one-off">("retainer");
   const [value, setValue] = useState("");
   const [status, setStatus] = useState<"active" | "completed" | "cancelled">("active");
   const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
 
-  const fn = useServerFn(createSale);
   const m = useMutation({
-    mutationFn: () =>
-      fn({
+    mutationFn: async () => {
+      const finalServiceIds = [...selectedServices];
+      let customName = "";
+      if (showCustom && customService.trim()) {
+        customName = customService.trim();
+        const newId = await customSrvFn({ data: { name: customName } });
+        finalServiceIds.push(newId);
+      }
+
+      if (finalServiceIds.length === 0 && !customName) {
+        throw new Error("Please select at least one service.");
+      }
+
+      const combinedServiceIds = Array.from(new Set([...currentServiceIds, ...finalServiceIds]));
+      await updateServicesFn({ data: { customerId, serviceIds: combinedServiceIds } });
+
+      const names = finalServiceIds.map(id => availableServices.find((s: any) => s.id === id)?.name).filter(Boolean);
+      if (customName) names.push(customName);
+      
+      const description = Array.from(new Set(names)).join(", ");
+
+      return fn({
         data: {
           customer_id: customerId,
-          description,
+          description: description,
           billing_type: billingType,
           value: Number(value),
           status,
           start_date: startDate,
         },
-      }),
+      });
+    },
     onSuccess: () => {
       toast.success("Sale added successfully");
       qc.invalidateQueries();
@@ -270,13 +307,46 @@ function AddSaleDialog({
           <DialogTitle>Add Sale</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-2">
-          <div className="space-y-1">
+          <div className="space-y-2">
             <Label>Product/Service</Label>
-            <Input
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="e.g. Website Maintenance"
-            />
+            <div className="border rounded-md p-3 space-y-2 max-h-[200px] overflow-y-auto bg-background">
+              {availableServices.map((s: any) => {
+                const isSelected = selectedServices.includes(s.id);
+                return (
+                  <label key={s.id} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 p-1 rounded">
+                    <input 
+                      type="checkbox" 
+                      checked={isSelected}
+                      onChange={() => {
+                        if (isSelected) setSelectedServices((prev) => prev.filter((id) => id !== s.id));
+                        else setSelectedServices((prev) => [...prev, s.id]);
+                      }}
+                      className="accent-brand h-4 w-4 rounded border-gray-300"
+                    />
+                    {s.name}
+                  </label>
+                );
+              })}
+              <label className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 p-1 rounded">
+                <input 
+                  type="checkbox" 
+                  checked={showCustom}
+                  onChange={() => setShowCustom(!showCustom)}
+                  className="accent-brand h-4 w-4 rounded border-gray-300"
+                />
+                Other...
+              </label>
+            </div>
+            {showCustom && (
+              <div className="mt-2 space-y-1">
+                <Label>Custom Service</Label>
+                <Input
+                  value={customService}
+                  onChange={(e) => setCustomService(e.target.value)}
+                  placeholder="Enter service name..."
+                />
+              </div>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
@@ -332,7 +402,7 @@ function AddSaleDialog({
             Cancel
           </Button>
           <Button
-            disabled={m.isPending || !description || !value}
+            disabled={m.isPending || (selectedServices.length === 0 && (!showCustom || !customService.trim())) || !value}
             onClick={() => m.mutate()}
           >
             Save Sale
