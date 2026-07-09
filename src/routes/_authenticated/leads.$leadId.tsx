@@ -126,7 +126,7 @@ function LeadProfile() {
 
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between overflow-x-auto pb-4">
           {stages.map((st, i) => {
-            const val = lead[st.dateField];
+            const val = (lead as any)[st.dateField];
             const isActive = lead.stage === st.key;
             const hasPassed = !!val;
             return (
