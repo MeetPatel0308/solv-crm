@@ -344,7 +344,7 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
               </select>
             </div>
             <div className="space-y-1">
-              <Label>Lead Source</Label>
+              <Label>Source</Label>
               <select
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
