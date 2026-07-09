@@ -403,10 +403,10 @@ export const updateLead = createServerFn({ method: "POST" })
       company: string | null;
       email: string | null;
       phone: string | null;
-      value: number;
       stage: string;
       source: string;
       notes: string | null;
+      customer_id?: string | null;
     }) =>
       z
         .object({
@@ -419,6 +419,7 @@ export const updateLead = createServerFn({ method: "POST" })
           stage: leadStageEnum,
           source: leadSourceEnum,
           notes: z.string().nullable(),
+          customer_id: z.string().uuid().nullable().optional(),
         })
         .parse(d),
   )
@@ -443,6 +444,7 @@ export const updateLead = createServerFn({ method: "POST" })
         stage: data.stage as never,
         source: data.source as never,
         notes: data.notes,
+        ...(data.customer_id !== undefined ? { customer_id: data.customer_id } : {}),
         lead_created_at: isNewStage("lead_created") ? now : existing?.lead_created_at,
         cold_at: isNewStage("cold") ? now : existing?.cold_at,
         warm_at: isNewStage("warm") ? now : existing?.warm_at,
@@ -567,10 +569,17 @@ export const convertLeadToCustomer = createServerFn({ method: "POST" })
       if (cErr) throw new Error(cErr.message);
       finalCustomerId = newCustomer.id;
 
-      // Link lead to new customer
-      await context.supabase.from("leads").update({ customer_id: finalCustomerId }).eq("id", lead.id);
+      // Link lead to new customer and mark finalized
+      await context.supabase.from("leads").update({ 
+        customer_id: finalCustomerId,
+        is_conversion_finalized: true
+      }).eq("id", lead.id);
     } else {
-      // Existing Customer -> Update Status/Value
+      // Existing Customer -> Update Status/Value and mark finalized
+      await context.supabase.from("leads").update({ 
+        is_conversion_finalized: true
+      }).eq("id", lead.id);
+
       await context.supabase.from("customers").update({
         status: "active",
         estimated_value: (lead.value || 0), // Ideally we'd add to existing, but this suffices for now

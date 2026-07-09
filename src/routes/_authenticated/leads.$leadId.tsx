@@ -270,6 +270,20 @@ function ConvertSection({ lead, services }: { lead: any; services: any[] }) {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  if (lead.is_conversion_finalized) {
+    return (
+      <Card className="p-6 bg-emerald-50 border-emerald-200">
+        <h3 className="text-lg font-semibold text-emerald-800">Conversion Finalized</h3>
+        <p className="text-sm text-emerald-600 mt-1">
+          {lead.customer_id ? "The sales records have been successfully added to the Customer Profile." : "This lead has been converted and the Customer Profile is active."}
+        </p>
+        <Button variant="outline" className="mt-4" asChild>
+          <Link to={`/crm/${lead.customer_id || ""}`}>View Customer Profile</Link>
+        </Button>
+      </Card>
+    );
+  }
+
   return (
     <Card className="p-6 border-brand border-2 shadow-lg">
       <div className="mb-6 border-b pb-4">
