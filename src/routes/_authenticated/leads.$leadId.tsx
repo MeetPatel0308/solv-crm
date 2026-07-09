@@ -300,42 +300,16 @@ function LeadDatePicker({
   const selectedDate = value ? parseDateInput(value) : undefined;
 
   return (
-    <div className="flex w-[150px] items-center gap-1">
+    <div className="flex w-full items-center">
       <Input
         type="date"
         min="1900-01-01"
         max="2999-12-31"
-        className="h-8 min-w-0 text-[11px] px-2"
+        className="h-8 w-full text-[11px] px-2"
         value={value}
         disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
       />
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="h-8 w-8 shrink-0"
-            disabled={disabled}
-            aria-label="Open calendar"
-          >
-            <CalendarIcon className="h-3.5 w-3.5" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={selectedDate ?? undefined}
-            onSelect={(date) => {
-              if (date) onChange(dateToInputValue(date));
-            }}
-            disabled={{ before: new Date(1900, 0, 1), after: new Date(2999, 11, 31) }}
-            captionLayout="dropdown"
-            className="p-3 pointer-events-auto"
-          />
-        </PopoverContent>
-      </Popover>
     </div>
   );
 }
