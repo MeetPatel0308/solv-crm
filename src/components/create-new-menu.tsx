@@ -28,6 +28,7 @@ import {
   createTicket,
   listCustomers,
   listProjects,
+  listServices,
 } from "@/lib/erp.functions";
 
 type Role = "admin" | "sales" | "project_manager" | "support" | "hr";
@@ -130,11 +131,27 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
   const qc = useQueryClient();
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
+  const [customerId, setCustomerId] = useState("");
   const [email, setEmail] = useState("");
   const [value, setValue] = useState("");
   const [stage, setStage] = useState("cold");
   const [source, setSource] = useState("");
+  const [serviceIds, setServiceIds] = useState<string[]>([]);
+  
   const fn = useServerFn(createLead);
+  
+  const getCusts = useServerFn(listCustomers);
+  const { data: customers = [] } = useQuery({
+    queryKey: ["customers"],
+    queryFn: () => getCusts(),
+  });
+
+  const getSrvs = useServerFn(listServices);
+  const { data: availableServices = [] } = useQuery({
+    queryKey: ["services"],
+    queryFn: () => getSrvs(),
+  });
+
   const m = useMutation({
     mutationFn: () =>
       fn({
@@ -146,6 +163,8 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
           value: Number(value) || 0,
           stage,
           source,
+          customer_id: customerId || null,
+          service_ids: serviceIds,
         },
       }),
     onSuccess: () => {
@@ -167,8 +186,55 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
             <Input value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="space-y-1">
-            <Label>Company</Label>
-            <Input value={company} onChange={(e) => setCompany(e.target.value)} />
+            <Label>Company (Select existing or type new)</Label>
+            <div className="flex gap-2">
+              <select
+                value={customerId}
+                onChange={(e) => {
+                  setCustomerId(e.target.value);
+                  if (e.target.value) {
+                    setCompany(""); // Clear typed company if existing selected
+                  }
+                }}
+                className="w-1/2 h-9 rounded-md border bg-background px-3 text-sm"
+              >
+                <option value="">-- New Company --</option>
+                {customers.map((c: any) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+              <Input 
+                value={company} 
+                onChange={(e) => {
+                  setCompany(e.target.value);
+                  setCustomerId(""); // Clear selected customer if typing new
+                }} 
+                placeholder="New Company Name..."
+                disabled={!!customerId}
+                className="w-1/2"
+              />
+            </div>
+          </div>
+          <div className="space-y-1">
+            <Label>Interested Services</Label>
+            <select
+              multiple
+              value={serviceIds}
+              onChange={(e) => {
+                const options = Array.from(e.target.selectedOptions);
+                setServiceIds(options.map(o => o.value));
+              }}
+              className="w-full rounded-md border bg-background p-2 text-sm min-h-[80px]"
+            >
+              {availableServices.map((s: any) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+            <p className="text-[10px] text-muted-foreground mt-1">Hold Ctrl/Cmd to select multiple</p>
           </div>
           <div className="space-y-1">
             <Label>Email</Label>

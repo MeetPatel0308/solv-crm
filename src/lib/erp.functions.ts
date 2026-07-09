@@ -309,6 +309,8 @@ export const createLead = createServerFn({ method: "POST" })
       value: number;
       stage: string;
       source: string;
+      customer_id?: string | null;
+      service_ids?: string[];
     }) =>
       z
         .object({
@@ -319,10 +321,29 @@ export const createLead = createServerFn({ method: "POST" })
           value: z.number().nonnegative(),
           stage: leadStageEnum,
           source: leadSourceEnum,
+          customer_id: z.string().uuid().nullable().optional(),
+          service_ids: z.array(z.string().uuid()).optional(),
         })
         .parse(d),
   )
   .handler(async ({ data, context }) => {
+    let finalCustomerId = data.customer_id;
+
+    if (!finalCustomerId && data.company) {
+      // Create a new customer record for this company
+      const { data: newCustomer, error: cErr } = await context.supabase
+        .from("customers")
+        .insert({
+          name: data.company,
+          status: "lead",
+          account_manager_id: context.userId,
+        })
+        .select("id")
+        .single();
+      if (cErr) throw new Error(cErr.message);
+      finalCustomerId = newCustomer.id;
+    }
+
     const { data: row, error } = await context.supabase
       .from("leads")
       .insert({
@@ -333,12 +354,26 @@ export const createLead = createServerFn({ method: "POST" })
         value: data.value,
         stage: data.stage as never,
         source: data.source as never,
+        customer_id: finalCustomerId,
         created_by: context.userId,
         converted_at: data.stage === "converted" ? new Date().toISOString() : null,
       })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
+
+    if (finalCustomerId && data.service_ids && data.service_ids.length > 0) {
+      const { error: srvErr } = await context.supabase
+        .from("customer_services")
+        .insert(
+          data.service_ids.map((id) => ({
+            customer_id: finalCustomerId,
+            service_id: id,
+            status: "interested",
+          }))
+        );
+      if (srvErr) throw new Error(srvErr.message);
+    }
     return row;
   });
 
