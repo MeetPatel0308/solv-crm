@@ -219,6 +219,18 @@ export const getCustomer = createServerFn({ method: "GET" })
       });
     }
 
+    if (sales) {
+      sales.forEach(s => {
+        synthesizedTimeline.push({
+          id: `sale-${s.id}`,
+          stage: "Sale Created",
+          description: s.description,
+          event_at: s.created_at,
+          assignee: null
+        });
+      });
+    }
+
     synthesizedTimeline.sort((a, b) => new Date(b.event_at).getTime() - new Date(a.event_at).getTime());
 
     return {
