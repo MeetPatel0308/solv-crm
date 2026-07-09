@@ -209,12 +209,6 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
           <DialogTitle>New Lead</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-4">
-          {leadType === "new" && (
-            <div className="space-y-1">
-              <Label>Contact Name</Label>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-          )}
           <div className="space-y-2">
             <Label>Lead Type</Label>
             <div className="flex gap-4">
@@ -242,6 +236,12 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
               </label>
             </div>
           </div>
+          {leadType === "new" && (
+            <div className="space-y-1">
+              <Label>Contact Name</Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+          )}
 
           {leadType === "new" ? (
             <div className="space-y-1">
@@ -272,89 +272,42 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
           
           <div className="space-y-2">
             <Label>Interested Services</Label>
-            <div className="flex flex-wrap gap-2 mt-1">
+            <div className="border rounded-md p-3 space-y-2 max-h-[200px] overflow-y-auto bg-background">
               {availableServices.map((s: any) => {
                 const isSelected = selectedServices.includes(s.id);
                 return (
-                  <button
-                    key={s.id}
-                    type="button"
-                    onClick={() => {
-                      if (isSelected) setSelectedServices((prev) => prev.filter((id) => id !== s.id));
-                      else setSelectedServices((prev) => [...prev, s.id]);
-                    }}
-                    className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${
-                      isSelected
-                        ? "bg-brand text-brand-foreground border-brand"
-                        : "bg-background text-foreground border-border hover:bg-slate-50"
-                    }`}
-                  >
+                  <label key={s.id} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 p-1 rounded">
+                    <input 
+                      type="checkbox" 
+                      checked={isSelected}
+                      onChange={() => {
+                        if (isSelected) setSelectedServices((prev) => prev.filter((id) => id !== s.id));
+                        else setSelectedServices((prev) => [...prev, s.id]);
+                      }}
+                      className="accent-brand h-4 w-4 rounded border-gray-300"
+                    />
                     {s.name}
-                  </button>
+                  </label>
                 );
               })}
-              <button
-                type="button"
-                onClick={() => setShowCustom(!showCustom)}
-                className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${
-                  showCustom
-                    ? "bg-brand text-brand-foreground border-brand"
-                    : "bg-background text-foreground border-border hover:bg-slate-50"
-                }`}
-              >
+              <label className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 p-1 rounded">
+                <input 
+                  type="checkbox" 
+                  checked={showCustom}
+                  onChange={() => setShowCustom(!showCustom)}
+                  className="accent-brand h-4 w-4 rounded border-gray-300"
+                />
                 Other...
-              </button>
+              </label>
             </div>
             {showCustom && (
-              <div className="mt-3 space-y-1">
+              <div className="mt-2 space-y-1">
                 <Label>Custom Service</Label>
                 <Input
                   value={customService}
                   onChange={(e) => setCustomService(e.target.value)}
                   placeholder="Enter service name..."
                 />
-              </div>
-            )}
-            
-            {(selectedServices.length > 0 || (showCustom && customService.trim())) && (
-              <div className="mt-4 p-3 bg-slate-50 rounded-md border">
-                <Label className="text-xs text-muted-foreground mb-2 block">Selected:</Label>
-                <div className="flex flex-wrap gap-2">
-                  {selectedServices.map((id) => {
-                    const s = availableServices.find((as: any) => as.id === id);
-                    if (!s) return null;
-                    return (
-                      <div
-                        key={id}
-                        className="flex items-center gap-1.5 bg-brand text-brand-foreground px-2 py-1 rounded-md text-sm shadow-sm"
-                      >
-                        <span>{s.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedServices((prev) => prev.filter((x) => x !== id))}
-                          className="text-brand-foreground/70 hover:text-brand-foreground"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    );
-                  })}
-                  {showCustom && customService.trim() && (
-                    <div className="flex items-center gap-1.5 bg-brand text-brand-foreground px-2 py-1 rounded-md text-sm shadow-sm">
-                      <span>{customService}</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setShowCustom(false);
-                          setCustomService("");
-                        }}
-                        className="text-brand-foreground/70 hover:text-brand-foreground"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  )}
-                </div>
               </div>
             )}
           </div>
