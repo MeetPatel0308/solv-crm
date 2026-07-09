@@ -238,7 +238,8 @@ export const getCustomer = createServerFn({ method: "GET" })
           stage: "Sale Created",
           description: s.description,
           event_at: s.created_at,
-          assignee: null
+          assignee: null,
+          value: s.value
         });
       });
     }

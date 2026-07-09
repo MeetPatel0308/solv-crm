@@ -142,6 +142,11 @@ function CustomerDetail() {
                 <div>
                   <div className="font-medium">{e.stage}</div>
                   <div className="text-muted-foreground">{e.description}</div>
+                  {e.value != null && (
+                    <div className="text-sm font-semibold text-emerald-600 mt-1">
+                      ${Number(e.value).toLocaleString()}
+                    </div>
+                  )}
                 </div>
                 <div className="text-xs text-muted-foreground text-right">
                   {new Date(e.event_at).toLocaleDateString()}
