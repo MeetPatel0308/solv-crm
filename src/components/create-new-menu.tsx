@@ -343,11 +343,8 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
                 <option value="lost">Lost</option>
               </select>
             </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <Label>Where did this lead come from?</Label>
+              <Label>Lead Source</Label>
               <select
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
@@ -359,7 +356,7 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
                 <option value="referral">Referral</option>
               </select>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1 col-span-2">
               <Label>Assigned Team Member</Label>
               <select
                 value={assignedTo}
