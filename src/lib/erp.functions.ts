@@ -342,7 +342,7 @@ export const createLead = createServerFn({ method: "POST" })
         .from("customers")
         .insert({
           name: data.company,
-          status: "lead",
+          status: "lead" as any,
           account_manager_id: context.userId,
         })
         .select("id")
