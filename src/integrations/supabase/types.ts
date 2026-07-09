@@ -514,45 +514,46 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
       sales: {
         Row: {
-          id: string
-          customer_id: string
-          service_id: string | null
-          description: string
-          billing_type: "retainer" | "one-off"
-          value: number
-          status: "active" | "completed" | "cancelled"
-          start_date: string
-          project_id: string | null
+          billing_type: string
           created_at: string
+          customer_id: string
+          description: string
+          id: string
+          project_id: string | null
+          service_id: string | null
+          start_date: string
+          status: string
           updated_at: string
+          value: number
         }
         Insert: {
-          id?: string
-          customer_id: string
-          service_id?: string | null
-          description: string
-          billing_type: "retainer" | "one-off"
-          value?: number
-          status?: "active" | "completed" | "cancelled"
-          start_date: string
-          project_id?: string | null
+          billing_type: string
           created_at?: string
+          customer_id: string
+          description: string
+          id?: string
+          project_id?: string | null
+          service_id?: string | null
+          start_date: string
+          status?: string
           updated_at?: string
+          value?: number
         }
         Update: {
-          id?: string
-          customer_id?: string
-          service_id?: string | null
-          description?: string
-          billing_type?: "retainer" | "one-off"
-          value?: number
-          status?: "active" | "completed" | "cancelled"
-          start_date?: string
-          project_id?: string | null
+          billing_type?: string
           created_at?: string
+          customer_id?: string
+          description?: string
+          id?: string
+          project_id?: string | null
+          service_id?: string | null
+          start_date?: string
+          status?: string
           updated_at?: string
+          value?: number
         }
         Relationships: [
           {
@@ -563,19 +564,19 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "sales_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "sales_service_id_fkey"
             columns: ["service_id"]
             isOneToOne: false
             referencedRelation: "services"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "sales_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          }
         ]
       }
       services: {
