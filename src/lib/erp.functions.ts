@@ -301,7 +301,7 @@ export const listLeads = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { data } = await context.supabase
       .from("leads")
-      .select("*")
+      .select("*, lead_services(id, service_id, services(id, name))")
       .is("deleted_at", null)
       .order("created_at", { ascending: false });
     return data ?? [];
@@ -407,6 +407,7 @@ export const updateLead = createServerFn({ method: "POST" })
       source: string;
       notes: string | null;
       customer_id?: string | null;
+      service_ids?: string[];
     }) =>
       z
         .object({
@@ -420,6 +421,7 @@ export const updateLead = createServerFn({ method: "POST" })
           source: leadSourceEnum,
           notes: z.string().nullable(),
           customer_id: z.string().uuid().nullable().optional(),
+          service_ids: z.array(z.string().uuid()).optional(),
         })
         .parse(d),
   )
@@ -456,6 +458,22 @@ export const updateLead = createServerFn({ method: "POST" })
       })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
+
+    if (data.service_ids) {
+      await context.supabase.from("lead_services").delete().eq("lead_id", data.id);
+      if (data.service_ids.length > 0) {
+        const { error: srvErr } = await context.supabase
+          .from("lead_services")
+          .insert(
+            data.service_ids.map((id) => ({
+              lead_id: data.id,
+              service_id: id,
+            }))
+          );
+        if (srvErr) throw new Error(srvErr.message);
+      }
+    }
+
     return { ok: true };
   });
 

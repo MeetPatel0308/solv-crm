@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { listLeads, updateLead, deleteLead } from "@/lib/erp.functions";
+import { listLeads, updateLead, deleteLead, listServices } from "@/lib/erp.functions";
 import { Card } from "@/components/ui/card";
 import {
   Table,
@@ -69,11 +69,56 @@ function LeadsList() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const getSrvs = useServerFn(listServices);
+  const { data: availableServices = [] } = useSuspenseQuery({
+    queryKey: ["services"],
+    queryFn: () => getSrvs(),
+  });
+
+  const [editingLead, setEditingLead] = useState<any>(null);
+  const updateMut = useMutation({
+    mutationFn: (vars: any) => updateLead({ data: vars }),
+    onSuccess: () => {
+      toast.success("Lead updated");
+      qc.invalidateQueries({ queryKey: ["leads"] });
+      setEditingLead(null);
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const filtered = data.filter(
     (l: any) =>
       l.name.toLowerCase().includes(q.toLowerCase()) ||
       (l.company ?? "").toLowerCase().includes(q.toLowerCase()),
   );
+
+  const activeLeads = data.filter((l: any) => l.stage !== "converted" && l.stage !== "lost");
+  
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  const newThisMonth = data.filter((l: any) => {
+    if (!l.created_at) return false;
+    const d = new Date(l.created_at);
+    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+  }).length;
+
+  const convertedCount = data.filter((l: any) => l.stage === "converted").length;
+  const lostCount = data.filter((l: any) => l.stage === "lost").length;
+  const conversionRate = (convertedCount + lostCount) === 0 ? 0 : Math.round((convertedCount / (convertedCount + lostCount)) * 100);
+
+  const serviceCounts: Record<string, number> = {};
+  activeLeads.forEach((l: any) => {
+    l.lead_services?.forEach((ls: any) => {
+      const name = ls.services?.name;
+      if (name) {
+        serviceCounts[name] = (serviceCounts[name] || 0) + 1;
+      }
+    });
+  });
+  
+  const sortedServices = Object.entries(serviceCounts).sort((a, b) => b[1] - a[1]);
+  const topService = sortedServices.length > 0 ? sortedServices[0][0] : "None";
+  const maxServiceCount = sortedServices.length > 0 ? sortedServices[0][1] : 1;
 
   return (
     <div className="p-6 md:p-8 space-y-6">
@@ -83,6 +128,50 @@ function LeadsList() {
           Prospective customers and where they came from.
         </p>
       </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="p-4">
+          <p className="text-sm font-medium text-muted-foreground">Active Leads</p>
+          <p className="text-2xl font-bold mt-1">{activeLeads.length}</p>
+        </Card>
+        <Card className="p-4">
+          <p className="text-sm font-medium text-muted-foreground">New This Month</p>
+          <p className="text-2xl font-bold mt-1">{newThisMonth}</p>
+        </Card>
+        <Card className="p-4">
+          <p className="text-sm font-medium text-muted-foreground">Conversion Rate</p>
+          <p className="text-2xl font-bold mt-1">{conversionRate}%</p>
+        </Card>
+        <Card className="p-4">
+          <p className="text-sm font-medium text-muted-foreground">Top Interested Service</p>
+          <p className="text-2xl font-bold mt-1 truncate">{topService}</p>
+        </Card>
+      </div>
+
+      <Card className="p-6">
+        <h2 className="text-lg font-semibold mb-4">Lead Interest Summary</h2>
+        <div className="space-y-3">
+          {sortedServices.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No services selected by active leads.</p>
+          ) : (
+            sortedServices.map(([name, count]) => {
+              const percentage = Math.max(1, Math.round((count / maxServiceCount) * 100));
+              return (
+                <div key={name} className="flex items-center text-sm">
+                  <div className="w-48 font-medium truncate pr-4">{name}</div>
+                  <div className="flex-1 flex items-center gap-2">
+                    <div 
+                      className="h-5 bg-foreground rounded-sm transition-all" 
+                      style={{ width: `${percentage}%` }}
+                    />
+                    <span className="text-muted-foreground tabular-nums w-8">{count}</span>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </Card>
       <Card className="p-4">
         <div className="mb-4">
           <Input
@@ -104,6 +193,7 @@ function LeadsList() {
                 <TableHead>Company</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Source</TableHead>
+                <TableHead>Interested Services</TableHead>
                 <TableHead>Value</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -121,11 +211,27 @@ function LeadsList() {
                   <TableCell className="text-muted-foreground">
                     {l.source ? SOURCE_LABELS[l.source] : "—"}
                   </TableCell>
+                  <TableCell>
+                    {l.lead_services && l.lead_services.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {l.lead_services.map((ls: any) => (
+                          <Badge key={ls.id} variant="outline" className="font-normal text-xs">
+                            {ls.services?.name}
+                          </Badge>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
+                  </TableCell>
                   <TableCell className="text-muted-foreground">
                     ${Number(l.value || 0).toLocaleString()}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">
+                      <Button variant="ghost" size="icon" onClick={() => setEditingLead(l)}>
+                        <Pencil className="h-4 w-4" />
+                      </Button>
                       <Button variant="ghost" size="icon" asChild>
                         <Link to={`/leads/${l.id}`}>
                           <ArrowRight className="h-4 w-4" />
@@ -144,6 +250,143 @@ function LeadsList() {
           </Table>
         )}
       </Card>
+
+      {editingLead && (
+        <EditLeadDialog 
+          lead={editingLead}
+          services={availableServices}
+          onClose={() => setEditingLead(null)}
+          onSave={(vars) => updateMut.mutate(vars)}
+          isPending={updateMut.isPending}
+        />
+      )}
     </div>
+  );
+}
+
+function EditLeadDialog({ lead, services, onClose, onSave, isPending }: any) {
+  const [name, setName] = useState(lead.name);
+  const [company, setCompany] = useState(lead.company || "");
+  const [email, setEmail] = useState(lead.email || "");
+  const [phone, setPhone] = useState(lead.phone || "");
+  const [value, setValue] = useState(lead.value?.toString() || "0");
+  const [source, setSource] = useState(lead.source || "");
+  const [stage, setStage] = useState(lead.stage || "lead_created");
+  const [notes, setNotes] = useState(lead.notes || "");
+  const [serviceIds, setServiceIds] = useState<string[]>(
+    lead.lead_services ? lead.lead_services.map((ls: any) => ls.service_id) : []
+  );
+
+  return (
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Edit Lead</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-4">
+          <div className="space-y-1">
+            <Label>Name</Label>
+            <Input value={name} onChange={(e) => setName(e.target.value)} />
+          </div>
+          <div className="space-y-1">
+            <Label>Company Name</Label>
+            <Input value={company} onChange={(e) => setCompany(e.target.value)} />
+          </div>
+          <div className="space-y-1">
+            <Label>Interested Services</Label>
+            <select
+              multiple
+              value={serviceIds}
+              onChange={(e) => {
+                const options = Array.from(e.target.selectedOptions);
+                setServiceIds(options.map(o => o.value));
+              }}
+              className="w-full rounded-md border bg-background p-2 text-sm min-h-[80px]"
+            >
+              {services.map((s: any) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+            <p className="text-[10px] text-muted-foreground mt-1">Hold Ctrl/Cmd to select multiple</p>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <Label>Email</Label>
+              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Phone</Label>
+              <Input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <Label>Estimated Value</Label>
+              <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Status</Label>
+              <select
+                value={stage}
+                onChange={(e) => setStage(e.target.value)}
+                className="w-full h-9 rounded-md border bg-background px-3 text-sm"
+              >
+                <option value="lead_created">Lead Created</option>
+                <option value="cold">Cold</option>
+                <option value="warm">Warm</option>
+                <option value="hot">Hot</option>
+                <option value="proposal">Proposal</option>
+                <option value="negotiation">Negotiation</option>
+                <option value="converted">Converted</option>
+                <option value="lost">Lost</option>
+              </select>
+            </div>
+          </div>
+          <div className="space-y-1">
+            <Label>Where did this lead come from?</Label>
+            <select
+              value={source}
+              onChange={(e) => setSource(e.target.value)}
+              className="w-full h-9 rounded-md border bg-background px-3 text-sm"
+            >
+              <option value="" disabled>Select a source…</option>
+              <option value="email">Email</option>
+              <option value="ads">Ads</option>
+              <option value="referral">Referral</option>
+            </select>
+          </div>
+          <div className="space-y-1">
+            <Label>Notes</Label>
+            <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button 
+            disabled={!name || isPending}
+            onClick={() => {
+              onSave({
+                id: lead.id,
+                name,
+                company: company || null,
+                email: email || null,
+                phone: phone || null,
+                value: Number(value) || 0,
+                stage,
+                source,
+                notes: notes || null,
+                service_ids: serviceIds,
+              });
+            }}
+          >
+            {isPending ? "Saving..." : "Save Changes"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
