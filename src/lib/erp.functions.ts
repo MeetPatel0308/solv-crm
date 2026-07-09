@@ -577,7 +577,7 @@ export const convertLeadToCustomer = createServerFn({ method: "POST" })
       }).eq("id", finalCustomerId);
     }
 
-    // Create Sales records for the finalized services
+    // Create Sales and Customer Services records for the finalized services
     if (data.salesData.length > 0) {
       const salesToInsert = data.salesData.map((s) => ({
         customer_id: finalCustomerId!,
@@ -589,6 +589,15 @@ export const convertLeadToCustomer = createServerFn({ method: "POST" })
         description: lead.customer_id ? "Sale added from lead" : "Converted from lead",
       }));
       await context.supabase.from("sales").insert(salesToInsert);
+
+      // Add to customer_services
+      const servicesToInsert = data.salesData.map((s) => ({
+        customer_id: finalCustomerId!,
+        service_id: s.service_id,
+        status: "active",
+        start_date: new Date().toISOString().split("T")[0],
+      }));
+      await context.supabase.from("customer_services").insert(servicesToInsert);
     }
 
     return { ok: true, customerId: finalCustomerId };
