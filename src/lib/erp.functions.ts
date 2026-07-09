@@ -909,6 +909,19 @@ export const listServices = createServerFn({ method: "GET" })
     return data ?? [];
   });
 
+export const createCustomService = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { name: string }) => z.object({ name: z.string().min(1) }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { data: inserted, error } = await context.supabase
+      .from("services")
+      .insert({ name: data.name, active: true })
+      .select("id")
+      .single();
+    if (error) throw new Error(error.message);
+    return inserted.id;
+  });
+
 export const upsertService = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { id?: string; name: string; parent_id: string | null; active: boolean }) =>

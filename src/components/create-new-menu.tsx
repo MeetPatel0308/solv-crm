@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import {
   createCustomer,
   createLead,
+  createCustomService,
   createProject,
   createTicket,
   listCustomers,
@@ -135,15 +136,18 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
   const [company, setCompany] = useState("");
   const [customerId, setCustomerId] = useState("");
   const [email, setEmail] = useState("");
-  const [value, setValue] = useState("");
   const [stage, setStage] = useState("cold");
   const [source, setSource] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
-  const [serviceIds, setServiceIds] = useState<string[]>([]);
+  
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [showCustom, setShowCustom] = useState(false);
+  const [customService, setCustomService] = useState("");
   
   const fn = useServerFn(createLead);
+  const customSrvFn = useServerFn(createCustomService);
   
   const getCusts = useServerFn(listCustomers);
   const { data: customers = [] } = useQuery({
@@ -164,22 +168,33 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
   });
 
   const m = useMutation({
-    mutationFn: () =>
-      fn({
+    mutationFn: async () => {
+      const finalServiceIds = [...selectedServices];
+      if (showCustom && customService.trim()) {
+        const newId = await customSrvFn({ data: { name: customService.trim() } });
+        finalServiceIds.push(newId);
+      }
+      
+      const finalName = leadType === "existing" 
+        ? (customers.find((c: any) => c.id === customerId)?.name || "Unknown")
+        : name;
+
+      return fn({
         data: {
-          name,
-          company: company || null,
-          email: email || null,
-          phone: phone || null,
-          value: Number(value) || 0,
+          name: finalName,
+          company: leadType === "existing" ? "" : (company || null),
+          email: leadType === "existing" ? null : (email || null),
+          phone: leadType === "existing" ? null : (phone || null),
+          value: 0,
           stage,
           source,
-          customer_id: customerId || null,
-          service_ids: serviceIds,
+          customer_id: leadType === "existing" ? (customerId || null) : null,
+          service_ids: finalServiceIds,
           assigned_to: assignedTo || null,
           notes: notes || null,
         },
-      }),
+      });
+    },
     onSuccess: () => {
       toast.success("Lead created");
       qc.invalidateQueries();
@@ -194,10 +209,12 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
           <DialogTitle>New Lead</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-4">
-          <div className="space-y-1">
-            <Label>Name</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
-          </div>
+          {leadType === "new" && (
+            <div className="space-y-1">
+              <Label>Contact Name</Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+          )}
           <div className="space-y-2">
             <Label>Lead Type</Label>
             <div className="flex gap-4">
@@ -253,42 +270,109 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
             </div>
           )}
           
-          <div className="space-y-1">
+          <div className="space-y-2">
             <Label>Interested Services</Label>
-            <select
-              multiple
-              value={serviceIds}
-              onChange={(e) => {
-                const options = Array.from(e.target.selectedOptions);
-                setServiceIds(options.map(o => o.value));
-              }}
-              className="w-full rounded-md border bg-background p-2 text-sm min-h-[80px]"
-            >
-              {availableServices.map((s: any) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-            <p className="text-[10px] text-muted-foreground mt-1">Hold Ctrl/Cmd to select multiple</p>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {availableServices.map((s: any) => {
+                const isSelected = selectedServices.includes(s.id);
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => {
+                      if (isSelected) setSelectedServices((prev) => prev.filter((id) => id !== s.id));
+                      else setSelectedServices((prev) => [...prev, s.id]);
+                    }}
+                    className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${
+                      isSelected
+                        ? "bg-brand text-brand-foreground border-brand"
+                        : "bg-background text-foreground border-border hover:bg-slate-50"
+                    }`}
+                  >
+                    {s.name}
+                  </button>
+                );
+              })}
+              <button
+                type="button"
+                onClick={() => setShowCustom(!showCustom)}
+                className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${
+                  showCustom
+                    ? "bg-brand text-brand-foreground border-brand"
+                    : "bg-background text-foreground border-border hover:bg-slate-50"
+                }`}
+              >
+                Other...
+              </button>
+            </div>
+            {showCustom && (
+              <div className="mt-3 space-y-1">
+                <Label>Custom Service</Label>
+                <Input
+                  value={customService}
+                  onChange={(e) => setCustomService(e.target.value)}
+                  placeholder="Enter service name..."
+                />
+              </div>
+            )}
+            
+            {(selectedServices.length > 0 || (showCustom && customService.trim())) && (
+              <div className="mt-4 p-3 bg-slate-50 rounded-md border">
+                <Label className="text-xs text-muted-foreground mb-2 block">Selected:</Label>
+                <div className="flex flex-wrap gap-2">
+                  {selectedServices.map((id) => {
+                    const s = availableServices.find((as: any) => as.id === id);
+                    if (!s) return null;
+                    return (
+                      <div
+                        key={id}
+                        className="flex items-center gap-1.5 bg-brand text-brand-foreground px-2 py-1 rounded-md text-sm shadow-sm"
+                      >
+                        <span>{s.name}</span>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedServices((prev) => prev.filter((x) => x !== id))}
+                          className="text-brand-foreground/70 hover:text-brand-foreground"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    );
+                  })}
+                  {showCustom && customService.trim() && (
+                    <div className="flex items-center gap-1.5 bg-brand text-brand-foreground px-2 py-1 rounded-md text-sm shadow-sm">
+                      <span>{customService}</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowCustom(false);
+                          setCustomService("");
+                        }}
+                        className="text-brand-foreground/70 hover:text-brand-foreground"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
           
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <Label>Email</Label>
-              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          {leadType === "new" && (
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label>Email</Label>
+                <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </div>
+              <div className="space-y-1">
+                <Label>Phone</Label>
+                <Input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              </div>
             </div>
-            <div className="space-y-1">
-              <Label>Phone</Label>
-              <Input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
-            </div>
-          </div>
+          )}
           
           <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <Label>Estimated Value</Label>
-              <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} />
-            </div>
             <div className="space-y-1">
               <Label>Status</Label>
               <select
@@ -347,8 +431,11 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
           <Button variant="ghost" onClick={onClose}>
             Cancel
           </Button>
-          <Button disabled={!name || !source || m.isPending} onClick={() => m.mutate()}>
-            Create
+          <Button 
+            disabled={(leadType === "new" && !name) || (leadType === "existing" && !customerId) || !source || m.isPending} 
+            onClick={() => m.mutate()}
+          >
+            {m.isPending ? "Creating..." : "Create"}
           </Button>
         </DialogFooter>
       </DialogContent>
