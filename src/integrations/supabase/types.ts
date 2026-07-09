@@ -218,10 +218,13 @@ export type Database = {
           email: string | null
           hot_at: string | null
           id: string
+          lead_created_at: string | null
           lost_at: string | null
           name: string
+          negotiation_at: string | null
           notes: string | null
           phone: string | null
+          proposal_at: string | null
           source: string | null
           stage: Database["public"]["Enums"]["lead_stage"]
           updated_at: string
@@ -239,10 +242,13 @@ export type Database = {
           email?: string | null
           hot_at?: string | null
           id?: string
+          lead_created_at?: string | null
           lost_at?: string | null
           name: string
+          negotiation_at?: string | null
           notes?: string | null
           phone?: string | null
+          proposal_at?: string | null
           source?: string | null
           stage?: Database["public"]["Enums"]["lead_stage"]
           updated_at?: string
@@ -260,10 +266,13 @@ export type Database = {
           email?: string | null
           hot_at?: string | null
           id?: string
+          lead_created_at?: string | null
           lost_at?: string | null
           name?: string
+          negotiation_at?: string | null
           notes?: string | null
           phone?: string | null
+          proposal_at?: string | null
           source?: string | null
           stage?: Database["public"]["Enums"]["lead_stage"]
           updated_at?: string
@@ -847,9 +856,12 @@ export type Database = {
       app_role: "admin" | "sales" | "project_manager" | "support" | "hr"
       customer_status: "cold" | "warm" | "hot" | "converted" | "lost" | "active"
       lead_stage:
+        | "lead_created"
         | "cold"
         | "warm"
         | "hot"
+        | "proposal"
+        | "negotiation"
         | "converted"
         | "lost"
       project_status:
@@ -997,9 +1009,12 @@ export const Constants = {
       app_role: ["admin", "sales", "project_manager", "support", "hr"],
       customer_status: ["cold", "warm", "hot", "converted", "lost", "active"],
       lead_stage: [
+        "lead_created",
         "cold",
         "warm",
         "hot",
+        "proposal",
+        "negotiation",
         "converted",
         "lost",
       ],

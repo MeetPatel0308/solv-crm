@@ -29,6 +29,7 @@ import {
   listCustomers,
   listProjects,
   listServices,
+  listTeam,
 } from "@/lib/erp.functions";
 
 type Role = "admin" | "sales" | "project_manager" | "support" | "hr";
@@ -136,6 +137,9 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
   const [value, setValue] = useState("");
   const [stage, setStage] = useState("cold");
   const [source, setSource] = useState("");
+  const [phone, setPhone] = useState("");
+  const [notes, setNotes] = useState("");
+  const [assignedTo, setAssignedTo] = useState("");
   const [serviceIds, setServiceIds] = useState<string[]>([]);
   
   const fn = useServerFn(createLead);
@@ -152,6 +156,12 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
     queryFn: () => getSrvs(),
   });
 
+  const getTeam = useServerFn(listTeam);
+  const { data: team = [] } = useQuery({
+    queryKey: ["team"],
+    queryFn: () => getTeam(),
+  });
+
   const m = useMutation({
     mutationFn: () =>
       fn({
@@ -159,12 +169,14 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
           name,
           company: company || null,
           email: email || null,
-          phone: null,
+          phone: phone || null,
           value: Number(value) || 0,
           stage,
           source,
           customer_id: customerId || null,
           service_ids: serviceIds,
+          assigned_to: assignedTo || null,
+          notes: notes || null,
         },
       }),
     onSuccess: () => {
@@ -251,12 +263,19 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
               onChange={(e) => setStage(e.target.value)}
               className="w-full h-9 rounded-md border bg-background px-3 text-sm"
             >
+              <option value="lead_created">Lead Created</option>
               <option value="cold">Cold</option>
               <option value="warm">Warm</option>
               <option value="hot">Hot</option>
+              <option value="proposal">Proposal</option>
+              <option value="negotiation">Negotiation</option>
               <option value="converted">Converted</option>
               <option value="lost">Lost</option>
             </select>
+          </div>
+          <div className="space-y-1">
+            <Label>Phone</Label>
+            <Input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
           </div>
           <div className="space-y-1">
             <Label>Where did this lead come from?</Label>
@@ -265,13 +284,30 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
               onChange={(e) => setSource(e.target.value)}
               className="w-full h-9 rounded-md border bg-background px-3 text-sm"
             >
-              <option value="" disabled>
-                Select a source…
-              </option>
+              <option value="" disabled>Select a source…</option>
               <option value="email">Email</option>
               <option value="ads">Ads</option>
               <option value="referral">Referral</option>
             </select>
+          </div>
+          <div className="space-y-1">
+            <Label>Assigned Team Member</Label>
+            <select
+              value={assignedTo}
+              onChange={(e) => setAssignedTo(e.target.value)}
+              className="w-full h-9 rounded-md border bg-background px-3 text-sm"
+            >
+              <option value="">-- Unassigned --</option>
+              {team.map((t: any) => (
+                <option key={t.id} value={t.id}>
+                  {t.full_name || t.email}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-1">
+            <Label>Notes</Label>
+            <Input value={notes} onChange={(e) => setNotes(e.target.value)} />
           </div>
         </div>
         <DialogFooter>

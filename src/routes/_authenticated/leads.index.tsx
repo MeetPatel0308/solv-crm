@@ -25,7 +25,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { ConfirmDeleteButton } from "@/components/confirm-delete-button";
-import { Pencil } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Pencil, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/leads/")({
@@ -34,9 +35,12 @@ export const Route = createFileRoute("/_authenticated/leads/")({
 });
 
 const STAGE_STYLES: Record<string, string> = {
-  cold: "bg-slate-100 text-slate-700",
+  lead_created: "bg-slate-100 text-slate-700",
+  cold: "bg-blue-100 text-blue-700",
   warm: "bg-amber-100 text-amber-700",
   hot: "bg-orange-100 text-orange-700",
+  proposal: "bg-purple-100 text-purple-700",
+  negotiation: "bg-pink-100 text-pink-700",
   converted: "bg-emerald-100 text-emerald-700",
   lost: "bg-red-100 text-red-700",
 };
@@ -52,7 +56,6 @@ function LeadsList() {
   const fn = useServerFn(listLeads);
   const { data } = useSuspenseQuery({ queryKey: ["leads"], queryFn: () => fn() });
   const [q, setQ] = useState("");
-  const [editing, setEditing] = useState<any>(null);
 
   const deleteFn = useServerFn(deleteLead);
   const deleteMut = useMutation({
@@ -112,7 +115,7 @@ function LeadsList() {
                   <TableCell className="text-muted-foreground">{l.company ?? "—"}</TableCell>
                   <TableCell>
                     <Badge variant="secondary" className={STAGE_STYLES[l.stage] ?? ""}>
-                      {l.stage}
+                      {l.stage.replace("_", " ")}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
@@ -123,8 +126,10 @@ function LeadsList() {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">
-                      <Button variant="ghost" size="icon" onClick={() => setEditing(l)}>
-                        <Pencil className="h-4 w-4" />
+                      <Button variant="ghost" size="icon" asChild>
+                        <Link to={`/leads/${l.id}`}>
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
                       </Button>
                       <ConfirmDeleteButton
                         itemLabel={l.name}
@@ -139,123 +144,6 @@ function LeadsList() {
           </Table>
         )}
       </Card>
-
-      {editing && <EditLeadDialog lead={editing} onClose={() => setEditing(null)} />}
     </div>
-  );
-}
-
-function EditLeadDialog({ lead, onClose }: { lead: any; onClose: () => void }) {
-  const qc = useQueryClient();
-  const [name, setName] = useState(lead.name ?? "");
-  const [company, setCompany] = useState(lead.company ?? "");
-  const [email, setEmail] = useState(lead.email ?? "");
-  const [phone, setPhone] = useState(lead.phone ?? "");
-  const [value, setValue] = useState(String(lead.value ?? 0));
-  const [stage, setStage] = useState(lead.stage ?? "cold");
-  const [source, setSource] = useState(lead.source ?? "");
-  const [notes, setNotes] = useState(lead.notes ?? "");
-
-  const fn = useServerFn(updateLead);
-  const m = useMutation({
-    mutationFn: () =>
-      fn({
-        data: {
-          id: lead.id,
-          name,
-          company: company || null,
-          email: email || null,
-          phone: phone || null,
-          value: Number(value) || 0,
-          stage,
-          source,
-          notes: notes || null,
-        },
-      }),
-    onSuccess: () => {
-      toast.success("Lead updated");
-      qc.invalidateQueries({ queryKey: ["leads"] });
-      qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
-      qc.invalidateQueries({ queryKey: ["leads-series"] });
-      onClose();
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
-
-  return (
-    <Dialog open onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Edit Lead</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-3">
-          <div className="space-y-1">
-            <Label>Name</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
-          </div>
-          <div className="space-y-1">
-            <Label>Company</Label>
-            <Input value={company} onChange={(e) => setCompany(e.target.value)} />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <Label>Email</Label>
-              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-            <div className="space-y-1">
-              <Label>Phone</Label>
-              <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
-            </div>
-          </div>
-          <div className="space-y-1">
-            <Label>Estimated Value</Label>
-            <Input type="number" value={value} onChange={(e) => setValue(e.target.value)} />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <Label>Status</Label>
-              <select
-                value={stage}
-                onChange={(e) => setStage(e.target.value)}
-                className="w-full h-9 rounded-md border bg-background px-3 text-sm"
-              >
-                <option value="cold">Cold</option>
-                <option value="warm">Warm</option>
-                <option value="hot">Hot</option>
-                <option value="converted">Converted</option>
-                <option value="lost">Lost</option>
-              </select>
-            </div>
-            <div className="space-y-1">
-              <Label>Source</Label>
-              <select
-                value={source}
-                onChange={(e) => setSource(e.target.value)}
-                className="w-full h-9 rounded-md border bg-background px-3 text-sm"
-              >
-                <option value="" disabled>
-                  Select a source…
-                </option>
-                <option value="email">Email</option>
-                <option value="ads">Ads</option>
-                <option value="referral">Referral</option>
-              </select>
-            </div>
-          </div>
-          <div className="space-y-1">
-            <Label>Notes</Label>
-            <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button variant="ghost" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button disabled={!name || !source || m.isPending} onClick={() => m.mutate()}>
-            Save changes
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 }

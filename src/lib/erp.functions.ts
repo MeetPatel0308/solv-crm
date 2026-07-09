@@ -124,7 +124,7 @@ export const getCustomer = createServerFn({ method: "GET" })
       .eq("id", data.id)
       .maybeSingle();
     if (!customer) throw new Error("Customer not found");
-    const [{ data: services }, { data: openTickets }, { data: allTickets }, { data: projects }, { data: sales }, { data: leads }] = await Promise.all([
+    const [{ data: services }, { data: openTickets }, { data: allTickets }, { data: projects }, { data: sales }] = await Promise.all([
       context.supabase
         .from("customer_services")
         .select("*, services(name,parent_id)")
@@ -152,9 +152,10 @@ export const getCustomer = createServerFn({ method: "GET" })
         .order("created_at", { ascending: false }),
       context.supabase
         .from("leads")
-        .select("*")
+        .select("id, converted_at")
         .eq("customer_id", data.id)
-        .order("created_at", { ascending: false }),
+        .eq("stage", "converted")
+        .maybeSingle(),
     ]);
 
     const synthesizedTimeline: any[] = [];
@@ -168,13 +169,19 @@ export const getCustomer = createServerFn({ method: "GET" })
         assignee: null
       });
     }
-    
-    if (customer.status && customer.status.toLowerCase() === "converted") {
+    const { data: convertedLead } = await context.supabase
+      .from("leads")
+      .select("id, converted_at")
+      .eq("customer_id", data.id)
+      .eq("stage", "converted")
+      .maybeSingle();
+
+    if (convertedLead?.converted_at) {
       synthesizedTimeline.push({
         id: `converted-${customer.id}`,
-        stage: "Customer Converted",
+        stage: "Converted from Lead",
         description: "Customer converted to active",
-        event_at: customer.updated_at || customer.created_at,
+        event_at: convertedLead.converted_at,
         assignee: null
       });
     }
@@ -244,7 +251,6 @@ export const getCustomer = createServerFn({ method: "GET" })
       services: services ?? [],
       openTickets: openTickets ?? [],
       sales: sales ?? [],
-      leads: leads ?? [],
     };
   });
 
@@ -301,7 +307,7 @@ export const listLeads = createServerFn({ method: "GET" })
     return data ?? [];
   });
 
-const leadStageEnum = z.enum(["cold", "warm", "hot", "converted", "lost"]);
+const leadStageEnum = z.enum(["lead_created", "cold", "warm", "hot", "proposal", "negotiation", "converted", "lost"]);
 const leadSourceEnum = z.enum(["email", "ads", "referral"]);
 
 export const createLead = createServerFn({ method: "POST" })
@@ -317,6 +323,8 @@ export const createLead = createServerFn({ method: "POST" })
       source: string;
       customer_id?: string | null;
       service_ids?: string[];
+      assigned_to?: string | null;
+      notes?: string | null;
     }) =>
       z
         .object({
@@ -336,6 +344,8 @@ export const createLead = createServerFn({ method: "POST" })
           source: leadSourceEnum,
           customer_id: z.string().uuid().nullable().optional(),
           service_ids: z.array(z.string().uuid()).optional(),
+          assigned_to: z.string().uuid().nullable().optional(),
+          notes: z.string().nullable().optional(),
         })
         .parse(d),
   )
@@ -369,9 +379,14 @@ export const createLead = createServerFn({ method: "POST" })
         source: data.source as never,
         customer_id: finalCustomerId,
         created_by: context.userId,
+        assigned_to: data.assigned_to,
+        notes: data.notes,
+        lead_created_at: data.stage === "lead_created" ? new Date().toISOString() : null,
         cold_at: data.stage === "cold" ? new Date().toISOString() : null,
         warm_at: data.stage === "warm" ? new Date().toISOString() : null,
         hot_at: data.stage === "hot" ? new Date().toISOString() : null,
+        proposal_at: data.stage === "proposal" ? new Date().toISOString() : null,
+        negotiation_at: data.stage === "negotiation" ? new Date().toISOString() : null,
         lost_at: data.stage === "lost" ? new Date().toISOString() : null,
         converted_at: data.stage === "converted" ? new Date().toISOString() : null,
       })
@@ -425,7 +440,7 @@ export const updateLead = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { data: existing } = await context.supabase
       .from("leads")
-      .select("stage,cold_at,warm_at,hot_at,lost_at,converted_at")
+      .select("stage,lead_created_at,cold_at,warm_at,hot_at,proposal_at,negotiation_at,lost_at,converted_at")
       .eq("id", data.id)
       .maybeSingle();
 
@@ -443,9 +458,12 @@ export const updateLead = createServerFn({ method: "POST" })
         stage: data.stage as never,
         source: data.source as never,
         notes: data.notes,
+        lead_created_at: isNewStage("lead_created") ? now : existing?.lead_created_at,
         cold_at: isNewStage("cold") ? now : existing?.cold_at,
         warm_at: isNewStage("warm") ? now : existing?.warm_at,
         hot_at: isNewStage("hot") ? now : existing?.hot_at,
+        proposal_at: isNewStage("proposal") ? now : existing?.proposal_at,
+        negotiation_at: isNewStage("negotiation") ? now : existing?.negotiation_at,
         lost_at: isNewStage("lost") ? now : existing?.lost_at,
         converted_at: isNewStage("converted") ? now : existing?.converted_at,
       })
@@ -458,17 +476,23 @@ export const updateLeadDates = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { 
     id: string; 
+    lead_created_at?: string | null;
     cold_at?: string | null; 
     warm_at?: string | null; 
     hot_at?: string | null; 
+    proposal_at?: string | null;
+    negotiation_at?: string | null;
     converted_at?: string | null; 
     lost_at?: string | null; 
   }) => 
     z.object({
       id: z.string().uuid(),
+      lead_created_at: z.string().nullable().optional(),
       cold_at: z.string().nullable().optional(),
       warm_at: z.string().nullable().optional(),
       hot_at: z.string().nullable().optional(),
+      proposal_at: z.string().nullable().optional(),
+      negotiation_at: z.string().nullable().optional(),
       converted_at: z.string().nullable().optional(),
       lost_at: z.string().nullable().optional(),
     }).parse(d)
@@ -493,6 +517,78 @@ export const deleteLead = createServerFn({ method: "POST" })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
+  });
+
+export const getLead = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { data: lead } = await context.supabase
+      .from("leads")
+      .select("*, assigned_member:profiles!leads_assigned_to_fkey(full_name,email), customer:customers(id, name, status)")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (!lead) throw new Error("Lead not found");
+
+    let services = [];
+    if (lead.customer_id) {
+      const { data: srvs } = await context.supabase
+        .from("customer_services")
+        .select("*, services(name,parent_id)")
+        .eq("customer_id", lead.customer_id);
+      services = srvs ?? [];
+    }
+    
+    return { lead, services };
+  });
+
+export const convertLeadToCustomer = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: {
+    leadId: string;
+    salesData: { service_id: string; billing_type: string; value: number }[];
+  }) => z.object({
+    leadId: z.string().uuid(),
+    salesData: z.array(z.object({
+      service_id: z.string().uuid(),
+      billing_type: z.string(),
+      value: z.number().nonnegative(),
+    })),
+  }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { data: lead } = await context.supabase
+      .from("leads")
+      .select("*")
+      .eq("id", data.leadId)
+      .single();
+    if (!lead) throw new Error("Lead not found");
+
+    if (lead.customer_id) {
+      // Update customer status to active
+      await context.supabase.from("customers").update({
+        status: "active",
+        contact_email: lead.email,
+        contact_phone: lead.phone,
+        estimated_value: lead.value,
+        account_manager_id: lead.assigned_to || context.userId,
+      }).eq("id", lead.customer_id);
+
+      // Create Sales records
+      if (data.salesData.length > 0) {
+        const salesToInsert = data.salesData.map((s) => ({
+          customer_id: lead.customer_id!,
+          service_id: s.service_id,
+          billing_type: s.billing_type,
+          value: s.value,
+          status: "active",
+          start_date: new Date().toISOString().split("T")[0],
+          description: "Converted from lead",
+        }));
+        await context.supabase.from("sales").insert(salesToInsert);
+      }
+    }
+
+    return { ok: true, customerId: lead.customer_id };
   });
 
 // ============ PROJECTS ============
