@@ -1283,6 +1283,43 @@ export const updateProjectDeadline = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const addProjectMember = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { project_id: string; user_id: string; role_label?: string }) =>
+    z
+      .object({
+        project_id: z.string().uuid(),
+        user_id: z.string().uuid(),
+        role_label: z.string().optional(),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("project_members")
+      .insert({ project_id: data.project_id, user_id: data.user_id, role_label: data.role_label || null });
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const removeProjectMember = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) =>
+    z
+      .object({
+        id: z.string().uuid(),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("project_members")
+      .delete()
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 export const updateProjectManager = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { id: string; project_manager_id: string }) =>

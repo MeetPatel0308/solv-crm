@@ -8,12 +8,14 @@ import {
   upsertProjectTimelineEvent,
   updateProjectManager,
   updateProjectDeadline,
+  addProjectMember,
+  removeProjectMember,
   listTeam,
 } from "@/lib/erp.functions";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, CalendarDays } from "lucide-react";
+import { ArrowLeft, CalendarDays, Plus, X } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -60,6 +62,8 @@ function ProjectDetail() {
   });
   const { project, tickets, timeline, members } = data;
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
+  const [newMemberId, setNewMemberId] = useState("");
+  const [newMemberRole, setNewMemberRole] = useState("");
 
   const getStageEvent = (stageName: string) => {
     return timeline.find((t: any) => t.stage === stageName);
@@ -89,6 +93,28 @@ function ProjectDetail() {
       toast.success("Project Deadline updated");
       qc.invalidateQueries({ queryKey: ["project", projectId] });
       qc.invalidateQueries({ queryKey: ["projects"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const addMemberFn = useServerFn(addProjectMember);
+  const addMemberMut = useMutation({
+    mutationFn: () => addMemberFn({ data: { project_id: projectId, user_id: newMemberId, role_label: newMemberRole || undefined } }),
+    onSuccess: () => {
+      toast.success("Team member added");
+      setNewMemberId("");
+      setNewMemberRole("");
+      qc.invalidateQueries({ queryKey: ["project", projectId] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const removeMemberFn = useServerFn(removeProjectMember);
+  const removeMemberMut = useMutation({
+    mutationFn: (id: string) => removeMemberFn({ data: { id } }),
+    onSuccess: () => {
+      toast.success("Team member removed");
+      qc.invalidateQueries({ queryKey: ["project", projectId] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -269,17 +295,57 @@ function ProjectDetail() {
         <Card className="p-6">
           <h2 className="font-medium mb-4">Team</h2>
           {members.length === 0 ? (
-            <div className="text-sm text-muted-foreground">No members assigned</div>
+            <div className="text-sm text-muted-foreground mb-4">No members assigned</div>
           ) : (
-            <ul className="space-y-2">
+            <ul className="space-y-2 mb-6">
               {members.map((m: any) => (
-                <li key={m.id} className="text-sm">
-                  {m.user_profile?.full_name}{" "}
-                  <span className="text-muted-foreground">— {m.role_label ?? "member"}</span>
+                <li key={m.id} className="text-sm flex items-center justify-between group">
+                  <div>
+                    {m.user_profile?.full_name}{" "}
+                    <span className="text-muted-foreground">- {m.role_label ?? "member"}</span>
+                  </div>
+                  <button
+                    onClick={() => removeMemberMut.mutate(m.id)}
+                    disabled={removeMemberMut.isPending}
+                    className="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity p-1"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
                 </li>
               ))}
             </ul>
           )}
+          <div className="border-t pt-4 space-y-3">
+            <h3 className="text-xs font-medium uppercase text-muted-foreground">Assign Member</h3>
+            <div className="flex gap-2">
+              <select
+                value={newMemberId}
+                onChange={(e) => setNewMemberId(e.target.value)}
+                className="flex-1 h-9 rounded-md border bg-background px-3 text-sm"
+              >
+                <option value="" disabled>Select team member...</option>
+                {team.filter((t: any) => !members.find((m: any) => m.user_id === t.id)).map((t: any) => (
+                  <option key={t.id} value={t.id}>{t.full_name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Role (e.g. Developer)"
+                value={newMemberRole}
+                onChange={(e) => setNewMemberRole(e.target.value)}
+                className="h-9"
+              />
+              <Button
+                size="sm"
+                className="h-9"
+                disabled={!newMemberId || addMemberMut.isPending}
+                onClick={() => addMemberMut.mutate()}
+              >
+                <Plus className="w-4 h-4 mr-1" /> Add
+              </Button>
+            </div>
+          </div>
         </Card>
       </div>
       {selectedStage && (
