@@ -175,9 +175,7 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
         finalServiceIds.push(newId);
       }
       
-      const finalName = leadType === "existing" 
-        ? (customers.find((c: any) => c.id === customerId)?.name || "Unknown")
-        : name;
+      const finalName = name;
 
       return fn({
         data: {
@@ -236,12 +234,10 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
               </label>
             </div>
           </div>
-          {leadType === "new" && (
-            <div className="space-y-1">
-              <Label>Contact Name</Label>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-          )}
+          <div className="space-y-1">
+            <Label>Contact Name</Label>
+            <Input value={name} onChange={(e) => setName(e.target.value)} />
+          </div>
 
           {leadType === "new" ? (
             <div className="space-y-1">
@@ -382,7 +378,7 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
             Cancel
           </Button>
           <Button 
-            disabled={(leadType === "new" && !name) || (leadType === "existing" && !customerId) || !source || m.isPending} 
+            disabled={!name || (leadType === "existing" && !customerId) || !source || m.isPending} 
             onClick={() => m.mutate()}
           >
             {m.isPending ? "Creating..." : "Create"}
