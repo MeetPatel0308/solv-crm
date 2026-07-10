@@ -608,9 +608,9 @@ export const convertLeadToCustomer = createServerFn({ method: "POST" })
       } as any).eq("id", lead.id);
     } else {
       // Existing Customer -> Update Status/Value and mark finalized
-      await context.supabase.from("leads").update({ 
-        is_conversion_finalized: true
-      }).eq("id", lead.id);
+      await context.supabase.from("leads").update({
+        is_conversion_finalized: true,
+      } as any).eq("id", lead.id);
 
       await context.supabase.from("customers").update({
         status: "active",
