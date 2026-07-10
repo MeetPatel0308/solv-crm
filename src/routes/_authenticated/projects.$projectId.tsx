@@ -6,6 +6,8 @@ import {
   getProject,
   deleteProject,
   upsertProjectTimelineEvent,
+  updateProjectManager,
+  listTeam,
 } from "@/lib/erp.functions";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -61,6 +63,23 @@ function ProjectDetail() {
   const getStageEvent = (stageName: string) => {
     return timeline.find((t: any) => t.stage === stageName);
   };
+
+  const getTeam = useServerFn(listTeam);
+  const { data: team = [] } = useQuery({
+    queryKey: ["team"],
+    queryFn: () => getTeam(),
+  });
+
+  const updateManagerFn = useServerFn(updateProjectManager);
+  const updateManagerMut = useMutation({
+    mutationFn: (newId: string) => updateManagerFn({ data: { id: projectId, project_manager_id: newId } }),
+    onSuccess: () => {
+      toast.success("Project Owner updated");
+      qc.invalidateQueries({ queryKey: ["project", projectId] });
+      qc.invalidateQueries({ queryKey: ["projects"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   const deleteFn = useServerFn(deleteProject);
   const deleteMut = useMutation({
@@ -121,8 +140,20 @@ function ProjectDetail() {
         </Card>
         <Card className="p-5">
           <div className="text-xs uppercase text-muted-foreground">Project Owner</div>
-          <div className="text-sm font-medium mt-1">
-            {project.project_manager?.full_name ?? "—"}
+          <div className="mt-1">
+            <select
+              value={project.project_manager_id || ""}
+              onChange={(e) => updateManagerMut.mutate(e.target.value)}
+              disabled={updateManagerMut.isPending}
+              className="w-full h-8 rounded-md border bg-background px-2 text-sm"
+            >
+              <option value="" disabled>-- Select Owner --</option>
+              {team.map((t: any) => (
+                <option key={t.id} value={t.id}>
+                  {t.full_name}
+                </option>
+              ))}
+            </select>
           </div>
         </Card>
         <Card className="p-5">

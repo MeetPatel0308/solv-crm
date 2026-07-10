@@ -790,13 +790,14 @@ export const getProject = createServerFn({ method: "GET" })
 
 export const createProject = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { name: string; description: string | null; deadline: string | null; customer_id?: string | null }) =>
+  .inputValidator((d: { name: string; description: string | null; deadline: string | null; customer_id?: string | null; project_manager_id?: string | null }) =>
     z
       .object({
         name: z.string().min(1),
         description: z.string().nullable(),
         deadline: z.string().nullable(),
         customer_id: z.string().uuid().nullable().optional(),
+        project_manager_id: z.string().uuid().nullable().optional(),
       })
       .parse(d),
   )
@@ -809,7 +810,7 @@ export const createProject = createServerFn({ method: "POST" })
         deadline: data.deadline,
         customer_id: data.customer_id || null,
         created_by: context.userId,
-        project_manager_id: context.userId,
+        project_manager_id: data.project_manager_id || context.userId,
       })
       .select("id")
       .single();
@@ -1258,6 +1259,25 @@ export const updateCustomerServiceStatus = createServerFn({ method: "POST" })
     const { error } = await context.supabase
       .from("customer_services")
       .update({ status: data.status })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const updateProjectManager = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string; project_manager_id: string }) =>
+    z
+      .object({
+        id: z.string().uuid(),
+        project_manager_id: z.string().uuid(),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("projects")
+      .update({ project_manager_id: data.project_manager_id })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };

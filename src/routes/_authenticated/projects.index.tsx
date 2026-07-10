@@ -43,7 +43,7 @@ function ProjectsList() {
     completed: data.filter((p: any) => p.status === "completed").length,
     overdue: data.filter((p: any) => p.status === "overdue").length,
   };
-  const donut = ["planning", "in_progress", "testing", "completed", "on_hold", "overdue"].map(
+  const donut = ["planning", "in_progress", "testing", "completed", "deployed", "on_hold", "overdue"].map(
     (s) => ({
       name: s,
       value: data.filter((p: any) => p.status === s).length,

@@ -410,6 +410,7 @@ function ProjectDialog({ onClose }: { onClose: () => void }) {
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
   const [customerId, setCustomerId] = useState("self");
+  const [projectManagerId, setProjectManagerId] = useState("");
 
   const getCusts = useServerFn(listCustomers);
   const { data: customers = [] } = useQuery({
@@ -417,10 +418,16 @@ function ProjectDialog({ onClose }: { onClose: () => void }) {
     queryFn: () => getCusts(),
   });
 
+  const getTeam = useServerFn(listTeam);
+  const { data: team = [] } = useQuery({
+    queryKey: ["team"],
+    queryFn: () => getTeam(),
+  });
+
   const fn = useServerFn(createProject);
   const m = useMutation({
     mutationFn: () =>
-      fn({ data: { name, description: description || null, deadline: deadline || null, customer_id: customerId === "self" ? null : customerId } }),
+      fn({ data: { name, description: description || null, deadline: deadline || null, customer_id: customerId === "self" ? null : customerId, project_manager_id: projectManagerId || null } }),
     onSuccess: (row) => {
       toast.success("Project created");
       qc.invalidateQueries();
@@ -455,6 +462,21 @@ function ProjectDialog({ onClose }: { onClose: () => void }) {
               {customers.map((c: any) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-1">
+            <Label>Project Owner</Label>
+            <select
+              value={projectManagerId}
+              onChange={(e) => setProjectManagerId(e.target.value)}
+              className="w-full h-9 rounded-md border bg-background px-3 text-sm"
+            >
+              <option value="">-- Assigned to Me --</option>
+              {team.map((t: any) => (
+                <option key={t.id} value={t.id}>
+                  {t.full_name}
                 </option>
               ))}
             </select>
