@@ -61,7 +61,7 @@ function CrmList() {
         <KpiCard label="Total Customers" value={totalCustomers} icon={Users} />
         <KpiCard label="Active Customers" value={activeCustomers} icon={UserCheck} />
         <KpiCard
-          label="Total Actual Value"
+          label="Total Value"
           value={`$${totalValue.toLocaleString()}`}
           icon={DollarSign}
         />

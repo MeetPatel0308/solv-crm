@@ -281,7 +281,7 @@ function LeadsList() {
           lead={editingLead}
           services={availableServices}
           onClose={() => setEditingLead(null)}
-          onSave={(vars) => updateMut.mutate(vars)}
+          onSave={updateMut.mutate}
           isPending={updateMut.isPending}
         />
       )}
