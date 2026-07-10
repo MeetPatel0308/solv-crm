@@ -26,6 +26,13 @@ import {
 } from "@/components/ui/dialog";
 import { ConfirmDeleteButton } from "@/components/confirm-delete-button";
 import { Link } from "@tanstack/react-router";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Pencil, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
@@ -56,6 +63,7 @@ function LeadsList() {
   const fn = useServerFn(listLeads);
   const { data } = useSuspenseQuery({ queryKey: ["leads"], queryFn: () => fn() });
   const [q, setQ] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
   const [showAllServices, setShowAllServices] = useState(false);
 
   const deleteFn = useServerFn(deleteLead);
@@ -87,11 +95,16 @@ function LeadsList() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const filtered = data.filter(
-    (l: any) =>
-      l.name.toLowerCase().includes(q.toLowerCase()) ||
-      (l.company ?? "").toLowerCase().includes(q.toLowerCase()),
-  );
+  const filtered = data.filter((l: any) => {
+    const matchesSearch = l.name.toLowerCase().includes(q.toLowerCase()) ||
+                          (l.company ?? "").toLowerCase().includes(q.toLowerCase());
+    if (!matchesSearch) return false;
+
+    if (statusFilter === "Active") return l.stage !== "converted" && l.stage !== "lost";
+    if (statusFilter === "Converted") return l.stage === "converted";
+    if (statusFilter === "Lost") return l.stage === "lost";
+    return true;
+  });
 
   const activeLeads = data.filter((l: any) => l.stage !== "converted" && l.stage !== "lost");
   
@@ -105,10 +118,11 @@ function LeadsList() {
 
   const convertedCount = data.filter((l: any) => l.stage === "converted").length;
   const lostCount = data.filter((l: any) => l.stage === "lost").length;
-  const conversionRate = data.length === 0 ? 0 : Math.round((convertedCount / data.length) * 100);
+  const closedLeadsCount = convertedCount + lostCount;
+  const conversionRate = closedLeadsCount === 0 ? 0 : Math.round((convertedCount / closedLeadsCount) * 100);
 
   const serviceCounts: Record<string, number> = {};
-  const summaryLeads = data.filter((l: any) => l.stage !== "lost");
+  const summaryLeads = activeLeads;
   summaryLeads.forEach((l: any) => {
     l.lead_services?.forEach((ls: any) => {
       const name = ls.services?.name;
@@ -194,17 +208,28 @@ function LeadsList() {
         </div>
       </Card>
       <Card className="p-4">
-        <div className="mb-4">
+        <div className="mb-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
           <Input
-            placeholder="Search leads…"
+            placeholder="Search leads."
             value={q}
             onChange={(e) => setQ(e.target.value)}
             className="max-w-sm"
           />
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Status Filter" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">All</SelectItem>
+              <SelectItem value="Active">Active</SelectItem>
+              <SelectItem value="Converted">Converted</SelectItem>
+              <SelectItem value="Lost">Lost</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         {filtered.length === 0 ? (
           <div className="text-sm text-muted-foreground py-12 text-center">
-            No leads yet. Use "Create New" to add one.
+            No leads match your filters. Use "Create New" to add one.
           </div>
         ) : (
           <Table>
