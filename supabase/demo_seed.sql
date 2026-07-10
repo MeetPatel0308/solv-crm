@@ -7,367 +7,374 @@
 -- 1. Create Users
 -- We insert into auth.users directly. Note: these users cannot log in.
 INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at) 
-VALUES ('88c67cb6-eca6-4385-987b-36785d3c4231', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'alice.sales@example.com', '', now(), now(), now())
+VALUES ('b750744d-5144-4685-b27e-324c93788185', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'alice.sales@example.com', '', now(), now(), now())
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.profiles (id, full_name, email, job_title, created_at, updated_at) 
-VALUES ('88c67cb6-eca6-4385-987b-36785d3c4231', 'Alice Smith', 'alice.sales@example.com', 'Sales Manager', now(), now())
+VALUES ('b750744d-5144-4685-b27e-324c93788185', 'Alice Smith', 'alice.sales@example.com', 'Sales Manager', now(), now())
 ON CONFLICT (id) DO UPDATE SET full_name = EXCLUDED.full_name, job_title = EXCLUDED.job_title;
 INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at) 
-VALUES ('43e399c1-a1c1-4a88-ac66-889d6d425848', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'bob.account@example.com', '', now(), now(), now())
+VALUES ('d50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'bob.account@example.com', '', now(), now(), now())
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.profiles (id, full_name, email, job_title, created_at, updated_at) 
-VALUES ('43e399c1-a1c1-4a88-ac66-889d6d425848', 'Bob Johnson', 'bob.account@example.com', 'Account Manager', now(), now())
+VALUES ('d50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'Bob Johnson', 'bob.account@example.com', 'Account Manager', now(), now())
 ON CONFLICT (id) DO UPDATE SET full_name = EXCLUDED.full_name, job_title = EXCLUDED.job_title;
 INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at) 
-VALUES ('fdadd2f9-a794-4826-af13-2ae475f2a54c', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'charlie.tech@example.com', '', now(), now(), now())
+VALUES ('195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'charlie.tech@example.com', '', now(), now(), now())
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.profiles (id, full_name, email, job_title, created_at, updated_at) 
-VALUES ('fdadd2f9-a794-4826-af13-2ae475f2a54c', 'Charlie Davis', 'charlie.tech@example.com', 'Lead Developer', now(), now())
+VALUES ('195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', 'Charlie Davis', 'charlie.tech@example.com', 'Lead Developer', now(), now())
 ON CONFLICT (id) DO UPDATE SET full_name = EXCLUDED.full_name, job_title = EXCLUDED.job_title;
 
 -- 2. Services
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('14111771-8366-4b11-990f-d4ac5c23042f', 'KIBO', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'AI Sales App', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('1389b058-bc71-4358-b965-32c93405d0cc', 'Website Development', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('6d07a5ab-8992-42ed-b839-36fd308404c1', 'Hosting', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('215a13db-85bc-40ad-b52e-4071cca84390', 'SEO', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('9d03521c-add3-4009-9bca-7d32507804fa', 'Meta Ads Management', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('a7e3ecea-0d61-4e1f-ab90-c6fdf3432255', 'Google Ads Management', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('f6d10cc9-9841-4b73-9664-8e3f9196e7ff', 'Broadcast Messaging', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('30970cdc-c058-4913-aef2-84dc49e82c91', 'KIBO', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('1bf9e124-6487-417f-b9ba-a31d25fb3b2c', 'AI Sales App', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('9151711d-9d8f-4fe9-80d5-097a9fc18fc8', 'Website Development', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('28773438-7a5d-47b8-98d2-258fc28b4594', 'Hosting', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('12df9177-1979-4dc3-9d42-5b34631f1a3c', 'SEO', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('e82477e5-8f6a-4e2a-b099-4f248d20732d', 'Meta Ads Management', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('37bd3a3c-d940-4f3e-89e9-47b7c8c941cc', 'Google Ads Management', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('44092069-1a31-4604-894f-2280ee57400b', 'Broadcast Messaging', now(), now()) ON CONFLICT DO NOTHING;
 
 -- 3. Customers, Sales & Customer Services
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('c52f2699-501d-4955-a305-5d7297bd5513', 'Acme Corp', 'contact@acme corp.com', 'Finance', '88c67cb6-eca6-4385-987b-36785d3c4231', 'active', now() - interval '31 days');
+VALUES ('1a54f644-e8e4-4c42-941a-2fca70bd2bc4', 'Acme Corp', 'contact@acme corp.com', 'Finance', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'active', now() - interval '100 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('c52f2699-501d-4955-a305-5d7297bd5513', '215a13db-85bc-40ad-b52e-4071cca84390', 'SEO', 'one-off', 2495, 'active', current_date, now() - interval '4 days');
+VALUES ('1a54f644-e8e4-4c42-941a-2fca70bd2bc4', '28773438-7a5d-47b8-98d2-258fc28b4594', 'Hosting', 'one-off', 5148, 'active', current_date, now() - interval '22 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('c52f2699-501d-4955-a305-5d7297bd5513', '215a13db-85bc-40ad-b52e-4071cca84390', 'active', current_date, now());
+VALUES ('1a54f644-e8e4-4c42-941a-2fca70bd2bc4', '28773438-7a5d-47b8-98d2-258fc28b4594', 'active', current_date, now());
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('1a54f644-e8e4-4c42-941a-2fca70bd2bc4', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c', 'AI Sales App', 'one-off', 8347, 'active', current_date, now() - interval '20 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('1a54f644-e8e4-4c42-941a-2fca70bd2bc4', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c', 'active', current_date, now());
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('1a54f644-e8e4-4c42-941a-2fca70bd2bc4', '12df9177-1979-4dc3-9d42-5b34631f1a3c', 'SEO', 'retainer', 776, 'active', current_date, now() - interval '5 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('1a54f644-e8e4-4c42-941a-2fca70bd2bc4', '12df9177-1979-4dc3-9d42-5b34631f1a3c', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('c2370bfd-6567-4b0a-8d87-4b4c24220e90', 'Globex Corporation', 'contact@globex corporation.com', 'Healthcare', '43e399c1-a1c1-4a88-ac66-889d6d425848', 'active', now() - interval '87 days');
+VALUES ('492aaa47-dc97-465c-9727-1ad772c5b79a', 'Globex Corporation', 'contact@globex corporation.com', 'Retail', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'active', now() - interval '78 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('c2370bfd-6567-4b0a-8d87-4b4c24220e90', '215a13db-85bc-40ad-b52e-4071cca84390', 'SEO', 'one-off', 5553, 'active', current_date, now() - interval '16 days');
+VALUES ('492aaa47-dc97-465c-9727-1ad772c5b79a', '28773438-7a5d-47b8-98d2-258fc28b4594', 'Hosting', 'retainer', 424, 'active', current_date, now() - interval '3 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('c2370bfd-6567-4b0a-8d87-4b4c24220e90', '215a13db-85bc-40ad-b52e-4071cca84390', 'active', current_date, now());
+VALUES ('492aaa47-dc97-465c-9727-1ad772c5b79a', '28773438-7a5d-47b8-98d2-258fc28b4594', 'active', current_date, now());
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('c2370bfd-6567-4b0a-8d87-4b4c24220e90', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff', 'Broadcast Messaging', 'retainer', 584, 'active', current_date, now() - interval '1 days');
+VALUES ('492aaa47-dc97-465c-9727-1ad772c5b79a', '44092069-1a31-4604-894f-2280ee57400b', 'Broadcast Messaging', 'one-off', 1526, 'active', current_date, now() - interval '28 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('c2370bfd-6567-4b0a-8d87-4b4c24220e90', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff', 'active', current_date, now());
-INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('c2370bfd-6567-4b0a-8d87-4b4c24220e90', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'AI Sales App', 'retainer', 1146, 'active', current_date, now() - interval '5 days');
-INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('c2370bfd-6567-4b0a-8d87-4b4c24220e90', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'active', current_date, now());
+VALUES ('492aaa47-dc97-465c-9727-1ad772c5b79a', '44092069-1a31-4604-894f-2280ee57400b', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('31cd80b1-7f01-4a9f-aed2-259a0af098d4', 'Soylent Corp', 'contact@soylent corp.com', 'Technology', '88c67cb6-eca6-4385-987b-36785d3c4231', 'active', now() - interval '28 days');
+VALUES ('d0c883ae-60af-4c4c-8970-c5f54d0a1e5c', 'Soylent Corp', 'contact@soylent corp.com', 'Technology', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', 'active', now() - interval '84 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('31cd80b1-7f01-4a9f-aed2-259a0af098d4', '9d03521c-add3-4009-9bca-7d32507804fa', 'Meta Ads Management', 'retainer', 577, 'active', current_date, now() - interval '5 days');
+VALUES ('d0c883ae-60af-4c4c-8970-c5f54d0a1e5c', '12df9177-1979-4dc3-9d42-5b34631f1a3c', 'SEO', 'one-off', 7988, 'active', current_date, now() - interval '4 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('31cd80b1-7f01-4a9f-aed2-259a0af098d4', '9d03521c-add3-4009-9bca-7d32507804fa', 'active', current_date, now());
+VALUES ('d0c883ae-60af-4c4c-8970-c5f54d0a1e5c', '12df9177-1979-4dc3-9d42-5b34631f1a3c', 'active', current_date, now());
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('31cd80b1-7f01-4a9f-aed2-259a0af098d4', '14111771-8366-4b11-990f-d4ac5c23042f', 'KIBO', 'retainer', 1013, 'active', current_date, now() - interval '5 days');
+VALUES ('d0c883ae-60af-4c4c-8970-c5f54d0a1e5c', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8', 'Website Development', 'retainer', 1492, 'active', current_date, now() - interval '27 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('31cd80b1-7f01-4a9f-aed2-259a0af098d4', '14111771-8366-4b11-990f-d4ac5c23042f', 'active', current_date, now());
+VALUES ('d0c883ae-60af-4c4c-8970-c5f54d0a1e5c', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('de068994-bc6c-4bcf-9879-80e7dc0b2c57', 'Initech', 'contact@initech.com', 'Healthcare', '88c67cb6-eca6-4385-987b-36785d3c4231', 'active', now() - interval '54 days');
+VALUES ('e62a5d2d-e355-4817-bcf2-b0aeac8f303f', 'Initech', 'contact@initech.com', 'Education', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', 'active', now() - interval '14 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('de068994-bc6c-4bcf-9879-80e7dc0b2c57', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'AI Sales App', 'one-off', 4664, 'active', current_date, now() - interval '29 days');
+VALUES ('e62a5d2d-e355-4817-bcf2-b0aeac8f303f', '28773438-7a5d-47b8-98d2-258fc28b4594', 'Hosting', 'one-off', 5248, 'active', current_date, now() - interval '1 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('de068994-bc6c-4bcf-9879-80e7dc0b2c57', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'active', current_date, now());
-INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('de068994-bc6c-4bcf-9879-80e7dc0b2c57', '1389b058-bc71-4358-b965-32c93405d0cc', 'Website Development', 'retainer', 1490, 'active', current_date, now() - interval '14 days');
-INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('de068994-bc6c-4bcf-9879-80e7dc0b2c57', '1389b058-bc71-4358-b965-32c93405d0cc', 'active', current_date, now());
+VALUES ('e62a5d2d-e355-4817-bcf2-b0aeac8f303f', '28773438-7a5d-47b8-98d2-258fc28b4594', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('836b73ec-507d-4bb4-ac7f-c318a58dc0a5', 'Umbrella Corporation', 'contact@umbrella corporation.com', 'Retail', '43e399c1-a1c1-4a88-ac66-889d6d425848', 'active', now() - interval '59 days');
+VALUES ('a2dddc85-8b3f-4921-b058-8744543bc221', 'Umbrella Corporation', 'contact@umbrella corporation.com', 'Finance', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'active', now() - interval '72 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('836b73ec-507d-4bb4-ac7f-c318a58dc0a5', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'AI Sales App', 'retainer', 555, 'active', current_date, now() - interval '5 days');
+VALUES ('a2dddc85-8b3f-4921-b058-8744543bc221', '37bd3a3c-d940-4f3e-89e9-47b7c8c941cc', 'Google Ads Management', 'one-off', 1847, 'active', current_date, now() - interval '19 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('836b73ec-507d-4bb4-ac7f-c318a58dc0a5', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'active', current_date, now());
+VALUES ('a2dddc85-8b3f-4921-b058-8744543bc221', '37bd3a3c-d940-4f3e-89e9-47b7c8c941cc', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('4b3ad919-bfed-4560-b0eb-da5a06a50e10', 'Stark Industries', 'contact@stark industries.com', 'Retail', '43e399c1-a1c1-4a88-ac66-889d6d425848', 'active', now() - interval '76 days');
+VALUES ('6541b743-003b-4585-9e64-c1d2584a6efc', 'Stark Industries', 'contact@stark industries.com', 'Education', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'active', now() - interval '43 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('4b3ad919-bfed-4560-b0eb-da5a06a50e10', '9d03521c-add3-4009-9bca-7d32507804fa', 'Meta Ads Management', 'retainer', 347, 'active', current_date, now() - interval '22 days');
+VALUES ('6541b743-003b-4585-9e64-c1d2584a6efc', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c', 'AI Sales App', 'one-off', 4718, 'active', current_date, now() - interval '20 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('4b3ad919-bfed-4560-b0eb-da5a06a50e10', '9d03521c-add3-4009-9bca-7d32507804fa', 'active', current_date, now());
+VALUES ('6541b743-003b-4585-9e64-c1d2584a6efc', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c', 'active', current_date, now());
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('6541b743-003b-4585-9e64-c1d2584a6efc', '30970cdc-c058-4913-aef2-84dc49e82c91', 'KIBO', 'retainer', 895, 'active', current_date, now() - interval '17 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('6541b743-003b-4585-9e64-c1d2584a6efc', '30970cdc-c058-4913-aef2-84dc49e82c91', 'active', current_date, now());
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('6541b743-003b-4585-9e64-c1d2584a6efc', '12df9177-1979-4dc3-9d42-5b34631f1a3c', 'SEO', 'one-off', 6780, 'active', current_date, now() - interval '11 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('6541b743-003b-4585-9e64-c1d2584a6efc', '12df9177-1979-4dc3-9d42-5b34631f1a3c', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('bf79d99d-f439-4bba-9121-8075f9d559e8', 'Wayne Enterprises', 'contact@wayne enterprises.com', 'Healthcare', '88c67cb6-eca6-4385-987b-36785d3c4231', 'active', now() - interval '88 days');
+VALUES ('1dc96a7a-3336-4f35-9078-b11053eb59ed', 'Wayne Enterprises', 'contact@wayne enterprises.com', 'Real Estate', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'active', now() - interval '64 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('bf79d99d-f439-4bba-9121-8075f9d559e8', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'AI Sales App', 'retainer', 811, 'active', current_date, now() - interval '24 days');
+VALUES ('1dc96a7a-3336-4f35-9078-b11053eb59ed', '44092069-1a31-4604-894f-2280ee57400b', 'Broadcast Messaging', 'retainer', 270, 'active', current_date, now() - interval '24 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('bf79d99d-f439-4bba-9121-8075f9d559e8', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'active', current_date, now());
+VALUES ('1dc96a7a-3336-4f35-9078-b11053eb59ed', '44092069-1a31-4604-894f-2280ee57400b', 'active', current_date, now());
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('bf79d99d-f439-4bba-9121-8075f9d559e8', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255', 'Google Ads Management', 'one-off', 8613, 'active', current_date, now() - interval '7 days');
+VALUES ('1dc96a7a-3336-4f35-9078-b11053eb59ed', '28773438-7a5d-47b8-98d2-258fc28b4594', 'Hosting', 'one-off', 2281, 'active', current_date, now() - interval '2 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('bf79d99d-f439-4bba-9121-8075f9d559e8', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255', 'active', current_date, now());
+VALUES ('1dc96a7a-3336-4f35-9078-b11053eb59ed', '28773438-7a5d-47b8-98d2-258fc28b4594', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('0c212f74-feda-48c4-b720-7240adc94e43', 'Cyberdyne Systems', 'contact@cyberdyne systems.com', 'Real Estate', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', 'active', now() - interval '37 days');
+VALUES ('48d16a7e-c707-4b10-90a7-d3e4a37ed566', 'Cyberdyne Systems', 'contact@cyberdyne systems.com', 'Education', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'active', now() - interval '59 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('0c212f74-feda-48c4-b720-7240adc94e43', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'Hosting', 'retainer', 632, 'active', current_date, now() - interval '26 days');
+VALUES ('48d16a7e-c707-4b10-90a7-d3e4a37ed566', '30970cdc-c058-4913-aef2-84dc49e82c91', 'KIBO', 'retainer', 709, 'active', current_date, now() - interval '12 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('0c212f74-feda-48c4-b720-7240adc94e43', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'active', current_date, now());
+VALUES ('48d16a7e-c707-4b10-90a7-d3e4a37ed566', '30970cdc-c058-4913-aef2-84dc49e82c91', 'active', current_date, now());
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('48d16a7e-c707-4b10-90a7-d3e4a37ed566', '44092069-1a31-4604-894f-2280ee57400b', 'Broadcast Messaging', 'retainer', 1376, 'active', current_date, now() - interval '1 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('48d16a7e-c707-4b10-90a7-d3e4a37ed566', '44092069-1a31-4604-894f-2280ee57400b', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('bfa0b86c-dfa9-4a9f-9d6b-9d6e71d0e30d', 'Massive Dynamic', 'contact@massive dynamic.com', 'Education', '88c67cb6-eca6-4385-987b-36785d3c4231', 'active', now() - interval '65 days');
+VALUES ('658a9b36-5d19-4a82-888d-6ad17f0beb37', 'Massive Dynamic', 'contact@massive dynamic.com', 'Retail', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'active', now() - interval '20 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('bfa0b86c-dfa9-4a9f-9d6b-9d6e71d0e30d', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'Hosting', 'one-off', 9416, 'active', current_date, now() - interval '21 days');
+VALUES ('658a9b36-5d19-4a82-888d-6ad17f0beb37', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c', 'AI Sales App', 'retainer', 1295, 'active', current_date, now() - interval '6 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('bfa0b86c-dfa9-4a9f-9d6b-9d6e71d0e30d', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'active', current_date, now());
+VALUES ('658a9b36-5d19-4a82-888d-6ad17f0beb37', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c', 'active', current_date, now());
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('658a9b36-5d19-4a82-888d-6ad17f0beb37', '37bd3a3c-d940-4f3e-89e9-47b7c8c941cc', 'Google Ads Management', 'retainer', 304, 'active', current_date, now() - interval '25 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('658a9b36-5d19-4a82-888d-6ad17f0beb37', '37bd3a3c-d940-4f3e-89e9-47b7c8c941cc', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('818d51aa-3da8-4ec5-a186-80ae46f4a140', 'Genco Pura Olive Oil', 'contact@genco pura olive oil.com', 'Logistics', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', 'active', now() - interval '55 days');
+VALUES ('8f345d18-10e2-4258-9228-f0fddf7677a7', 'Genco Pura Olive Oil', 'contact@genco pura olive oil.com', 'Real Estate', 'b750744d-5144-4685-b27e-324c93788185', 'active', now() - interval '28 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('818d51aa-3da8-4ec5-a186-80ae46f4a140', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'Hosting', 'one-off', 4210, 'active', current_date, now() - interval '18 days');
+VALUES ('8f345d18-10e2-4258-9228-f0fddf7677a7', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8', 'Website Development', 'one-off', 1516, 'active', current_date, now() - interval '13 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('818d51aa-3da8-4ec5-a186-80ae46f4a140', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'active', current_date, now());
+VALUES ('8f345d18-10e2-4258-9228-f0fddf7677a7', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8', 'active', current_date, now());
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('818d51aa-3da8-4ec5-a186-80ae46f4a140', '14111771-8366-4b11-990f-d4ac5c23042f', 'KIBO', 'retainer', 483, 'active', current_date, now() - interval '24 days');
+VALUES ('8f345d18-10e2-4258-9228-f0fddf7677a7', '30970cdc-c058-4913-aef2-84dc49e82c91', 'KIBO', 'one-off', 2534, 'active', current_date, now() - interval '2 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('818d51aa-3da8-4ec5-a186-80ae46f4a140', '14111771-8366-4b11-990f-d4ac5c23042f', 'active', current_date, now());
+VALUES ('8f345d18-10e2-4258-9228-f0fddf7677a7', '30970cdc-c058-4913-aef2-84dc49e82c91', 'active', current_date, now());
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('8f345d18-10e2-4258-9228-f0fddf7677a7', '28773438-7a5d-47b8-98d2-258fc28b4594', 'Hosting', 'one-off', 6196, 'active', current_date, now() - interval '16 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('8f345d18-10e2-4258-9228-f0fddf7677a7', '28773438-7a5d-47b8-98d2-258fc28b4594', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('05daed82-2813-40c7-b775-96ee91f58772', 'LexCorp', 'contact@lexcorp.com', 'Finance', '88c67cb6-eca6-4385-987b-36785d3c4231', 'active', now() - interval '92 days');
+VALUES ('255b420e-c5ad-4e90-beec-07a7ed0b19e8', 'LexCorp', 'contact@lexcorp.com', 'Healthcare', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'active', now() - interval '56 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('05daed82-2813-40c7-b775-96ee91f58772', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'Hosting', 'retainer', 674, 'active', current_date, now() - interval '11 days');
+VALUES ('255b420e-c5ad-4e90-beec-07a7ed0b19e8', 'e82477e5-8f6a-4e2a-b099-4f248d20732d', 'Meta Ads Management', 'retainer', 1369, 'active', current_date, now() - interval '29 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('05daed82-2813-40c7-b775-96ee91f58772', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'active', current_date, now());
-INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('05daed82-2813-40c7-b775-96ee91f58772', '9d03521c-add3-4009-9bca-7d32507804fa', 'Meta Ads Management', 'one-off', 7342, 'active', current_date, now() - interval '10 days');
-INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('05daed82-2813-40c7-b775-96ee91f58772', '9d03521c-add3-4009-9bca-7d32507804fa', 'active', current_date, now());
-INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('05daed82-2813-40c7-b775-96ee91f58772', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff', 'Broadcast Messaging', 'one-off', 7005, 'active', current_date, now() - interval '16 days');
-INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('05daed82-2813-40c7-b775-96ee91f58772', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff', 'active', current_date, now());
+VALUES ('255b420e-c5ad-4e90-beec-07a7ed0b19e8', 'e82477e5-8f6a-4e2a-b099-4f248d20732d', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('b1236ba5-0b5a-44c8-ae37-ca40cda75480', 'Oceanic Airlines', 'contact@oceanic airlines.com', 'Logistics', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', 'active', now() - interval '80 days');
+VALUES ('d3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', 'Oceanic Airlines', 'contact@oceanic airlines.com', 'Retail', 'b750744d-5144-4685-b27e-324c93788185', 'active', now() - interval '81 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('b1236ba5-0b5a-44c8-ae37-ca40cda75480', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'AI Sales App', 'retainer', 1241, 'active', current_date, now() - interval '22 days');
+VALUES ('d3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', '28773438-7a5d-47b8-98d2-258fc28b4594', 'Hosting', 'one-off', 8259, 'active', current_date, now() - interval '25 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('b1236ba5-0b5a-44c8-ae37-ca40cda75480', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b', 'active', current_date, now());
+VALUES ('d3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', '28773438-7a5d-47b8-98d2-258fc28b4594', 'active', current_date, now());
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('d3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', '12df9177-1979-4dc3-9d42-5b34631f1a3c', 'SEO', 'retainer', 1070, 'active', current_date, now() - interval '24 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('d3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', '12df9177-1979-4dc3-9d42-5b34631f1a3c', 'active', current_date, now());
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('d3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', '30970cdc-c058-4913-aef2-84dc49e82c91', 'KIBO', 'one-off', 8338, 'active', current_date, now() - interval '24 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('d3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', '30970cdc-c058-4913-aef2-84dc49e82c91', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('33134382-5980-4a50-9843-cbf2123797a6', 'Wonka Industries', 'contact@wonka industries.com', 'Retail', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', 'active', now() - interval '29 days');
+VALUES ('cfae116e-aee1-4a8e-b057-e8337f1975ee', 'Wonka Industries', 'contact@wonka industries.com', 'Retail', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', 'active', now() - interval '57 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('33134382-5980-4a50-9843-cbf2123797a6', '14111771-8366-4b11-990f-d4ac5c23042f', 'KIBO', 'one-off', 6654, 'active', current_date, now() - interval '16 days');
+VALUES ('cfae116e-aee1-4a8e-b057-e8337f1975ee', '44092069-1a31-4604-894f-2280ee57400b', 'Broadcast Messaging', 'retainer', 1333, 'active', current_date, now() - interval '18 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('33134382-5980-4a50-9843-cbf2123797a6', '14111771-8366-4b11-990f-d4ac5c23042f', 'active', current_date, now());
-INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('33134382-5980-4a50-9843-cbf2123797a6', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255', 'Google Ads Management', 'one-off', 6999, 'active', current_date, now() - interval '25 days');
-INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('33134382-5980-4a50-9843-cbf2123797a6', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255', 'active', current_date, now());
-INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('33134382-5980-4a50-9843-cbf2123797a6', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'Hosting', 'retainer', 950, 'active', current_date, now() - interval '24 days');
-INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('33134382-5980-4a50-9843-cbf2123797a6', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'active', current_date, now());
+VALUES ('cfae116e-aee1-4a8e-b057-e8337f1975ee', '44092069-1a31-4604-894f-2280ee57400b', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('63fc56fd-9f22-43a6-96ab-ee5fc0624ec3', 'Oscorp', 'contact@oscorp.com', 'Healthcare', '43e399c1-a1c1-4a88-ac66-889d6d425848', 'active', now() - interval '53 days');
+VALUES ('e9d0b187-e3b5-4219-8d68-5d1bfd321269', 'Oscorp', 'contact@oscorp.com', 'Real Estate', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', 'active', now() - interval '85 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('63fc56fd-9f22-43a6-96ab-ee5fc0624ec3', '14111771-8366-4b11-990f-d4ac5c23042f', 'KIBO', 'one-off', 4392, 'active', current_date, now() - interval '15 days');
+VALUES ('e9d0b187-e3b5-4219-8d68-5d1bfd321269', '44092069-1a31-4604-894f-2280ee57400b', 'Broadcast Messaging', 'one-off', 1188, 'active', current_date, now() - interval '10 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('63fc56fd-9f22-43a6-96ab-ee5fc0624ec3', '14111771-8366-4b11-990f-d4ac5c23042f', 'active', current_date, now());
+VALUES ('e9d0b187-e3b5-4219-8d68-5d1bfd321269', '44092069-1a31-4604-894f-2280ee57400b', 'active', current_date, now());
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('62b62dbe-37f6-46fb-a780-3e513609d8cb', 'Hooli', 'contact@hooli.com', 'Healthcare', '88c67cb6-eca6-4385-987b-36785d3c4231', 'active', now() - interval '39 days');
+VALUES ('45ab4e2c-fd87-4087-95b0-e3b92faaaefa', 'Hooli', 'contact@hooli.com', 'Real Estate', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', 'active', now() - interval '24 days');
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('62b62dbe-37f6-46fb-a780-3e513609d8cb', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'Hosting', 'one-off', 5416, 'active', current_date, now() - interval '18 days');
+VALUES ('45ab4e2c-fd87-4087-95b0-e3b92faaaefa', '28773438-7a5d-47b8-98d2-258fc28b4594', 'Hosting', 'one-off', 8257, 'active', current_date, now() - interval '3 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('62b62dbe-37f6-46fb-a780-3e513609d8cb', '6d07a5ab-8992-42ed-b839-36fd308404c1', 'active', current_date, now());
+VALUES ('45ab4e2c-fd87-4087-95b0-e3b92faaaefa', '28773438-7a5d-47b8-98d2-258fc28b4594', 'active', current_date, now());
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('62b62dbe-37f6-46fb-a780-3e513609d8cb', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff', 'Broadcast Messaging', 'retainer', 767, 'active', current_date, now() - interval '2 days');
+VALUES ('45ab4e2c-fd87-4087-95b0-e3b92faaaefa', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c', 'AI Sales App', 'retainer', 1154, 'active', current_date, now() - interval '11 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('62b62dbe-37f6-46fb-a780-3e513609d8cb', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff', 'active', current_date, now());
+VALUES ('45ab4e2c-fd87-4087-95b0-e3b92faaaefa', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c', 'active', current_date, now());
 
 -- 4. Leads & Lead Services
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('e266acdd-1930-45d7-899e-aba04e4ff4ed', 'Contact 15', 'Pied Piper (Lead)', 'contact15@example.com', 'warm', 628, 'Social Media', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, NULL, NULL, now() - interval '19 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e266acdd-1930-45d7-899e-aba04e4ff4ed', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e266acdd-1930-45d7-899e-aba04e4ff4ed', '6d07a5ab-8992-42ed-b839-36fd308404c1');
+VALUES ('41caf4af-7a1e-47c8-8ed1-60ce23dae8c9', 'Contact 15', 'Pied Piper (Lead)', 'contact15@example.com', 'warm', 4541, 'Cold Call', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, NULL, NULL, now() - interval '38 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('41caf4af-7a1e-47c8-8ed1-60ce23dae8c9', '44092069-1a31-4604-894f-2280ee57400b');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('41caf4af-7a1e-47c8-8ed1-60ce23dae8c9', '12df9177-1979-4dc3-9d42-5b34631f1a3c');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('41caf4af-7a1e-47c8-8ed1-60ce23dae8c9', '28773438-7a5d-47b8-98d2-258fc28b4594');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('14394f55-2234-4b3d-8f5d-92cf1f659aad', 'Contact 16', 'Dunder Mifflin (Lead)', 'contact16@example.com', 'warm', 2709, 'Trade Show', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, NULL, NULL, now() - interval '18 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('14394f55-2234-4b3d-8f5d-92cf1f659aad', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('14394f55-2234-4b3d-8f5d-92cf1f659aad', '215a13db-85bc-40ad-b52e-4071cca84390');
+VALUES ('0edeccac-1b13-482a-94c0-2c255b6563c3', 'Contact 16', 'Dunder Mifflin (Lead)', 'contact16@example.com', 'converted', 2700, 'Cold Call', 'b750744d-5144-4685-b27e-324c93788185', now() - interval '6 days', NULL, NULL, now() - interval '39 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('0edeccac-1b13-482a-94c0-2c255b6563c3', '12df9177-1979-4dc3-9d42-5b34631f1a3c');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('0edeccac-1b13-482a-94c0-2c255b6563c3', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('ef844b94-8977-4568-8a8c-cf4748e66620', 'Contact 17', 'Massive Dynamic', 'contact17@example.com', 'proposal', 4586, 'Referral', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, NULL, NULL, now() - interval '15 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('ef844b94-8977-4568-8a8c-cf4748e66620', '9d03521c-add3-4009-9bca-7d32507804fa');
+VALUES ('693e2624-202e-499d-a874-847d5ae176d2', 'Contact 17', 'Aperture Science (Lead)', 'contact17@example.com', 'warm', 1960, 'Trade Show', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, NULL, NULL, now() - interval '12 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('693e2624-202e-499d-a874-847d5ae176d2', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('693e2624-202e-499d-a874-847d5ae176d2', '12df9177-1979-4dc3-9d42-5b34631f1a3c');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('67d03439-f5ce-43c0-b86a-e1dd88d02292', 'Contact 18', 'Wayne Enterprises', 'contact18@example.com', 'hot', 2461, 'Social Media', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, NULL, NULL, now() - interval '13 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('67d03439-f5ce-43c0-b86a-e1dd88d02292', '215a13db-85bc-40ad-b52e-4071cca84390');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('67d03439-f5ce-43c0-b86a-e1dd88d02292', '9d03521c-add3-4009-9bca-7d32507804fa');
+VALUES ('402ab831-f05f-44ac-a135-a50d043fd30a', 'Contact 18', 'LexCorp', 'contact18@example.com', 'cold', 2512, 'Cold Call', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', NULL, NULL, NULL, now() - interval '22 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('402ab831-f05f-44ac-a135-a50d043fd30a', 'e82477e5-8f6a-4e2a-b099-4f248d20732d');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('402ab831-f05f-44ac-a135-a50d043fd30a', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('103a69f6-e72a-4cec-9982-4ad134b10e4d', 'Contact 19', 'LexCorp', 'contact19@example.com', 'lost', 2326, 'Referral', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, now() - interval '3 days', 'No Response', now() - interval '11 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('103a69f6-e72a-4cec-9982-4ad134b10e4d', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255');
+VALUES ('2fe0ff41-210d-406c-98c9-e215c875e0d6', 'Contact 19', 'Gringotts (Lead)', 'contact19@example.com', 'negotiation', 3633, 'Trade Show', 'b750744d-5144-4685-b27e-324c93788185', NULL, NULL, NULL, now() - interval '31 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('2fe0ff41-210d-406c-98c9-e215c875e0d6', '28773438-7a5d-47b8-98d2-258fc28b4594');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('f7ec767d-a62c-478f-a896-b67e29fd17c9', 'Contact 20', 'Genco Pura Olive Oil', 'contact20@example.com', 'proposal', 1546, 'Cold Call', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, NULL, NULL, now() - interval '26 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('f7ec767d-a62c-478f-a896-b67e29fd17c9', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('f7ec767d-a62c-478f-a896-b67e29fd17c9', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('f7ec767d-a62c-478f-a896-b67e29fd17c9', '9d03521c-add3-4009-9bca-7d32507804fa');
+VALUES ('faa0e320-4eaa-40d3-97ab-7a9c18296d8d', 'Contact 20', 'Ollivanders (Lead)', 'contact20@example.com', 'warm', 2374, 'Referral', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, NULL, NULL, now() - interval '12 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('faa0e320-4eaa-40d3-97ab-7a9c18296d8d', '30970cdc-c058-4913-aef2-84dc49e82c91');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('faa0e320-4eaa-40d3-97ab-7a9c18296d8d', '28773438-7a5d-47b8-98d2-258fc28b4594');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('6a279144-638e-428f-9fb1-e4a9693b0f0b', 'Contact 21', 'Virtucon (Lead)', 'contact21@example.com', 'converted', 3168, 'Trade Show', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', now() - interval '1 days', NULL, NULL, now() - interval '15 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('6a279144-638e-428f-9fb1-e4a9693b0f0b', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('6a279144-638e-428f-9fb1-e4a9693b0f0b', '1389b058-bc71-4358-b965-32c93405d0cc');
+VALUES ('6be92eac-650a-4e32-b9f2-a79c249eb6d5', 'Contact 21', 'Virtucon (Lead)', 'contact21@example.com', 'proposal', 3713, 'Referral', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', NULL, NULL, NULL, now() - interval '17 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('6be92eac-650a-4e32-b9f2-a79c249eb6d5', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('e3e3080e-835f-4d78-ab15-b38c0561569e', 'Contact 22', 'Initech', 'contact22@example.com', 'lost', 1437, 'Social Media', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '8 days', 'Budget', now() - interval '38 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e3e3080e-835f-4d78-ab15-b38c0561569e', '215a13db-85bc-40ad-b52e-4071cca84390');
+VALUES ('71eeb90e-e431-4194-afe8-f94eb2b45bcd', 'Contact 22', 'Wayne Enterprises', 'contact22@example.com', 'cold', 2689, 'Referral', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, NULL, NULL, now() - interval '20 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('71eeb90e-e431-4194-afe8-f94eb2b45bcd', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('71eeb90e-e431-4194-afe8-f94eb2b45bcd', 'e82477e5-8f6a-4e2a-b099-4f248d20732d');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('7f9696e8-cd4d-47b6-9b67-75e8642f0776', 'Contact 23', 'Slurm (Lead)', 'contact23@example.com', 'cold', 1034, 'Referral', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, NULL, NULL, now() - interval '40 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7f9696e8-cd4d-47b6-9b67-75e8642f0776', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255');
+VALUES ('743ba72d-6b41-49fe-bc11-d20ce90fe1cb', 'Contact 23', 'Slurm (Lead)', 'contact23@example.com', 'cold', 1937, 'Website', 'b750744d-5144-4685-b27e-324c93788185', NULL, NULL, NULL, now() - interval '12 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('743ba72d-6b41-49fe-bc11-d20ce90fe1cb', '37bd3a3c-d940-4f3e-89e9-47b7c8c941cc');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('743ba72d-6b41-49fe-bc11-d20ce90fe1cb', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('743ba72d-6b41-49fe-bc11-d20ce90fe1cb', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('7fdac2e9-b2a6-432d-99f0-e68aeb0c35ba', 'Contact 24', 'Nuka-Cola (Lead)', 'contact24@example.com', 'cold', 1885, 'Trade Show', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, NULL, NULL, now() - interval '18 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7fdac2e9-b2a6-432d-99f0-e68aeb0c35ba', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7fdac2e9-b2a6-432d-99f0-e68aeb0c35ba', '14111771-8366-4b11-990f-d4ac5c23042f');
+VALUES ('3854bd5c-d248-497c-9adf-213c3e2d43ed', 'Contact 24', 'Nuka-Cola (Lead)', 'contact24@example.com', 'hot', 3390, 'Cold Call', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, NULL, NULL, now() - interval '31 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('3854bd5c-d248-497c-9adf-213c3e2d43ed', '30970cdc-c058-4913-aef2-84dc49e82c91');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('885943d9-ac3d-4bea-aba4-fde2802b09e3', 'Contact 25', 'Acme Corp', 'contact25@example.com', 'converted', 2794, 'Referral', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', now() - interval '6 days', NULL, NULL, now() - interval '13 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('885943d9-ac3d-4bea-aba4-fde2802b09e3', '14111771-8366-4b11-990f-d4ac5c23042f');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('885943d9-ac3d-4bea-aba4-fde2802b09e3', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff');
+VALUES ('899a339a-cd05-49b0-a38a-8236c1e06394', 'Contact 25', 'Acme Corp (Lead)', 'contact25@example.com', 'lost', 4344, 'Social Media', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '5 days', 'Competitor', now() - interval '30 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('899a339a-cd05-49b0-a38a-8236c1e06394', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('2aeb727d-171a-418e-96f1-1997b42b337d', 'Contact 26', 'Globex Corporation (Lead)', 'contact26@example.com', 'lost', 3231, 'Referral', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '2 days', 'Not a Good Fit', now() - interval '15 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('2aeb727d-171a-418e-96f1-1997b42b337d', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('2aeb727d-171a-418e-96f1-1997b42b337d', '6d07a5ab-8992-42ed-b839-36fd308404c1');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('2aeb727d-171a-418e-96f1-1997b42b337d', '14111771-8366-4b11-990f-d4ac5c23042f');
+VALUES ('b58940ee-30b5-4fc1-90e0-cd91e5aef5ab', 'Contact 26', 'Umbrella Corporation', 'contact26@example.com', 'negotiation', 3222, 'Cold Call', 'b750744d-5144-4685-b27e-324c93788185', NULL, NULL, NULL, now() - interval '14 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('b58940ee-30b5-4fc1-90e0-cd91e5aef5ab', '12df9177-1979-4dc3-9d42-5b34631f1a3c');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('b58940ee-30b5-4fc1-90e0-cd91e5aef5ab', '37bd3a3c-d940-4f3e-89e9-47b7c8c941cc');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('0608d6fe-30d9-4d3b-9b3f-4c31866cbef7', 'Contact 27', 'Soylent Corp (Lead)', 'contact27@example.com', 'hot', 3883, 'Referral', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, NULL, NULL, now() - interval '31 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('0608d6fe-30d9-4d3b-9b3f-4c31866cbef7', '9d03521c-add3-4009-9bca-7d32507804fa');
+VALUES ('d8f16cd8-9aa3-45b1-87aa-090e1cd1d648', 'Contact 27', 'Soylent Corp (Lead)', 'contact27@example.com', 'warm', 750, 'Website', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', NULL, NULL, NULL, now() - interval '23 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d8f16cd8-9aa3-45b1-87aa-090e1cd1d648', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d8f16cd8-9aa3-45b1-87aa-090e1cd1d648', '28773438-7a5d-47b8-98d2-258fc28b4594');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('e4a36dfa-d6ff-4448-8731-f477b6dab1c9', 'Contact 28', 'Initech (Lead)', 'contact28@example.com', 'lost', 4080, 'Referral', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, now() - interval '6 days', 'No Response', now() - interval '33 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e4a36dfa-d6ff-4448-8731-f477b6dab1c9', '9d03521c-add3-4009-9bca-7d32507804fa');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e4a36dfa-d6ff-4448-8731-f477b6dab1c9', '1389b058-bc71-4358-b965-32c93405d0cc');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e4a36dfa-d6ff-4448-8731-f477b6dab1c9', '14111771-8366-4b11-990f-d4ac5c23042f');
+VALUES ('65371d9b-3564-4cec-9f91-485db5fc206c', 'Contact 28', 'Initech (Lead)', 'contact28@example.com', 'lost', 1820, 'Trade Show', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '8 days', 'No Response', now() - interval '25 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('65371d9b-3564-4cec-9f91-485db5fc206c', 'e82477e5-8f6a-4e2a-b099-4f248d20732d');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('65371d9b-3564-4cec-9f91-485db5fc206c', '12df9177-1979-4dc3-9d42-5b34631f1a3c');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('55ad7cec-da3c-4899-852e-f3cece04378e', 'Contact 29', 'Umbrella Corporation (Lead)', 'contact29@example.com', 'warm', 4019, 'Website', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, NULL, NULL, now() - interval '32 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('55ad7cec-da3c-4899-852e-f3cece04378e', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('55ad7cec-da3c-4899-852e-f3cece04378e', '215a13db-85bc-40ad-b52e-4071cca84390');
+VALUES ('71e9fdde-5598-40fd-a26a-debc8adaec92', 'Contact 29', 'LexCorp', 'contact29@example.com', 'negotiation', 2020, 'Cold Call', 'b750744d-5144-4685-b27e-324c93788185', NULL, NULL, NULL, now() - interval '15 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('71e9fdde-5598-40fd-a26a-debc8adaec92', '12df9177-1979-4dc3-9d42-5b34631f1a3c');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('7f296ed5-9323-4691-91b9-dd28c09cad66', 'Contact 30', 'Stark Industries (Lead)', 'contact30@example.com', 'warm', 2995, 'Referral', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, NULL, NULL, now() - interval '12 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7f296ed5-9323-4691-91b9-dd28c09cad66', '14111771-8366-4b11-990f-d4ac5c23042f');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7f296ed5-9323-4691-91b9-dd28c09cad66', '9d03521c-add3-4009-9bca-7d32507804fa');
+VALUES ('043d1736-e7fd-40bf-87c9-53592ddb0c36', 'Contact 30', 'Stark Industries (Lead)', 'contact30@example.com', 'warm', 4359, 'Cold Call', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, NULL, NULL, now() - interval '31 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('043d1736-e7fd-40bf-87c9-53592ddb0c36', '37bd3a3c-d940-4f3e-89e9-47b7c8c941cc');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('043d1736-e7fd-40bf-87c9-53592ddb0c36', '28773438-7a5d-47b8-98d2-258fc28b4594');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('2fb00a66-ca89-40f5-a933-ac999532fa31', 'Contact 31', 'Wayne Enterprises (Lead)', 'contact31@example.com', 'negotiation', 4221, 'Social Media', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, NULL, NULL, now() - interval '30 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('2fb00a66-ca89-40f5-a933-ac999532fa31', '6d07a5ab-8992-42ed-b839-36fd308404c1');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('2fb00a66-ca89-40f5-a933-ac999532fa31', '9d03521c-add3-4009-9bca-7d32507804fa');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('2fb00a66-ca89-40f5-a933-ac999532fa31', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff');
+VALUES ('aa69b11c-a8d0-43c4-a4f0-aac5758aa39e', 'Contact 31', 'Wayne Enterprises (Lead)', 'contact31@example.com', 'cold', 782, 'Social Media', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, NULL, NULL, now() - interval '30 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('aa69b11c-a8d0-43c4-a4f0-aac5758aa39e', '28773438-7a5d-47b8-98d2-258fc28b4594');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('cdd8c5e6-e1ef-4466-ba4f-b788f5ccf738', 'Contact 32', 'Cyberdyne Systems (Lead)', 'contact32@example.com', 'cold', 2174, 'Trade Show', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, NULL, NULL, now() - interval '34 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('cdd8c5e6-e1ef-4466-ba4f-b788f5ccf738', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('cdd8c5e6-e1ef-4466-ba4f-b788f5ccf738', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('cdd8c5e6-e1ef-4466-ba4f-b788f5ccf738', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff');
+VALUES ('d9ad19b9-adc1-4a8f-a9bd-e2becc2ef909', 'Contact 32', 'Cyberdyne Systems (Lead)', 'contact32@example.com', 'lost', 3558, 'Website', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', NULL, now() - interval '8 days', 'Timing', now() - interval '21 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d9ad19b9-adc1-4a8f-a9bd-e2becc2ef909', '44092069-1a31-4604-894f-2280ee57400b');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d9ad19b9-adc1-4a8f-a9bd-e2becc2ef909', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d9ad19b9-adc1-4a8f-a9bd-e2becc2ef909', 'e82477e5-8f6a-4e2a-b099-4f248d20732d');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('aa8bd744-7b50-4c05-bb4f-45088b9a0507', 'Contact 33', 'Massive Dynamic (Lead)', 'contact33@example.com', 'converted', 2446, 'Social Media', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', now() - interval '2 days', NULL, NULL, now() - interval '39 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('aa8bd744-7b50-4c05-bb4f-45088b9a0507', '1389b058-bc71-4358-b965-32c93405d0cc');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('aa8bd744-7b50-4c05-bb4f-45088b9a0507', '6a785978-3b44-42cd-83f3-2c4b54b3ba8b');
+VALUES ('88f23ac4-0b28-4e2f-93e3-3813040adf6b', 'Contact 33', 'Cyberdyne Systems', 'contact33@example.com', 'warm', 4327, 'Referral', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, NULL, NULL, now() - interval '39 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('88f23ac4-0b28-4e2f-93e3-3813040adf6b', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('88f23ac4-0b28-4e2f-93e3-3813040adf6b', '44092069-1a31-4604-894f-2280ee57400b');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('a38f047b-3961-4462-8d86-49d144df2fab', 'Contact 34', 'Genco Pura Olive Oil (Lead)', 'contact34@example.com', 'cold', 539, 'Referral', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, NULL, NULL, now() - interval '26 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('a38f047b-3961-4462-8d86-49d144df2fab', '1389b058-bc71-4358-b965-32c93405d0cc');
+VALUES ('30020683-5c6c-4610-a29d-545e27741a83', 'Contact 34', 'Genco Pura Olive Oil (Lead)', 'contact34@example.com', 'cold', 1109, 'Website', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, NULL, NULL, now() - interval '24 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('30020683-5c6c-4610-a29d-545e27741a83', '30970cdc-c058-4913-aef2-84dc49e82c91');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('30020683-5c6c-4610-a29d-545e27741a83', '9151711d-9d8f-4fe9-80d5-097a9fc18fc8');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('d13f69f6-e8a2-43f8-b092-942ac406aef3', 'Contact 35', 'LexCorp (Lead)', 'contact35@example.com', 'lost', 2830, 'Cold Call', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '5 days', 'No Response', now() - interval '37 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d13f69f6-e8a2-43f8-b092-942ac406aef3', '6d07a5ab-8992-42ed-b839-36fd308404c1');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d13f69f6-e8a2-43f8-b092-942ac406aef3', '1389b058-bc71-4358-b965-32c93405d0cc');
+VALUES ('1151f233-ec20-4ea9-827e-a9acd7c5b4e8', 'Contact 35', 'LexCorp (Lead)', 'contact35@example.com', 'warm', 1554, 'Referral', 'b750744d-5144-4685-b27e-324c93788185', NULL, NULL, NULL, now() - interval '31 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('1151f233-ec20-4ea9-827e-a9acd7c5b4e8', '28773438-7a5d-47b8-98d2-258fc28b4594');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('4d4f3cf2-5244-4d6f-b1e6-1b319c8254a8', 'Contact 36', 'Oceanic Airlines (Lead)', 'contact36@example.com', 'converted', 2535, 'Website', '88c67cb6-eca6-4385-987b-36785d3c4231', now() - interval '1 days', NULL, NULL, now() - interval '31 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('4d4f3cf2-5244-4d6f-b1e6-1b319c8254a8', '9d03521c-add3-4009-9bca-7d32507804fa');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('4d4f3cf2-5244-4d6f-b1e6-1b319c8254a8', '14111771-8366-4b11-990f-d4ac5c23042f');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('4d4f3cf2-5244-4d6f-b1e6-1b319c8254a8', '215a13db-85bc-40ad-b52e-4071cca84390');
+VALUES ('1bbe4cf1-539b-48e5-bec2-8c7c979b4ab7', 'Contact 36', 'Oceanic Airlines (Lead)', 'contact36@example.com', 'warm', 1302, 'Website', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', NULL, NULL, NULL, now() - interval '13 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('1bbe4cf1-539b-48e5-bec2-8c7c979b4ab7', '30970cdc-c058-4913-aef2-84dc49e82c91');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('14fd1621-2c4f-43aa-be29-6bae0d31d1a9', 'Contact 37', 'Wonka Industries (Lead)', 'contact37@example.com', 'cold', 1539, 'Trade Show', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, NULL, NULL, now() - interval '20 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('14fd1621-2c4f-43aa-be29-6bae0d31d1a9', 'f6d10cc9-9841-4b73-9664-8e3f9196e7ff');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('14fd1621-2c4f-43aa-be29-6bae0d31d1a9', '1389b058-bc71-4358-b965-32c93405d0cc');
+VALUES ('22c1951b-483a-47d2-9350-b9525c0238ab', 'Contact 37', 'Wonka Industries (Lead)', 'contact37@example.com', 'hot', 2289, 'Social Media', 'b750744d-5144-4685-b27e-324c93788185', NULL, NULL, NULL, now() - interval '38 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('22c1951b-483a-47d2-9350-b9525c0238ab', '37bd3a3c-d940-4f3e-89e9-47b7c8c941cc');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('ff659b95-8756-4c07-aaf1-3b285ccfc31a', 'Contact 38', 'Oscorp (Lead)', 'contact38@example.com', 'hot', 3142, 'Social Media', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, NULL, NULL, now() - interval '11 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('ff659b95-8756-4c07-aaf1-3b285ccfc31a', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('ff659b95-8756-4c07-aaf1-3b285ccfc31a', '1389b058-bc71-4358-b965-32c93405d0cc');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('ff659b95-8756-4c07-aaf1-3b285ccfc31a', '14111771-8366-4b11-990f-d4ac5c23042f');
+VALUES ('5cce16e4-3c56-4759-a22c-a535f0c73c4d', 'Contact 38', 'Oscorp (Lead)', 'contact38@example.com', 'negotiation', 3719, 'Website', 'b750744d-5144-4685-b27e-324c93788185', NULL, NULL, NULL, now() - interval '39 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('5cce16e4-3c56-4759-a22c-a535f0c73c4d', '37bd3a3c-d940-4f3e-89e9-47b7c8c941cc');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('5cce16e4-3c56-4759-a22c-a535f0c73c4d', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c');
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('7a744d3d-79c9-45a8-bb6c-98bf2f2787df', 'Contact 39', 'Oceanic Airlines', 'contact39@example.com', 'warm', 548, 'Website', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, NULL, NULL, now() - interval '30 days');
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7a744d3d-79c9-45a8-bb6c-98bf2f2787df', 'a7e3ecea-0d61-4e1f-ab90-c6fdf3432255');
+VALUES ('5a93b02c-9109-4610-beef-fc66f0aadf3d', 'Contact 39', 'Hooli (Lead)', 'contact39@example.com', 'lost', 642, 'Cold Call', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '6 days', 'No Response', now() - interval '19 days');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('5a93b02c-9109-4610-beef-fc66f0aadf3d', '30970cdc-c058-4913-aef2-84dc49e82c91');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('5a93b02c-9109-4610-beef-fc66f0aadf3d', 'e82477e5-8f6a-4e2a-b099-4f248d20732d');
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('5a93b02c-9109-4610-beef-fc66f0aadf3d', '1bf9e124-6487-417f-b9ba-a31d25fb3b2c');
 
 -- 5. Projects
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('ddc5b567-9ef2-40a6-890b-e3d56c4dca41', 'bf79d99d-f439-4bba-9121-8075f9d559e8', 'Implementation Project 1', 'completed', 'medium', current_date + interval '28 days', now() - interval '17 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('ddc5b567-9ef2-40a6-890b-e3d56c4dca41', '88c67cb6-eca6-4385-987b-36785d3c4231');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('114f2949-1a60-4cc6-a52e-ca03f794db3f', '63fc56fd-9f22-43a6-96ab-ee5fc0624ec3', 'Implementation Project 2', 'completed', 'medium', current_date + interval '10 days', now() - interval '7 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('114f2949-1a60-4cc6-a52e-ca03f794db3f', '43e399c1-a1c1-4a88-ac66-889d6d425848');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('b7de5bd0-1eb3-4790-aad4-001931092c1d', '0c212f74-feda-48c4-b720-7240adc94e43', 'Implementation Project 3', 'planning', 'medium', current_date + interval '14 days', now() - interval '10 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('b7de5bd0-1eb3-4790-aad4-001931092c1d', 'fdadd2f9-a794-4826-af13-2ae475f2a54c');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('e8fed8e4-534c-4119-818b-8befae45c132', '62b62dbe-37f6-46fb-a780-3e513609d8cb', 'Implementation Project 4', 'completed', 'medium', current_date + interval '17 days', now() - interval '1 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('e8fed8e4-534c-4119-818b-8befae45c132', '88c67cb6-eca6-4385-987b-36785d3c4231');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('c1d36b1c-88a6-4077-a1c6-6d5c967000ff', '62b62dbe-37f6-46fb-a780-3e513609d8cb', 'Implementation Project 5', 'review', 'medium', current_date + interval '5 days', now() - interval '8 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('c1d36b1c-88a6-4077-a1c6-6d5c967000ff', 'fdadd2f9-a794-4826-af13-2ae475f2a54c');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('e774b02b-815d-46f7-81fc-7edadf8a4013', '4b3ad919-bfed-4560-b0eb-da5a06a50e10', 'Implementation Project 6', 'completed', 'medium', current_date + interval '25 days', now() - interval '13 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('e774b02b-815d-46f7-81fc-7edadf8a4013', '43e399c1-a1c1-4a88-ac66-889d6d425848');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('250a6c03-e20c-4b2f-9ce9-6d567c6db629', 'c52f2699-501d-4955-a305-5d7297bd5513', 'Implementation Project 7', 'completed', 'medium', current_date + interval '22 days', now() - interval '8 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('250a6c03-e20c-4b2f-9ce9-6d567c6db629', 'fdadd2f9-a794-4826-af13-2ae475f2a54c');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('6b51b63d-ce45-4441-b825-e4fcaeef4c8c', 'bf79d99d-f439-4bba-9121-8075f9d559e8', 'Implementation Project 8', 'review', 'medium', current_date + interval '13 days', now() - interval '12 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('6b51b63d-ce45-4441-b825-e4fcaeef4c8c', 'fdadd2f9-a794-4826-af13-2ae475f2a54c');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('5c4084e1-9c2c-4839-9039-741906a101c2', '0c212f74-feda-48c4-b720-7240adc94e43', 'Implementation Project 9', 'review', 'medium', current_date + interval '14 days', now() - interval '17 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('5c4084e1-9c2c-4839-9039-741906a101c2', '88c67cb6-eca6-4385-987b-36785d3c4231');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('831f5aec-50aa-4173-b22d-223eb474f4c9', 'de068994-bc6c-4bcf-9879-80e7dc0b2c57', 'Implementation Project 10', 'in_progress', 'medium', current_date + interval '20 days', now() - interval '17 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('831f5aec-50aa-4173-b22d-223eb474f4c9', 'fdadd2f9-a794-4826-af13-2ae475f2a54c');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('5bb4482c-593a-4468-a507-c0e5a71eb965', 'de068994-bc6c-4bcf-9879-80e7dc0b2c57', 'Implementation Project 11', 'review', 'medium', current_date + interval '20 days', now() - interval '5 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('5bb4482c-593a-4468-a507-c0e5a71eb965', 'fdadd2f9-a794-4826-af13-2ae475f2a54c');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('86da9908-3bef-4d35-85bd-a81c28e08609', 'de068994-bc6c-4bcf-9879-80e7dc0b2c57', 'Implementation Project 12', 'planning', 'medium', current_date + interval '10 days', now() - interval '18 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('86da9908-3bef-4d35-85bd-a81c28e08609', 'fdadd2f9-a794-4826-af13-2ae475f2a54c');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('63d28eb2-e663-43dd-941c-56927b4144a7', 'b1236ba5-0b5a-44c8-ae37-ca40cda75480', 'Implementation Project 13', 'in_progress', 'medium', current_date + interval '6 days', now() - interval '15 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('63d28eb2-e663-43dd-941c-56927b4144a7', '88c67cb6-eca6-4385-987b-36785d3c4231');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('0d9654a5-7692-4f36-831d-da9bd1d68e11', '31cd80b1-7f01-4a9f-aed2-259a0af098d4', 'Implementation Project 14', 'in_progress', 'medium', current_date + interval '21 days', now() - interval '15 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('0d9654a5-7692-4f36-831d-da9bd1d68e11', '43e399c1-a1c1-4a88-ac66-889d6d425848');
-INSERT INTO public.projects (id, customer_id, name, status, priority, due_date, created_at) 
-VALUES ('80b127a0-a745-486f-a9df-7a4f373f2c39', '836b73ec-507d-4bb4-ac7f-c318a58dc0a5', 'Implementation Project 15', 'in_progress', 'medium', current_date + interval '29 days', now() - interval '15 days');
-INSERT INTO public.project_members (project_id, user_id) VALUES ('80b127a0-a745-486f-a9df-7a4f373f2c39', 'fdadd2f9-a794-4826-af13-2ae475f2a54c');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('4d9833f6-86bf-4b1a-b712-a52b3f93ab66', '6541b743-003b-4585-9e64-c1d2584a6efc', 'Implementation Project 1', 'review', current_date + interval '16 days', now() - interval '5 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('4d9833f6-86bf-4b1a-b712-a52b3f93ab66', 'b750744d-5144-4685-b27e-324c93788185');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('341fa43f-a3e4-4e31-93b5-ed8cb169d85b', 'd0c883ae-60af-4c4c-8970-c5f54d0a1e5c', 'Implementation Project 2', 'planning', current_date + interval '9 days', now() - interval '10 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('341fa43f-a3e4-4e31-93b5-ed8cb169d85b', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('fd9c88a8-76c7-414b-b693-0b8098a985e8', 'e62a5d2d-e355-4817-bcf2-b0aeac8f303f', 'Implementation Project 3', 'in_progress', current_date + interval '7 days', now() - interval '19 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('fd9c88a8-76c7-414b-b693-0b8098a985e8', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('bdf8f49d-1adf-47f5-a044-04ee136c3757', '1a54f644-e8e4-4c42-941a-2fca70bd2bc4', 'Implementation Project 4', 'completed', current_date + interval '5 days', now() - interval '6 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('bdf8f49d-1adf-47f5-a044-04ee136c3757', 'b750744d-5144-4685-b27e-324c93788185');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('9a3c5dbb-f633-44f7-8077-46f5f4fee51c', 'e9d0b187-e3b5-4219-8d68-5d1bfd321269', 'Implementation Project 5', 'in_progress', current_date + interval '22 days', now() - interval '1 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('9a3c5dbb-f633-44f7-8077-46f5f4fee51c', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('448817a0-6be6-4a42-b03e-3f34f5a58df8', '6541b743-003b-4585-9e64-c1d2584a6efc', 'Implementation Project 6', 'completed', current_date + interval '27 days', now() - interval '10 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('448817a0-6be6-4a42-b03e-3f34f5a58df8', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('d8bbc4a6-96e1-46d9-97b8-1b722cbe2e5e', '492aaa47-dc97-465c-9727-1ad772c5b79a', 'Implementation Project 7', 'completed', current_date + interval '9 days', now() - interval '12 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('d8bbc4a6-96e1-46d9-97b8-1b722cbe2e5e', 'b750744d-5144-4685-b27e-324c93788185');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('6e028e59-d763-49cb-acb3-6981a7bdb15b', '45ab4e2c-fd87-4087-95b0-e3b92faaaefa', 'Implementation Project 8', 'in_progress', current_date + interval '27 days', now() - interval '16 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('6e028e59-d763-49cb-acb3-6981a7bdb15b', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('37bb6dc3-10e7-4757-9ecd-b58068da1651', 'd3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', 'Implementation Project 9', 'completed', current_date + interval '20 days', now() - interval '8 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('37bb6dc3-10e7-4757-9ecd-b58068da1651', 'b750744d-5144-4685-b27e-324c93788185');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('371d2a5a-3298-4a39-8548-e564840a52b3', 'e9d0b187-e3b5-4219-8d68-5d1bfd321269', 'Implementation Project 10', 'completed', current_date + interval '16 days', now() - interval '13 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('371d2a5a-3298-4a39-8548-e564840a52b3', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('cc06c973-c011-4d5e-b40f-92ef442334ad', 'd0c883ae-60af-4c4c-8970-c5f54d0a1e5c', 'Implementation Project 11', 'completed', current_date + interval '11 days', now() - interval '7 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('cc06c973-c011-4d5e-b40f-92ef442334ad', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('6c67c4ca-9af0-4e80-a219-709605105483', '45ab4e2c-fd87-4087-95b0-e3b92faaaefa', 'Implementation Project 12', 'review', current_date + interval '28 days', now() - interval '10 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('6c67c4ca-9af0-4e80-a219-709605105483', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('f591dac6-54b7-469f-94a5-d98c1068140c', 'cfae116e-aee1-4a8e-b057-e8337f1975ee', 'Implementation Project 13', 'review', current_date + interval '10 days', now() - interval '10 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('f591dac6-54b7-469f-94a5-d98c1068140c', 'b750744d-5144-4685-b27e-324c93788185');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('2e2ed9a8-e745-45e6-b37f-09f8d1db4449', 'd3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', 'Implementation Project 14', 'completed', current_date + interval '8 days', now() - interval '20 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('2e2ed9a8-e745-45e6-b37f-09f8d1db4449', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923');
+INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
+VALUES ('3990c2de-5000-4ac7-b3c8-8766622b93b4', 'a2dddc85-8b3f-4921-b058-8744543bc221', 'Implementation Project 15', 'in_progress', current_date + interval '21 days', now() - interval '17 days');
+INSERT INTO public.project_members (project_id, user_id) VALUES ('3990c2de-5000-4ac7-b3c8-8766622b93b4', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923');
 
 -- 6. Tickets
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('b577605b-79a4-4ade-9d72-22b796729ad0', 'c52f2699-501d-4955-a305-5d7297bd5513', NULL, 'Support Request 1', 'Client needs help with configuration.', 'in_progress', 'medium', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '14 days');
+VALUES ('282f08eb-b2e5-4037-bbda-2b31056904ea', '8f345d18-10e2-4258-9228-f0fddf7677a7', '6e028e59-d763-49cb-acb3-6981a7bdb15b', 'Support Request 1', 'Client needs help with configuration.', 'open', 'low', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '7 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('26c0bc65-7a8b-4a89-9054-2cd7070b69fc', '63fc56fd-9f22-43a6-96ab-ee5fc0624ec3', NULL, 'Support Request 2', 'Client needs help with configuration.', 'waiting', 'low', '88c67cb6-eca6-4385-987b-36785d3c4231', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, now() - interval '8 days');
+VALUES ('afdd370e-04e6-4c1c-8c58-d27c4f9a6815', '8f345d18-10e2-4258-9228-f0fddf7677a7', NULL, 'Support Request 2', 'Client needs help with configuration.', 'open', 'high', 'b750744d-5144-4685-b27e-324c93788185', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '2 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('f16ffe0d-69cd-4ddb-8994-cea430f869aa', 'c52f2699-501d-4955-a305-5d7297bd5513', '0d9654a5-7692-4f36-831d-da9bd1d68e11', 'Support Request 3', 'Client needs help with configuration.', 'waiting', 'low', '88c67cb6-eca6-4385-987b-36785d3c4231', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, now() - interval '7 days');
+VALUES ('225292ef-5c57-457f-9d4f-5b38b32cf2b7', 'e9d0b187-e3b5-4219-8d68-5d1bfd321269', '37bb6dc3-10e7-4757-9ecd-b58068da1651', 'Support Request 3', 'Client needs help with configuration.', 'open', 'low', 'b750744d-5144-4685-b27e-324c93788185', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '10 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('aaa53aa6-2e86-4ddb-bb14-e21fe7612b92', '63fc56fd-9f22-43a6-96ab-ee5fc0624ec3', '5c4084e1-9c2c-4839-9039-741906a101c2', 'Support Request 4', 'Client needs help with configuration.', 'in_progress', 'high', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '5 days');
+VALUES ('54ce2e98-38b4-4940-a803-b8f6a8df61f6', '48d16a7e-c707-4b10-90a7-d3e4a37ed566', '6e028e59-d763-49cb-acb3-6981a7bdb15b', 'Support Request 4', 'Client needs help with configuration.', 'in_progress', 'low', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '6 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('ae3cc0ac-40c2-469f-aadb-5593e52a14cd', '0c212f74-feda-48c4-b720-7240adc94e43', '114f2949-1a60-4cc6-a52e-ca03f794db3f', 'Support Request 5', 'Client needs help with configuration.', 'resolved', 'medium', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', now() - interval '5 days', now() - interval '4 days');
+VALUES ('7d78232c-cbc5-4627-a6c2-aa6f49aaef40', '1a54f644-e8e4-4c42-941a-2fca70bd2bc4', 'cc06c973-c011-4d5e-b40f-92ef442334ad', 'Support Request 5', 'Client needs help with configuration.', 'open', 'medium', 'b750744d-5144-4685-b27e-324c93788185', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '14 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('602ebde0-f7b4-4cd9-9c29-0b73c3056165', '836b73ec-507d-4bb4-ac7f-c318a58dc0a5', NULL, 'Support Request 6', 'Client needs help with configuration.', 'waiting', 'medium', '88c67cb6-eca6-4385-987b-36785d3c4231', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, now() - interval '13 days');
+VALUES ('494f1fb7-e5be-473d-a55d-f54831d3172d', '492aaa47-dc97-465c-9727-1ad772c5b79a', NULL, 'Support Request 6', 'Client needs help with configuration.', 'waiting', 'critical', 'b750744d-5144-4685-b27e-324c93788185', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', NULL, now() - interval '9 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('a6878593-8fd7-4766-ae89-7859a80c0056', '836b73ec-507d-4bb4-ac7f-c318a58dc0a5', '831f5aec-50aa-4173-b22d-223eb474f4c9', 'Support Request 7', 'Client needs help with configuration.', 'in_progress', 'high', '88c67cb6-eca6-4385-987b-36785d3c4231', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, now() - interval '10 days');
+VALUES ('d16c8505-db07-4672-9059-e05ecc4307df', '1dc96a7a-3336-4f35-9078-b11053eb59ed', NULL, 'Support Request 7', 'Client needs help with configuration.', 'resolved', 'low', 'b750744d-5144-4685-b27e-324c93788185', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', now() - interval '5 days', now() - interval '9 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('24902412-18b3-4537-bf99-538f98b77c26', '05daed82-2813-40c7-b775-96ee91f58772', '5c4084e1-9c2c-4839-9039-741906a101c2', 'Support Request 8', 'Client needs help with configuration.', 'open', 'medium', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '12 days');
+VALUES ('e76dbb7c-7462-4e9e-9975-5dd889ddd36b', '658a9b36-5d19-4a82-888d-6ad17f0beb37', NULL, 'Support Request 8', 'Client needs help with configuration.', 'resolved', 'low', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', now() - interval '3 days', now() - interval '2 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('b8918767-ff1f-4eee-b065-8960ef9ffe3f', 'b1236ba5-0b5a-44c8-ae37-ca40cda75480', NULL, 'Support Request 9', 'Client needs help with configuration.', 'waiting', 'low', '88c67cb6-eca6-4385-987b-36785d3c4231', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, now() - interval '6 days');
+VALUES ('6e69d6e9-88f1-4e49-8af3-60ea37e2032b', '1dc96a7a-3336-4f35-9078-b11053eb59ed', '9a3c5dbb-f633-44f7-8077-46f5f4fee51c', 'Support Request 9', 'Client needs help with configuration.', 'in_progress', 'high', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '3 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('61ed7ace-b92e-4409-9d0c-4caa3b9a6edd', '63fc56fd-9f22-43a6-96ab-ee5fc0624ec3', '250a6c03-e20c-4b2f-9ce9-6d567c6db629', 'Support Request 10', 'Client needs help with configuration.', 'resolved', 'high', '88c67cb6-eca6-4385-987b-36785d3c4231', '88c67cb6-eca6-4385-987b-36785d3c4231', now() - interval '2 days', now() - interval '3 days');
+VALUES ('852776b4-c1d5-43b2-9aef-0a1afcf33502', '45ab4e2c-fd87-4087-95b0-e3b92faaaefa', 'd8bbc4a6-96e1-46d9-97b8-1b722cbe2e5e', 'Support Request 10', 'Client needs help with configuration.', 'waiting', 'low', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '12 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('673686cb-ca8b-4a93-beaa-568da2089437', '63fc56fd-9f22-43a6-96ab-ee5fc0624ec3', NULL, 'Support Request 11', 'Client needs help with configuration.', 'in_progress', 'low', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '12 days');
+VALUES ('8dfac6c6-b26f-44ae-b314-32c0ad5ca7c6', 'cfae116e-aee1-4a8e-b057-e8337f1975ee', NULL, 'Support Request 11', 'Client needs help with configuration.', 'waiting', 'medium', 'b750744d-5144-4685-b27e-324c93788185', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '1 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('9103e68f-e1f8-43d5-b94c-962a3bf127e3', 'b1236ba5-0b5a-44c8-ae37-ca40cda75480', NULL, 'Support Request 12', 'Client needs help with configuration.', 'waiting', 'medium', '88c67cb6-eca6-4385-987b-36785d3c4231', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, now() - interval '6 days');
+VALUES ('9866ea47-d7a2-4eed-8aef-e797d3b60804', 'e62a5d2d-e355-4817-bcf2-b0aeac8f303f', '6c67c4ca-9af0-4e80-a219-709605105483', 'Support Request 12', 'Client needs help with configuration.', 'resolved', 'medium', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', now() - interval '3 days', now() - interval '3 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('dec04314-7396-4428-a4e2-d40bf2f1f305', 'c52f2699-501d-4955-a305-5d7297bd5513', 'e8fed8e4-534c-4119-818b-8befae45c132', 'Support Request 13', 'Client needs help with configuration.', 'open', 'critical', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '13 days');
+VALUES ('7c31e8e8-6579-4a1e-b3be-33be78d84017', '1a54f644-e8e4-4c42-941a-2fca70bd2bc4', NULL, 'Support Request 13', 'Client needs help with configuration.', 'waiting', 'high', 'b750744d-5144-4685-b27e-324c93788185', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '4 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('f2e2e926-829f-4346-9a81-cc72fd8a2daf', '836b73ec-507d-4bb4-ac7f-c318a58dc0a5', '6b51b63d-ce45-4441-b825-e4fcaeef4c8c', 'Support Request 14', 'Client needs help with configuration.', 'open', 'low', '88c67cb6-eca6-4385-987b-36785d3c4231', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, now() - interval '15 days');
+VALUES ('72fc076d-3465-4fa4-b93d-36e01cea82b5', 'e62a5d2d-e355-4817-bcf2-b0aeac8f303f', NULL, 'Support Request 14', 'Client needs help with configuration.', 'resolved', 'high', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', now() - interval '2 days', now() - interval '14 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('96c497c7-6fa4-4955-913c-52d124cb7286', 'c52f2699-501d-4955-a305-5d7297bd5513', NULL, 'Support Request 15', 'Client needs help with configuration.', 'waiting', 'low', '88c67cb6-eca6-4385-987b-36785d3c4231', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, now() - interval '4 days');
+VALUES ('9fa3bb56-426f-4f1c-a6ec-86b936ba3b05', '1a54f644-e8e4-4c42-941a-2fca70bd2bc4', '341fa43f-a3e4-4e31-93b5-ed8cb169d85b', 'Support Request 15', 'Client needs help with configuration.', 'open', 'critical', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '7 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('1388d96f-c3d6-47d8-945e-e5553ff7f15c', 'c2370bfd-6567-4b0a-8d87-4b4c24220e90', NULL, 'Support Request 16', 'Client needs help with configuration.', 'waiting', 'high', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '1 days');
+VALUES ('2dcb1485-8b4f-4a78-861e-06b0e3c8395b', '492aaa47-dc97-465c-9727-1ad772c5b79a', 'f591dac6-54b7-469f-94a5-d98c1068140c', 'Support Request 16', 'Client needs help with configuration.', 'open', 'critical', 'b750744d-5144-4685-b27e-324c93788185', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '3 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('46335776-381e-445d-83f9-9b8d3c6fb8a2', 'bfa0b86c-dfa9-4a9f-9d6b-9d6e71d0e30d', NULL, 'Support Request 17', 'Client needs help with configuration.', 'waiting', 'high', '88c67cb6-eca6-4385-987b-36785d3c4231', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, now() - interval '9 days');
+VALUES ('cc73ac04-8cfd-408a-9c85-83e83b33c6f4', 'e9d0b187-e3b5-4219-8d68-5d1bfd321269', NULL, 'Support Request 17', 'Client needs help with configuration.', 'open', 'medium', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '1 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('c225c37e-eb5c-4c49-ae68-0d02b8a44e85', '4b3ad919-bfed-4560-b0eb-da5a06a50e10', '6b51b63d-ce45-4441-b825-e4fcaeef4c8c', 'Support Request 18', 'Client needs help with configuration.', 'open', 'medium', '88c67cb6-eca6-4385-987b-36785d3c4231', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, now() - interval '13 days');
+VALUES ('c92476e1-5103-4eb6-9d98-7a12f0c302a8', 'a2dddc85-8b3f-4921-b058-8744543bc221', '6e028e59-d763-49cb-acb3-6981a7bdb15b', 'Support Request 18', 'Client needs help with configuration.', 'waiting', 'critical', 'b750744d-5144-4685-b27e-324c93788185', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '11 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('cf3964b3-e7dd-47eb-9e47-44c744a832a2', 'de068994-bc6c-4bcf-9879-80e7dc0b2c57', NULL, 'Support Request 19', 'Client needs help with configuration.', 'resolved', 'critical', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', now() - interval '4 days', now() - interval '2 days');
+VALUES ('fe26cf19-c27f-47a4-b7c4-c08be5da9b64', 'd0c883ae-60af-4c4c-8970-c5f54d0a1e5c', NULL, 'Support Request 19', 'Client needs help with configuration.', 'in_progress', 'high', 'b750744d-5144-4685-b27e-324c93788185', 'd50078c7-ec2d-47f1-b7d4-d4a4d40b3e66', NULL, now() - interval '1 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('41283200-3aa0-4f9f-8be4-739a0c997b29', 'bfa0b86c-dfa9-4a9f-9d6b-9d6e71d0e30d', '114f2949-1a60-4cc6-a52e-ca03f794db3f', 'Support Request 20', 'Client needs help with configuration.', 'waiting', 'high', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '9 days');
+VALUES ('2d0bf847-55f0-4ec9-8e26-8d2d04de4541', 'd3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', NULL, 'Support Request 20', 'Client needs help with configuration.', 'in_progress', 'medium', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '1 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('2395ce30-fe96-45dd-8dd6-59739f6ce1f7', '63fc56fd-9f22-43a6-96ab-ee5fc0624ec3', '63d28eb2-e663-43dd-941c-56927b4144a7', 'Support Request 21', 'Client needs help with configuration.', 'in_progress', 'low', '88c67cb6-eca6-4385-987b-36785d3c4231', '43e399c1-a1c1-4a88-ac66-889d6d425848', NULL, now() - interval '14 days');
+VALUES ('c5d1ebc6-40b4-4ed9-bd3a-62bd57190924', 'a2dddc85-8b3f-4921-b058-8744543bc221', '37bb6dc3-10e7-4757-9ecd-b58068da1651', 'Support Request 21', 'Client needs help with configuration.', 'open', 'high', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '4 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('202b012e-b708-4ee1-b993-149194475e63', '62b62dbe-37f6-46fb-a780-3e513609d8cb', '831f5aec-50aa-4173-b22d-223eb474f4c9', 'Support Request 22', 'Client needs help with configuration.', 'in_progress', 'high', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '13 days');
+VALUES ('b27cf4f2-33f0-4950-9060-247985b0ea99', 'd3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', NULL, 'Support Request 22', 'Client needs help with configuration.', 'in_progress', 'critical', 'b750744d-5144-4685-b27e-324c93788185', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', NULL, now() - interval '9 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('75c16b07-cd97-4076-8e70-7b571ec510ad', '0c212f74-feda-48c4-b720-7240adc94e43', 'b7de5bd0-1eb3-4790-aad4-001931092c1d', 'Support Request 23', 'Client needs help with configuration.', 'in_progress', 'critical', '88c67cb6-eca6-4385-987b-36785d3c4231', '88c67cb6-eca6-4385-987b-36785d3c4231', NULL, now() - interval '10 days');
+VALUES ('751df1ff-d345-43c0-a689-6cc63475fe00', '6541b743-003b-4585-9e64-c1d2584a6efc', NULL, 'Support Request 23', 'Client needs help with configuration.', 'resolved', 'high', 'b750744d-5144-4685-b27e-324c93788185', '195b23e7-a8d2-4cbd-a4a2-9c437e8bc923', now() - interval '1 days', now() - interval '4 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('c0c1ace5-fbc4-4d85-890b-6651759723b8', '62b62dbe-37f6-46fb-a780-3e513609d8cb', 'e8fed8e4-534c-4119-818b-8befae45c132', 'Support Request 24', 'Client needs help with configuration.', 'waiting', 'medium', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', NULL, now() - interval '13 days');
+VALUES ('09c982e4-6448-4ca4-b6a6-ad8aabe6a99a', '45ab4e2c-fd87-4087-95b0-e3b92faaaefa', '9a3c5dbb-f633-44f7-8077-46f5f4fee51c', 'Support Request 24', 'Client needs help with configuration.', 'in_progress', 'low', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '3 days');
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('57c8c929-87c3-4132-a34e-4e055cd65f0a', '4b3ad919-bfed-4560-b0eb-da5a06a50e10', '5bb4482c-593a-4468-a507-c0e5a71eb965', 'Support Request 25', 'Client needs help with configuration.', 'resolved', 'low', '88c67cb6-eca6-4385-987b-36785d3c4231', 'fdadd2f9-a794-4826-af13-2ae475f2a54c', now() - interval '1 days', now() - interval '9 days');
+VALUES ('d8ca4d9c-0ed3-4dc7-9051-e73d2cccaf87', 'd3b55152-f9b4-4b3c-9dd0-9a0449c05ba2', NULL, 'Support Request 25', 'Client needs help with configuration.', 'in_progress', 'low', 'b750744d-5144-4685-b27e-324c93788185', 'b750744d-5144-4685-b27e-324c93788185', NULL, now() - interval '1 days');
