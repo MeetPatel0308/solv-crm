@@ -22,7 +22,16 @@ export const Route = createFileRoute("/_authenticated/projects/")({
   component: ProjectsList,
 });
 
-const COLORS = ["#22C55E", "#3B82F6", "#F59E0B", "#8B5CF6", "#EF4444", "#94A3B8"];
+const STATUS_COLORS: Record<string, string> = {
+  planning: "#94A3B8",    // Slate
+  in_progress: "#3B82F6", // Blue
+  testing: "#F59E0B",     // Orange
+  completed: "#22C55E",   // Green
+  deployed: "#10B981",    // Emerald
+  overdue: "#EF4444",     // Red
+};
+
+const formatStatus = (s: string) => s.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
 function ProjectsList() {
   const qc = useQueryClient();
@@ -49,7 +58,7 @@ function ProjectsList() {
     completed: projects.filter((p: any) => p.status === "completed" || p.status === "deployed").length,
     overdue: projects.filter((p: any) => p.status === "overdue").length,
   };
-  const donut = ["planning", "in_progress", "testing", "completed", "deployed", "on_hold", "overdue"].map(
+  const donut = ["planning", "in_progress", "testing", "completed", "deployed", "overdue"].map(
     (s) => ({
       name: s,
       value: projects.filter((p: any) => p.status === s).length,
@@ -105,7 +114,7 @@ function ProjectsList() {
                       {p.customers?.name ?? "—"}
                     </TableCell>
                     <TableCell>
-                      <Badge variant="secondary">{p.status.replace("_", " ")}</Badge>
+                      <Badge variant="secondary" className="capitalize">{formatStatus(p.status)}</Badge>
                     </TableCell>
                     <TableCell>
                       <Progress value={p.progress} className="w-24" />
@@ -131,8 +140,8 @@ function ProjectsList() {
             <ResponsiveContainer>
               <PieChart>
                 <Pie data={donut} dataKey="value" nameKey="name" innerRadius={40} outerRadius={70}>
-                  {donut.map((_, i) => (
-                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                  {donut.map((d, i) => (
+                    <Cell key={i} fill={STATUS_COLORS[d.name]} />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -145,9 +154,9 @@ function ProjectsList() {
                 <span className="flex items-center gap-2">
                   <span
                     className="w-2 h-2 rounded-full"
-                    style={{ background: COLORS[i % COLORS.length] }}
+                    style={{ background: STATUS_COLORS[d.name] }}
                   />
-                  {d.name.replace("_", " ")}
+                  {formatStatus(d.name)}
                 </span>
                 <span>{d.value}</span>
               </li>

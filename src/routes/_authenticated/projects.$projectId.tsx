@@ -121,7 +121,7 @@ function ProjectDetail() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge className="bg-brand/10 text-brand hover:bg-brand/20">
+          <Badge className="bg-brand/10 text-brand hover:bg-brand/20 capitalize">
             {project.status !== "completed" && project.status !== "deployed" && project.deadline && new Date(project.deadline) < new Date()
               ? "overdue"
               : project.status.replace("_", " ")}
