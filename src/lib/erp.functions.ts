@@ -295,6 +295,7 @@ export const getCustomer = createServerFn({ method: "GET" })
       services: services ?? [],
       openTickets: openTickets ?? [],
       sales: sales ?? [],
+      projects: projects ?? [],
     };
   });
 
@@ -1347,16 +1348,24 @@ export const upsertProjectTimelineEvent = createServerFn({ method: "POST" })
       case "Development Started":
       case "Review": status = "in_progress"; break;
       case "Testing": status = "testing"; break;
-      case "Completed":
-      case "Deployed": status = "completed"; break;
+      case "Completed": status = "completed"; break;
+      case "Deployed": status = "deployed"; break;
     }
 
-    if (status) {
-      await context.supabase
-        .from("projects")
-        .update({ status: status as any })
-        .eq("id", data.projectId);
-    }
+    const { count } = await context.supabase
+      .from("project_timeline_events")
+      .select("*", { count: 'exact', head: true })
+      .eq("project_id", data.projectId);
+
+    const progress = count ? Math.round((count / 6) * 100) : 0;
+
+    const updateData: any = { progress };
+    if (status) updateData.status = status;
+
+    await context.supabase
+      .from("projects")
+      .update(updateData)
+      .eq("id", data.projectId);
 
     return { ok: true };
   });

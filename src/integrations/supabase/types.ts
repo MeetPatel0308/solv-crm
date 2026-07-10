@@ -921,6 +921,7 @@ export type Database = {
         | "testing"
         | "completed"
         | "on_hold"
+        | "deployed"
         | "overdue"
       ticket_priority: "low" | "medium" | "high" | "urgent"
       ticket_status:
@@ -1075,6 +1076,7 @@ export const Constants = {
         "testing",
         "completed",
         "on_hold",
+        "deployed",
         "overdue",
       ],
       ticket_priority: ["low", "medium", "high", "urgent"],

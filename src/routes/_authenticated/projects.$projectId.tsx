@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import {
   getProject,
   deleteProject,
-  updateProjectProgress,
   upsertProjectTimelineEvent,
 } from "@/lib/erp.functions";
 import { Card } from "@/components/ui/card";
@@ -57,27 +56,7 @@ function ProjectDetail() {
     queryFn: () => fn({ data: { id: projectId } }),
   });
   const { project, tickets, timeline, members } = data;
-
-  const [progress, setProgress] = useState(project.progress);
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
-
-  useEffect(() => {
-    setProgress(project.progress);
-  }, [project.progress]);
-
-  const progressFn = useServerFn(updateProjectProgress);
-  const progressMut = useMutation({
-    mutationFn: (val: number) => progressFn({ data: { id: projectId, progress: val } }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["project", projectId] });
-      qc.invalidateQueries({ queryKey: ["projects"] });
-      toast.success("Progress updated");
-    },
-    onError: (e: Error) => {
-      toast.error(e.message);
-      setProgress(project.progress);
-    },
-  });
 
   const getStageEvent = (stageName: string) => {
     return timeline.find((t: any) => t.stage === stageName);
@@ -149,21 +128,9 @@ function ProjectDetail() {
         <Card className="p-5">
           <div className="flex justify-between items-center text-xs uppercase text-muted-foreground">
             <span>Progress</span>
-            <span className="font-semibold text-foreground">{progress}%</span>
+            <span className="font-semibold text-foreground">{project.progress}%</span>
           </div>
           <Progress value={project.progress} className="mt-2" />
-          <div className="mt-3">
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={progress}
-              onChange={(e) => setProgress(Number(e.target.value))}
-              onMouseUp={() => progressMut.mutate(progress)}
-              onKeyUp={() => progressMut.mutate(progress)}
-              className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-brand"
-            />
-          </div>
         </Card>
       </div>
 
