@@ -35,6 +35,9 @@ import {
 } from "@/components/ui/select";
 import { Pencil, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from "recharts";
+
+const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
 export const Route = createFileRoute("/_authenticated/leads/")({
   head: () => ({ meta: [{ title: "Leads — solv." }] }),
@@ -138,6 +141,18 @@ function LeadsList() {
     return a[0].localeCompare(b[0]);
   });
   const displayedServices = showAllServices ? sortedServices : sortedServices.slice(0, 5);
+
+  const sourceCounts: Record<string, number> = {};
+  data.forEach((l: any) => {
+    if (l.source) {
+      const sourceName = l.source.charAt(0).toUpperCase() + l.source.slice(1);
+      sourceCounts[sourceName] = (sourceCounts[sourceName] || 0) + 1;
+    }
+  });
+  const sourceData = Object.entries(sourceCounts)
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => b.value - a.value);
+
   const topService = sortedServices.length > 0 ? sortedServices[0][0] : "None";
 
   return (
@@ -168,46 +183,77 @@ function LeadsList() {
         </Card>
       </div>
 
-      <Card className="p-6">
-        <h2 className="text-lg font-semibold mb-6">Lead Interest Summary</h2>
-        <div className="flex flex-col relative">
-          {sortedServices.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No service interest has been recorded yet.</p>
-          ) : (
-            <div className="flex flex-col">
-              {displayedServices.map(([name, count], index) => {
-                const rankIndicator = <span className="text-muted-foreground font-mono text-xs w-6">#{index + 1}</span>;
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold mb-6">Lead Interest Summary</h2>
+          <div className="flex flex-col relative">
+            {sortedServices.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No service interest has been recorded yet.</p>
+            ) : (
+              <div className="flex flex-col">
+                {displayedServices.map(([name, count], index) => {
+                  const rankIndicator = <span className="text-muted-foreground font-mono text-xs w-6">#{index + 1}</span>;
 
-                return (
-                  <div key={name} className={`flex items-center justify-between py-3 ${index !== displayedServices.length - 1 ? 'border-b border-gray-100' : ''} animate-in fade-in slide-in-from-top-1 duration-300`}>
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center font-medium">
-                        {rankIndicator}
+                  return (
+                    <div key={name} className={`flex items-center justify-between py-3 ${index !== displayedServices.length - 1 ? 'border-b border-gray-100' : ''} animate-in fade-in slide-in-from-top-1 duration-300`}>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-center font-medium">
+                          {rankIndicator}
+                        </div>
+                        <span className="font-medium text-sm text-foreground">{name}</span>
                       </div>
-                      <span className="font-medium text-sm text-foreground">{name}</span>
+                      <div className="text-sm text-gray-500">
+                        {count} {count === 1 ? 'lead' : 'leads'}
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-500">
-                      {count} {count === 1 ? 'lead' : 'leads'}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-          {sortedServices.length > 5 && (
-            <div className="mt-4 flex justify-center">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => setShowAllServices(!showAllServices)}
-              >
-                {showAllServices ? "Show Less ↑" : "Show More ↓"}
-              </Button>
-            </div>
-          )}
-        </div>
-      </Card>
+                  );
+                })}
+              </div>
+            )}
+            {sortedServices.length > 5 && (
+              <div className="mt-4 flex justify-center">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setShowAllServices(!showAllServices)}
+                >
+                  {showAllServices ? 'Show Less' : 'Show More'}
+                </Button>
+              </div>
+            )}
+          </div>
+        </Card>
+
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold mb-6">Lead Sources</h2>
+          <div className="h-[250px] w-full">
+            {sourceData.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No source data available.</p>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={sourceData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {sourceData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+        </Card>
+      </div>
+
       <Card className="p-4">
         <div className="mb-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
           <Input
