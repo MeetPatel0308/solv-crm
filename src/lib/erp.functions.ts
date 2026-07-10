@@ -662,24 +662,27 @@ export const convertLeadToCustomer = createServerFn({ method: "POST" })
       finalCustomerId = newCustomer.id;
 
       // Link lead to new customer and mark finalized
-      await context.supabase.from("leads").update({
+      const { error: updErr1 } = await context.supabase.from("leads").update({
         customer_id: finalCustomerId,
         is_conversion_finalized: true,
         stage: "converted",
         converted_at: new Date().toISOString()
       } as any).eq("id", lead.id);
+      if (updErr1) throw new Error("Failed to update lead: " + updErr1.message);
     } else {
       // Existing Customer -> Update Status/Value and mark finalized
-      await context.supabase.from("leads").update({
+      const { error: updErr2 } = await context.supabase.from("leads").update({
         is_conversion_finalized: true,
         stage: "converted",
         converted_at: new Date().toISOString()
       } as any).eq("id", lead.id);
+      if (updErr2) throw new Error("Failed to update lead: " + updErr2.message);
 
-      await context.supabase.from("customers").update({
+      const { error: cUpdErr } = await context.supabase.from("customers").update({
         status: "active",
         estimated_value: (lead.value || 0), // Ideally we'd add to existing, but this suffices for now
       }).eq("id", finalCustomerId);
+      if (cUpdErr) throw new Error("Failed to update customer: " + cUpdErr.message);
     }
 
     // Create Sales and Customer Services records for the finalized services
