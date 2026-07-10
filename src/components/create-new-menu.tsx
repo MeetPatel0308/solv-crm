@@ -180,7 +180,9 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
       return fn({
         data: {
           name: finalName,
-          company: leadType === "existing" ? "" : (company || null),
+          company: leadType === "existing"
+            ? (customers.find((c: any) => c.id === customerId)?.name || null)
+            : (company || null),
           email: leadType === "existing" ? null : (email || null),
           phone: leadType === "existing" ? null : (phone || null),
           value: 0,
