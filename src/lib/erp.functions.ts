@@ -154,7 +154,9 @@ export const getCustomer = createServerFn({ method: "GET" })
         .from("leads")
         .select("id, converted_at")
         .eq("customer_id", data.id)
-        .eq("stage", "converted")
+        .or("stage.eq.converted,is_conversion_finalized.eq.true")
+        .order("converted_at", { ascending: false })
+        .limit(1)
         .maybeSingle(),
     ]);
 
@@ -173,7 +175,9 @@ export const getCustomer = createServerFn({ method: "GET" })
       .from("leads")
       .select("id, name, converted_at, deleted_at")
       .eq("customer_id", data.id)
-      .eq("stage", "converted")
+      .or("stage.eq.converted,is_conversion_finalized.eq.true")
+      .order("converted_at", { ascending: false })
+      .limit(1)
       .maybeSingle();
 
     let hasInitialSale = false;
@@ -659,11 +663,15 @@ export const convertLeadToCustomer = createServerFn({ method: "POST" })
       await context.supabase.from("leads").update({
         customer_id: finalCustomerId,
         is_conversion_finalized: true,
+        stage: "converted",
+        converted_at: new Date().toISOString()
       } as any).eq("id", lead.id);
     } else {
       // Existing Customer -> Update Status/Value and mark finalized
       await context.supabase.from("leads").update({
         is_conversion_finalized: true,
+        stage: "converted",
+        converted_at: new Date().toISOString()
       } as any).eq("id", lead.id);
 
       await context.supabase.from("customers").update({
