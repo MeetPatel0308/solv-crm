@@ -56,6 +56,7 @@ function LeadsList() {
   const fn = useServerFn(listLeads);
   const { data } = useSuspenseQuery({ queryKey: ["leads"], queryFn: () => fn() });
   const [q, setQ] = useState("");
+  const [showAllServices, setShowAllServices] = useState(false);
 
   const deleteFn = useServerFn(deleteLead);
   const deleteMut = useMutation({
@@ -117,9 +118,12 @@ function LeadsList() {
     });
   });
   
-  const sortedServices = Object.entries(serviceCounts).sort((a, b) => b[1] - a[1]);
+  const sortedServices = Object.entries(serviceCounts).sort((a, b) => {
+    if (b[1] !== a[1]) return b[1] - a[1];
+    return a[0].localeCompare(b[0]);
+  });
+  const displayedServices = showAllServices ? sortedServices : sortedServices.slice(0, 5);
   const topService = sortedServices.length > 0 ? sortedServices[0][0] : "None";
-  const maxServiceCount = sortedServices.length > 0 ? sortedServices[0][1] : 1;
 
   return (
     <div className="p-6 md:p-8 space-y-6">
@@ -150,26 +154,46 @@ function LeadsList() {
       </div>
 
       <Card className="p-6">
-        <h2 className="text-lg font-semibold mb-4">Lead Interest Summary</h2>
-        <div className="space-y-3">
+        <h2 className="text-lg font-semibold mb-6">Lead Interest Summary</h2>
+        <div className="flex flex-col relative">
           {sortedServices.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No services selected by active leads.</p>
+            <p className="text-sm text-muted-foreground">No service interest has been recorded yet.</p>
           ) : (
-            sortedServices.map(([name, count]) => {
-              const percentage = Math.max(1, Math.round((count / maxServiceCount) * 100));
-              return (
-                <div key={name} className="flex items-center text-sm">
-                  <div className="w-48 font-medium truncate pr-4">{name}</div>
-                  <div className="flex-1 flex items-center gap-2">
-                    <div 
-                      className="h-5 bg-foreground rounded-sm transition-all" 
-                      style={{ width: `${percentage}%` }}
-                    />
-                    <span className="text-muted-foreground tabular-nums w-8">{count}</span>
+            <div className="flex flex-col">
+              {displayedServices.map(([name, count], index) => {
+                let rankIndicator;
+                if (index === 0) rankIndicator = <span className="text-amber-500 w-6 text-base">🥇</span>;
+                else if (index === 1) rankIndicator = <span className="text-slate-400 w-6 text-base">🥈</span>;
+                else if (index === 2) rankIndicator = <span className="text-amber-700 w-6 text-base">🥉</span>;
+                else rankIndicator = <span className="text-muted-foreground font-mono text-xs w-6">#{index + 1}</span>;
+
+                return (
+                  <div key={name} className={`flex items-center justify-between py-3 ${index !== displayedServices.length - 1 ? 'border-b border-gray-100' : ''} animate-in fade-in slide-in-from-top-1 duration-300`}>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center font-medium">
+                        {rankIndicator}
+                      </div>
+                      <span className="font-medium text-sm text-foreground">{name}</span>
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {count} {count === 1 ? 'lead' : 'leads'}
+                    </div>
                   </div>
-                </div>
-              );
-            })
+                );
+              })}
+            </div>
+          )}
+          {sortedServices.length > 5 && (
+            <div className="mt-4 flex justify-center">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                onClick={() => setShowAllServices(!showAllServices)}
+              >
+                {showAllServices ? "Show Less ↑" : "Show More ↓"}
+              </Button>
+            </div>
           )}
         </div>
       </Card>
