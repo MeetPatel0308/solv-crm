@@ -161,11 +161,7 @@ function LeadsList() {
           ) : (
             <div className="flex flex-col">
               {displayedServices.map(([name, count], index) => {
-                let rankIndicator;
-                if (index === 0) rankIndicator = <span className="text-amber-500 w-6 text-base">🥇</span>;
-                else if (index === 1) rankIndicator = <span className="text-slate-400 w-6 text-base">🥈</span>;
-                else if (index === 2) rankIndicator = <span className="text-amber-700 w-6 text-base">🥉</span>;
-                else rankIndicator = <span className="text-muted-foreground font-mono text-xs w-6">#{index + 1}</span>;
+                const rankIndicator = <span className="text-muted-foreground font-mono text-xs w-6">#{index + 1}</span>;
 
                 return (
                   <div key={name} className={`flex items-center justify-between py-3 ${index !== displayedServices.length - 1 ? 'border-b border-gray-100' : ''} animate-in fade-in slide-in-from-top-1 duration-300`}>
