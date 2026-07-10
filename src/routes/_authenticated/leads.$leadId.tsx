@@ -451,7 +451,7 @@ function ConvertSection({ lead, services }: { lead: any; services: any[] }) {
       service_id: s.service_id,
       service_name: s.services?.name,
       billing_type: "one-off",
-      value: 0,
+      value: "" as number | string,
     }))
   );
 
@@ -459,7 +459,12 @@ function ConvertSection({ lead, services }: { lead: any; services: any[] }) {
 
   const convertFn = useServerFn(convertLeadToCustomer);
   const convertMut = useMutation({
-    mutationFn: () => convertFn({ data: { leadId: lead.id, salesData } }),
+    mutationFn: () => convertFn({ 
+      data: { 
+        leadId: lead.id, 
+        salesData: salesData.map(s => ({ ...s, value: Number(s.value) || 0 })) 
+      } 
+    }),
     onSuccess: (res) => {
       toast.success(isExistingCustomer ? "Successfully added sale to Customer!" : "Successfully converted to Customer!");
       qc.invalidateQueries();
@@ -522,7 +527,7 @@ function ConvertSection({ lead, services }: { lead: any; services: any[] }) {
                   value={s.value}
                   onChange={(e) => {
                     const next = [...salesData];
-                    next[idx].value = Number(e.target.value);
+                    next[idx].value = e.target.value === "" ? "" : Number(e.target.value);
                     setSalesData(next);
                   }}
                 />
