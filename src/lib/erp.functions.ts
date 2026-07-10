@@ -63,10 +63,10 @@ export const getDashboardStats = createServerFn({ method: "GET" })
     const convertedLeads = (pipeline ?? []).filter(l => l.stage === 'converted');
     const lostLeadsCount = (pipeline ?? []).filter(l => l.stage === 'lost').length;
     const convertedLeadsCount = convertedLeads.length;
-    const totalFinished = convertedLeadsCount + lostLeadsCount;
+    const totalLeads = (pipeline ?? []).length;
     
-    const conversionRate = totalFinished > 0 ? Math.round((convertedLeadsCount / totalFinished) * 100) : 0;
-    const lostRate = totalFinished > 0 ? Math.round((lostLeadsCount / totalFinished) * 100) : 0;
+    const conversionRate = totalLeads > 0 ? Math.round((convertedLeadsCount / totalLeads) * 100) : 0;
+    const lostRate = totalLeads > 0 ? Math.round((lostLeadsCount / totalLeads) * 100) : 0;
     
     let totalDaysToConvert = 0;
     let leadsWithValidDates = 0;
