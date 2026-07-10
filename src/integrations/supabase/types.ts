@@ -254,7 +254,6 @@ export type Database = {
           email: string | null
           hot_at: string | null
           id: string
-          is_conversion_finalized: boolean
           lead_created_at: string | null
           lost_at: string | null
           name: string
@@ -280,7 +279,6 @@ export type Database = {
           email?: string | null
           hot_at?: string | null
           id?: string
-          is_conversion_finalized?: boolean
           lead_created_at?: string | null
           lost_at?: string | null
           name: string
