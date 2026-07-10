@@ -171,32 +171,13 @@ export const getCustomer = createServerFn({ method: "GET" })
     }
     const { data: convertedLead } = await context.supabase
       .from("leads")
-      .select("id, converted_at")
+      .select("id, name, converted_at, deleted_at")
       .eq("customer_id", data.id)
       .eq("stage", "converted")
       .maybeSingle();
 
-    if (convertedLead?.converted_at) {
-      synthesizedTimeline.push({
-        id: `converted-${customer.id}`,
-        stage: "Converted from Lead",
-        description: "Customer converted to active",
-        event_at: convertedLead.converted_at,
-        assignee: null
-      });
-    }
+    let hasInitialSale = false;
 
-    if (services) {
-      services.forEach(s => {
-        synthesizedTimeline.push({
-          id: `service-${s.id}`,
-          stage: "Product Purchased",
-          description: s.services?.name || "Service",
-          event_at: s.created_at,
-          assignee: null
-        });
-      });
-    }
 
     if (projects) {
       projects.forEach(p => {
@@ -205,7 +186,8 @@ export const getCustomer = createServerFn({ method: "GET" })
           stage: "Project Created",
           description: p.name,
           event_at: p.created_at,
-          assignee: null
+          assignee: null,
+          link: { type: "project", id: p.id, active: true }
         });
       });
     }
@@ -217,7 +199,8 @@ export const getCustomer = createServerFn({ method: "GET" })
           stage: "Ticket Created",
           description: t.title,
           event_at: t.created_at,
-          assignee: null
+          assignee: null,
+          link: { type: "ticket", id: t.id, active: true }
         });
         if (t.resolved_at) {
           synthesizedTimeline.push({
@@ -225,7 +208,8 @@ export const getCustomer = createServerFn({ method: "GET" })
             stage: "Ticket Resolved",
             description: t.title,
             event_at: t.resolved_at,
-            assignee: null
+            assignee: null,
+            link: { type: "ticket", id: t.id, active: true }
           });
         }
       });
@@ -233,14 +217,41 @@ export const getCustomer = createServerFn({ method: "GET" })
 
     if (sales) {
       sales.forEach(s => {
+        const isInitialSale = s.description === "Sale added from lead" || s.description === "Converted from lead";
+        if (isInitialSale) hasInitialSale = true;
+        
+        let stage = "Service Added";
+        let description = `${s.description} added as a ${s.billing_type === 'retainer' ? 'Retainer' : 'One-Off Service'} ($${s.value}${s.billing_type === 'retainer' ? '/month' : ''})`;
+        let link = undefined;
+
+        if (isInitialSale && convertedLead) {
+          stage = s.description === "Sale added from lead" ? "Initial sale created from Lead" : "Converted from Lead";
+          description = convertedLead.name;
+          link = { type: "lead", id: convertedLead.id, active: convertedLead.deleted_at == null };
+        } else if (isInitialSale && !convertedLead) {
+          description = "Converted from an archived lead";
+        }
+
         synthesizedTimeline.push({
           id: `sale-${s.id}`,
-          stage: "Sale Created",
-          description: s.description,
+          stage,
+          description,
           event_at: s.created_at,
           assignee: null,
-          value: s.value
+          value: s.value,
+          link
         });
+      });
+    }
+
+    if (convertedLead?.converted_at && !hasInitialSale) {
+      synthesizedTimeline.push({
+        id: `converted-${customer.id}`,
+        stage: "Converted from Lead",
+        description: convertedLead.name,
+        event_at: convertedLead.converted_at,
+        assignee: null,
+        link: { type: "lead", id: convertedLead.id, active: convertedLead.deleted_at == null }
       });
     }
 

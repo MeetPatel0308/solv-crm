@@ -142,7 +142,23 @@ function CustomerDetail() {
               <div key={e.id} className="flex justify-between text-sm border-b pb-2">
                 <div>
                   <div className="font-medium">{e.stage}</div>
-                  <div className="text-muted-foreground">{e.description}</div>
+                  <div className="text-muted-foreground">
+                    {e.link ? (
+                      e.link.active ? (
+                        <Link 
+                          to={e.link.type === "lead" ? "/leads/$leadId" : e.link.type === "project" ? "/projects/$projectId" : "/tickets/$ticketId"} 
+                          params={e.link.type === "lead" ? { leadId: e.link.id } : e.link.type === "project" ? { projectId: e.link.id } : { ticketId: e.link.id }} 
+                          className="hover:underline text-brand font-medium"
+                        >
+                          {e.description}
+                        </Link>
+                      ) : (
+                        <span>{e.description} (Archived)</span>
+                      )
+                    ) : (
+                      e.description
+                    )}
+                  </div>
                   {e.value != null && (
                     <div className="text-sm font-semibold text-emerald-600 mt-1">
                       ${Number(e.value).toLocaleString()}
