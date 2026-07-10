@@ -78,7 +78,7 @@ for (let i = 0; i < 15; i++) {
     customers.push({ id: cId, name: cName });
     
     sql += `INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('${cId}', '${cName}', 'contact@${cName.replace(/\\s+/g, '').toLowerCase()}.com', '${randElement(industries)}', '${am}', 'active', now() - interval '${randInt(10, 100)} days');\n`;
+VALUES ('${cId}', '${cName}', 'contact@${cName.replace(/\\s+/g, '').toLowerCase()}.com', '${randElement(industries)}', '${am}', 'active', now() - interval '${randInt(10, 100)} days') ON CONFLICT (id) DO NOTHING;\n`;
 
     // 1-3 services per customer
     const srvCount = randInt(1, 3);
@@ -118,7 +118,7 @@ for (let i = 15; i < 40; i++) {
     }
 
     sql += `INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('${lId}', 'Contact ${i}', '${cName}', 'contact${i}@example.com', '${stage}', ${randInt(500, 5000)}, '${randElement(leadSources)}', '${sp}', ${convertedAt}, ${lostAt}, ${lossReason}, now() - interval '${randInt(11, 40)} days');\n`;
+VALUES ('${lId}', 'Contact ${i}', '${cName}', 'contact${i}@example.com', '${stage}', ${randInt(500, 5000)}, '${randElement(leadSources)}', '${sp}', ${convertedAt}, ${lostAt}, ${lossReason}, now() - interval '${randInt(11, 40)} days') ON CONFLICT (id) DO NOTHING;\n`;
 
     const srvCount = randInt(1, 3);
     const assignedServices = new Set();
@@ -126,7 +126,7 @@ VALUES ('${lId}', 'Contact ${i}', '${cName}', 'contact${i}@example.com', '${stag
         assignedServices.add(randElement(servicesData));
     }
     assignedServices.forEach(srv => {
-        sql += `INSERT INTO public.lead_services (lead_id, service_id) VALUES ('${lId}', '${srv.id}');\n`;
+        sql += `INSERT INTO public.lead_services (lead_id, service_id) VALUES ('${lId}', '${srv.id}') ON CONFLICT DO NOTHING;\n`;
     });
 }
 
@@ -140,9 +140,9 @@ for (let i = 0; i < 15; i++) {
     projects.push(pId);
 
     sql += `INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('${pId}', '${cId}', 'Implementation Project ${i+1}', '${stat}', current_date + interval '${randInt(5, 30)} days', now() - interval '${randInt(1, 20)} days');\n`;
+VALUES ('${pId}', '${cId}', 'Implementation Project ${i+1}', '${stat}', current_date + interval '${randInt(5, 30)} days', now() - interval '${randInt(1, 20)} days') ON CONFLICT (id) DO NOTHING;\n`;
 
-    sql += `INSERT INTO public.project_members (project_id, user_id) VALUES ('${pId}', '${randElement(users).id}');\n`;
+    sql += `INSERT INTO public.project_members (project_id, user_id) VALUES ('${pId}', '${randElement(users).id}') ON CONFLICT DO NOTHING;\n`;
 }
 
 sql += `\n-- 6. Tickets\n`;
@@ -158,7 +158,7 @@ for (let i = 0; i < 25; i++) {
     if (stat === 'resolved') resolvedAt = `now() - interval '${randInt(1, 5)} days'`;
 
     sql += `INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('${tId}', '${cId}', ${pId}, 'Support Request ${i+1}', 'Client needs help with configuration.', '${stat}', '${randElement(priorities)}', '${users[0].id}', '${randElement(users).id}', ${resolvedAt}, now() - interval '${randInt(1, 15)} days');\n`;
+VALUES ('${tId}', '${cId}', ${pId}, 'Support Request ${i+1}', 'Client needs help with configuration.', '${stat}', '${randElement(priorities)}', '${users[0].id}', '${randElement(users).id}', ${resolvedAt}, now() - interval '${randInt(1, 15)} days') ON CONFLICT (id) DO NOTHING;\n`;
 }
 
 fs.writeFileSync('supabase/demo_seed.sql', sql);
