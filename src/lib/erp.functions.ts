@@ -1240,6 +1240,26 @@ export const updateCustomerServices = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const updateCustomerServiceStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    (d: { id: string; status: string }) =>
+      z
+        .object({
+          id: z.string().uuid(),
+          status: z.string(),
+        })
+        .parse(d)
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("customer_services")
+      .update({ status: data.status })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 export const updateProjectProgress = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { id: string; progress: number }) =>

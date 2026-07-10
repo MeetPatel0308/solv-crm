@@ -6,6 +6,7 @@ import {
   getCustomer,
   deleteCustomer,
   updateCustomerServices,
+  updateCustomerServiceStatus,
   listServices,
   createSale,
   getMyRoles,
@@ -78,6 +79,19 @@ function CustomerDetail() {
     },
     onError: (e: Error) => toast.error(e.message),
   });
+
+  const updateStatusFn = useServerFn(updateCustomerServiceStatus);
+  const statusMut = useMutation({
+    mutationFn: (vars: { id: string; status: string }) => updateStatusFn({ data: vars }),
+    onSuccess: () => {
+      toast.success("Service status updated");
+      qc.invalidateQueries({ queryKey: ["customer", customerId] });
+      qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  if (!customer) return <div className="p-8">Customer not found</div>;
 
   return (
     <div className="p-6 md:p-8 space-y-6 max-w-6xl">
@@ -195,9 +209,20 @@ function CustomerDetail() {
                   className="flex justify-between items-center text-sm border-b pb-2 last:border-0 last:pb-0"
                 >
                   <span className="font-medium">{s.services?.name}</span>
-                  <Badge variant="secondary" className="capitalize">
-                    {s.status}
-                  </Badge>
+                  <Select
+                    value={s.status}
+                    onValueChange={(val) => statusMut.mutate({ id: s.id, status: val })}
+                    disabled={statusMut.isPending}
+                  >
+                    <SelectTrigger className="w-[110px] h-7 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                      <SelectItem value="cancelled">Cancelled</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </li>
               ))}
             </ul>
