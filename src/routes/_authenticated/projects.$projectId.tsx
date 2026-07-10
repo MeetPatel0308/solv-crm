@@ -126,7 +126,15 @@ function ProjectDetail() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="p-5">
           <div className="text-xs uppercase text-muted-foreground">Customer</div>
-          <div className="text-sm font-medium mt-1">{project.customers?.name ?? "—"}</div>
+          <div className="text-sm font-medium mt-1">
+            {project.customer_id ? (
+              <Link to="/crm/$customerId" params={{ customerId: project.customer_id }} className="hover:underline text-brand">
+                {project.customers?.name ?? "Unknown Customer"}
+              </Link>
+            ) : (
+              "Self (Internal)"
+            )}
+          </div>
         </Card>
         <Card className="p-5">
           <div className="text-xs uppercase text-muted-foreground">Deadline</div>

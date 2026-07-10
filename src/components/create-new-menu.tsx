@@ -409,10 +409,18 @@ function ProjectDialog({ onClose }: { onClose: () => void }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
+  const [customerId, setCustomerId] = useState("self");
+
+  const getCusts = useServerFn(listCustomers);
+  const { data: customers = [] } = useQuery({
+    queryKey: ["customers"],
+    queryFn: () => getCusts(),
+  });
+
   const fn = useServerFn(createProject);
   const m = useMutation({
     mutationFn: () =>
-      fn({ data: { name, description: description || null, deadline: deadline || null } }),
+      fn({ data: { name, description: description || null, deadline: deadline || null, customer_id: customerId === "self" ? null : customerId } }),
     onSuccess: (row) => {
       toast.success("Project created");
       qc.invalidateQueries();
@@ -435,6 +443,21 @@ function ProjectDialog({ onClose }: { onClose: () => void }) {
           <div className="space-y-1">
             <Label>Description</Label>
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+          </div>
+          <div className="space-y-1">
+            <Label>Customer</Label>
+            <select
+              value={customerId}
+              onChange={(e) => setCustomerId(e.target.value)}
+              className="w-full h-9 rounded-md border bg-background px-3 text-sm"
+            >
+              <option value="self">Self (Internal Work)</option>
+              {customers.map((c: any) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="space-y-1">
             <Label>Deadline</Label>

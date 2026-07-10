@@ -789,12 +789,13 @@ export const getProject = createServerFn({ method: "GET" })
 
 export const createProject = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { name: string; description: string | null; deadline: string | null }) =>
+  .inputValidator((d: { name: string; description: string | null; deadline: string | null; customer_id?: string | null }) =>
     z
       .object({
         name: z.string().min(1),
         description: z.string().nullable(),
         deadline: z.string().nullable(),
+        customer_id: z.string().uuid().nullable().optional(),
       })
       .parse(d),
   )
@@ -805,6 +806,7 @@ export const createProject = createServerFn({ method: "POST" })
         name: data.name,
         description: data.description,
         deadline: data.deadline,
+        customer_id: data.customer_id || null,
         created_by: context.userId,
         project_manager_id: context.userId,
       })

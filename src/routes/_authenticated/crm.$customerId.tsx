@@ -49,7 +49,7 @@ function CustomerDetail() {
     queryKey: ["customer", customerId],
     queryFn: () => fn({ data: { id: customerId } }),
   });
-  const { customer, timeline, services, openTickets, sales = [] } = data;
+  const { customer, timeline, services, openTickets, sales = [], projects = [] } = data;
 
   const rolesFn = useServerFn(getMyRoles);
   const { data: rolesData } = useQuery({
@@ -245,6 +245,27 @@ function CustomerDetail() {
                     <span className="text-muted-foreground mr-2">{t.ticket_code}</span>
                     {t.title}
                   </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+
+        <Card className="p-6">
+          <h2 className="font-medium mb-4">All-time Projects</h2>
+          {projects.length === 0 ? (
+            <div className="text-sm text-muted-foreground">No projects assigned</div>
+          ) : (
+            <ul className="space-y-2">
+              {projects.map((p: any) => (
+                <li
+                  key={p.id}
+                  className="flex justify-between items-center text-sm border-b pb-2 last:border-0 last:pb-0"
+                >
+                  <Link to="/projects/$projectId" params={{ projectId: p.id }} className="hover:underline text-brand font-medium">
+                    {p.name}
+                  </Link>
+                  <span className="text-muted-foreground text-xs">{new Date(p.created_at).toLocaleDateString()}</span>
                 </li>
               ))}
             </ul>
