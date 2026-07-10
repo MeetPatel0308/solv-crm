@@ -154,10 +154,7 @@ export const getCustomer = createServerFn({ method: "GET" })
         .from("leads")
         .select("id, converted_at")
         .eq("customer_id", data.id)
-        .or("stage.eq.converted,is_conversion_finalized.eq.true")
-        .order("converted_at", { ascending: false })
-        .limit(1)
-        .maybeSingle(),
+        .order("converted_at", { ascending: false }),
     ]);
 
     const synthesizedTimeline: any[] = [];
@@ -171,14 +168,19 @@ export const getCustomer = createServerFn({ method: "GET" })
         assignee: null
       });
     }
-    const { data: convertedLead } = await context.supabase
+    const { data: allCustomerLeads } = await context.supabase
       .from("leads")
-      .select("id, name, converted_at, deleted_at")
-      .eq("customer_id", data.id)
-      .or("stage.eq.converted,is_conversion_finalized.eq.true")
-      .order("converted_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
+      .select("id, name, converted_at, deleted_at, stage, is_conversion_finalized")
+      .eq("customer_id", data.id);
+      
+    // Safely find the converted lead in JS to avoid any PostgREST enum/boolean OR syntax issues
+    const convertedLead = (allCustomerLeads || [])
+      .filter(l => l.stage === "converted" || l.is_conversion_finalized)
+      .sort((a, b) => {
+        if (!a.converted_at) return 1;
+        if (!b.converted_at) return -1;
+        return new Date(b.converted_at).getTime() - new Date(a.converted_at).getTime();
+      })[0];
 
     let hasInitialSale = false;
 
