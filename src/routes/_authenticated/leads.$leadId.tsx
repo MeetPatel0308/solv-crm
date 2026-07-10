@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, User, Building, Mail, Phone, Handshake, DollarSign, Target, CalendarIcon } from "lucide-react";
+import { ArrowLeft, User, Users, Building, Mail, Phone, Handshake, DollarSign, Target, CalendarIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/leads/$leadId")({
   head: () => ({ meta: [{ title: "Lead Profile — solv." }] }),
@@ -254,6 +254,16 @@ function LeadProfile() {
                 <p className="text-sm text-muted-foreground">{lead.email || "—"}</p>
               </div>
             </div>
+
+            {lead.contact_name && (
+              <div className="flex items-start gap-3">
+                <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium">Contact Name</p>
+                  <p className="text-sm text-muted-foreground">{lead.contact_name}</p>
+                </div>
+              </div>
+            )}
 
             <div className="flex items-start gap-3">
               <Phone className="h-5 w-5 text-muted-foreground mt-0.5" />

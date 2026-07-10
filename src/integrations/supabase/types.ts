@@ -143,6 +143,7 @@ export type Database = {
         Row: {
           account_manager_id: string | null
           contact_email: string | null
+          contact_name: string | null
           contact_phone: string | null
           created_at: string
           created_by: string | null
@@ -159,6 +160,7 @@ export type Database = {
         Insert: {
           account_manager_id?: string | null
           contact_email?: string | null
+          contact_name?: string | null
           contact_phone?: string | null
           created_at?: string
           created_by?: string | null
@@ -175,6 +177,7 @@ export type Database = {
         Update: {
           account_manager_id?: string | null
           contact_email?: string | null
+          contact_name?: string | null
           contact_phone?: string | null
           created_at?: string
           created_by?: string | null
@@ -246,6 +249,7 @@ export type Database = {
           assigned_to: string | null
           cold_at: string | null
           company: string | null
+          contact_name: string | null
           converted_at: string | null
           created_at: string
           created_by: string | null
@@ -273,6 +277,7 @@ export type Database = {
           assigned_to?: string | null
           cold_at?: string | null
           company?: string | null
+          contact_name?: string | null
           converted_at?: string | null
           created_at?: string
           created_by?: string | null
@@ -300,6 +305,7 @@ export type Database = {
           assigned_to?: string | null
           cold_at?: string | null
           company?: string | null
+          contact_name?: string | null
           converted_at?: string | null
           created_at?: string
           created_by?: string | null

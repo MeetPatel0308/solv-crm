@@ -132,6 +132,7 @@ function CustomerDialog({ onClose }: { onClose: () => void }) {
 function LeadDialog({ onClose }: { onClose: () => void }) {
   const qc = useQueryClient();
   const [name, setName] = useState("");
+  const [contactName, setContactName] = useState("");
   const [leadType, setLeadType] = useState<"new" | "existing">("new");
   const [company, setCompany] = useState("");
   const [customerId, setCustomerId] = useState("");
@@ -180,6 +181,7 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
       return fn({
         data: {
           name: finalName,
+          contact_name: leadType === "existing" ? null : (contactName || null),
           company: leadType === "existing"
             ? (customers.find((c: any) => c.id === customerId)?.name || null)
             : (company || null),
@@ -237,19 +239,29 @@ function LeadDialog({ onClose }: { onClose: () => void }) {
             </div>
           </div>
           <div className="space-y-1">
-            <Label>Contact Name</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
+            <Label>Lead Name</Label>
+            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Website Redesign" />
           </div>
 
           {leadType === "new" ? (
-            <div className="space-y-1">
-              <Label>Company Name</Label>
-              <Input 
-                value={company} 
-                onChange={(e) => setCompany(e.target.value)} 
-                placeholder="Company Name..."
-              />
-            </div>
+            <>
+              <div className="space-y-1">
+                <Label>Company Name</Label>
+                <Input 
+                  value={company} 
+                  onChange={(e) => setCompany(e.target.value)} 
+                  placeholder="Company Name..."
+                />
+              </div>
+              <div className="space-y-1">
+                <Label>Contact Name</Label>
+                <Input 
+                  value={contactName} 
+                  onChange={(e) => setContactName(e.target.value)} 
+                  placeholder="Contact Person..."
+                />
+              </div>
+            </>
           ) : (
             <div className="space-y-1">
               <Label>Select Customer</Label>

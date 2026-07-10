@@ -236,7 +236,7 @@ function LeadsList() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
+                <TableHead>Lead Name</TableHead>
                 <TableHead>Company</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Source</TableHead>
@@ -313,6 +313,7 @@ function LeadsList() {
 
 function EditLeadDialog({ lead, services, onClose, onSave, isPending }: any) {
   const [name, setName] = useState(lead.name);
+  const [contactName, setContactName] = useState(lead.contact_name || "");
   const [company, setCompany] = useState(lead.company || "");
   const [email, setEmail] = useState(lead.email || "");
   const [phone, setPhone] = useState(lead.phone || "");
@@ -332,13 +333,19 @@ function EditLeadDialog({ lead, services, onClose, onSave, isPending }: any) {
         </DialogHeader>
         <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-4">
           <div className="space-y-1">
-            <Label>Name</Label>
+            <Label>Lead Name</Label>
             <Input value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="space-y-1">
             <Label>Company Name</Label>
             <Input value={company} onChange={(e) => setCompany(e.target.value)} />
           </div>
+          {!lead.customer_id && (
+            <div className="space-y-1">
+              <Label>Contact Name</Label>
+              <Input value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="Contact Person..." />
+            </div>
+          )}
           <div className="space-y-1">
             <Label>Interested Services</Label>
             <select
@@ -419,6 +426,7 @@ function EditLeadDialog({ lead, services, onClose, onSave, isPending }: any) {
               onSave({
                 id: lead.id,
                 name,
+                contact_name: contactName || null,
                 company: company || null,
                 email: email || null,
                 phone: phone || null,

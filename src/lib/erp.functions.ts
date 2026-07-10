@@ -359,6 +359,7 @@ export const createLead = createServerFn({ method: "POST" })
   .inputValidator(
     (d: {
       name: string;
+      contact_name?: string | null;
       company: string | null;
       email: string | null;
       phone: string | null;
@@ -373,6 +374,7 @@ export const createLead = createServerFn({ method: "POST" })
       z
         .object({
           name: z.string().min(1),
+          contact_name: z.string().nullable().optional(),
           company: z.string().nullable(),
           email: z.preprocess(
             (val) => {
@@ -400,6 +402,7 @@ export const createLead = createServerFn({ method: "POST" })
       .from("leads")
       .insert({
         name: data.name,
+        contact_name: data.contact_name,
         company: data.company,
         email: data.email,
         phone: data.phone,
@@ -444,6 +447,7 @@ export const updateLead = createServerFn({ method: "POST" })
     (d: {
       id: string;
       name: string;
+      contact_name?: string | null;
       company: string | null;
       email: string | null;
       phone: string | null;
@@ -457,6 +461,7 @@ export const updateLead = createServerFn({ method: "POST" })
         .object({
           id: z.string().uuid(),
           name: z.string().min(1),
+          contact_name: z.string().nullable().optional(),
           company: z.string().nullable(),
           email: z.preprocess((val) => (val === "" ? null : val), z.string().email().nullable()),
           phone: z.string().nullable(),
@@ -483,6 +488,7 @@ export const updateLead = createServerFn({ method: "POST" })
       .from("leads")
       .update({
         name: data.name,
+        contact_name: data.contact_name,
         company: data.company,
         email: data.email,
         phone: data.phone,
@@ -676,6 +682,7 @@ export const convertLeadToCustomer = createServerFn({ method: "POST" })
         .from("customers")
         .insert({
           name: lead.company || "Unknown Company",
+          contact_name: lead.contact_name,
           status: "active",
           contact_email: lead.email,
           contact_phone: lead.phone,
