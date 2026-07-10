@@ -602,10 +602,10 @@ export const convertLeadToCustomer = createServerFn({ method: "POST" })
       finalCustomerId = newCustomer.id;
 
       // Link lead to new customer and mark finalized
-      await context.supabase.from("leads").update({ 
+      await context.supabase.from("leads").update({
         customer_id: finalCustomerId,
-        is_conversion_finalized: true
-      }).eq("id", lead.id);
+        is_conversion_finalized: true,
+      } as any).eq("id", lead.id);
     } else {
       // Existing Customer -> Update Status/Value and mark finalized
       await context.supabase.from("leads").update({ 
