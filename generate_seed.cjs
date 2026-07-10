@@ -132,7 +132,7 @@ VALUES ('${lId}', 'Contact ${i}', '${cName}', 'contact${i}@example.com', '${stag
 
 sql += `\n-- 5. Projects\n`;
 const projects = [];
-const projStatuses = ['planning', 'in_progress', 'review', 'completed'];
+const projStatuses = ['planning', 'in_progress', 'testing', 'completed'];
 for (let i = 0; i < 15; i++) {
     const pId = genUUID();
     const cId = randElement(customers).id;
@@ -146,8 +146,8 @@ VALUES ('${pId}', '${cId}', 'Implementation Project ${i+1}', '${stat}', current_
 }
 
 sql += `\n-- 6. Tickets\n`;
-const ticketStatuses = ['open', 'in_progress', 'waiting', 'resolved'];
-const priorities = ['low', 'medium', 'high', 'critical'];
+const ticketStatuses = ['new', 'in_progress', 'waiting', 'resolved'];
+const priorities = ['low', 'medium', 'high', 'urgent'];
 for (let i = 0; i < 25; i++) {
     const tId = genUUID();
     const cId = randElement(customers).id;
