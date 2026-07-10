@@ -1340,5 +1340,23 @@ export const upsertProjectTimelineEvent = createServerFn({ method: "POST" })
       });
       if (error) throw new Error(error.message);
     }
+
+    let status: string | undefined;
+    switch (data.stage) {
+      case "Scope Approved": status = "planning"; break;
+      case "Development Started":
+      case "Review": status = "in_progress"; break;
+      case "Testing": status = "testing"; break;
+      case "Completed":
+      case "Deployed": status = "completed"; break;
+    }
+
+    if (status) {
+      await context.supabase
+        .from("projects")
+        .update({ status: status as any })
+        .eq("id", data.projectId);
+    }
+
     return { ok: true };
   });

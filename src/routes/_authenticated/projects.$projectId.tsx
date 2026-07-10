@@ -141,7 +141,7 @@ function ProjectDetail() {
           <div className="text-sm font-medium mt-1">{project.deadline ?? "—"}</div>
         </Card>
         <Card className="p-5">
-          <div className="text-xs uppercase text-muted-foreground">Manager</div>
+          <div className="text-xs uppercase text-muted-foreground">Project Owner</div>
           <div className="text-sm font-medium mt-1">
             {project.project_manager?.full_name ?? "—"}
           </div>
@@ -170,9 +170,6 @@ function ProjectDetail() {
       <Card className="p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-medium">Project timeline</h2>
-          <Button variant="outline" size="sm" onClick={() => setSelectedStage(STAGES[0])}>
-            <CalendarDays className="h-4 w-4 mr-1" /> Log Stage
-          </Button>
         </div>
         <div className="flex items-center gap-4 overflow-x-auto pb-2">
           {STAGES.map((s, i) => {
