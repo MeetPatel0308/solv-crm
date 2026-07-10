@@ -90,6 +90,7 @@ function LeadsList() {
     onSuccess: () => {
       toast.success("Lead updated");
       qc.invalidateQueries({ queryKey: ["leads"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
       setEditingLead(null);
     },
     onError: (e: Error) => toast.error(e.message),

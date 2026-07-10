@@ -99,6 +99,7 @@ function LeadProfile() {
       toast.success("Lead reopened successfully");
       qc.invalidateQueries({ queryKey: ["lead", leadId] });
       qc.invalidateQueries({ queryKey: ["leads"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -114,9 +115,10 @@ function LeadProfile() {
         },
       }),
     onSuccess: () => {
-      toast.success("Timeline updated");
+      toast.success("Lead details updated");
       qc.invalidateQueries({ queryKey: ["lead", leadId] });
       qc.invalidateQueries({ queryKey: ["leads"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -361,6 +363,7 @@ function MarkAsLostDialog({ leadId, onClose, onSave }: any) {
       toast.success("Lead marked as lost");
       qc.invalidateQueries({ queryKey: ["lead", leadId] });
       qc.invalidateQueries({ queryKey: ["leads"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
       onSave();
     } catch (e: any) {
       toast.error(e.message);
