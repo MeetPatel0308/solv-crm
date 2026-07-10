@@ -7,6 +7,7 @@ import {
   deleteProject,
   upsertProjectTimelineEvent,
   updateProjectManager,
+  updateProjectDeadline,
   listTeam,
 } from "@/lib/erp.functions";
 import { Card } from "@/components/ui/card";
@@ -81,6 +82,17 @@ function ProjectDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const updateDeadlineFn = useServerFn(updateProjectDeadline);
+  const updateDeadlineMut = useMutation({
+    mutationFn: (newDeadline: string) => updateDeadlineFn({ data: { id: projectId, deadline: newDeadline || null } }),
+    onSuccess: () => {
+      toast.success("Project Deadline updated");
+      qc.invalidateQueries({ queryKey: ["project", projectId] });
+      qc.invalidateQueries({ queryKey: ["projects"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const deleteFn = useServerFn(deleteProject);
   const deleteMut = useMutation({
     mutationFn: () => deleteFn({ data: { id: projectId } }),
@@ -110,7 +122,9 @@ function ProjectDetail() {
         </div>
         <div className="flex items-center gap-2">
           <Badge className="bg-brand/10 text-brand hover:bg-brand/20">
-            {project.status.replace("_", " ")}
+            {project.status !== "completed" && project.status !== "deployed" && project.deadline && new Date(project.deadline) < new Date()
+              ? "overdue"
+              : project.status.replace("_", " ")}
           </Badge>
           <ConfirmDeleteButton
             itemLabel={project.name}
@@ -136,7 +150,15 @@ function ProjectDetail() {
         </Card>
         <Card className="p-5">
           <div className="text-xs uppercase text-muted-foreground">Deadline</div>
-          <div className="text-sm font-medium mt-1">{project.deadline ?? "—"}</div>
+          <div className="mt-1">
+            <input
+              type="date"
+              value={project.deadline || ""}
+              onChange={(e) => updateDeadlineMut.mutate(e.target.value)}
+              disabled={updateDeadlineMut.isPending}
+              className="w-full h-8 rounded-md border bg-background px-2 text-sm"
+            />
+          </div>
         </Card>
         <Card className="p-5">
           <div className="text-xs uppercase text-muted-foreground">Project Owner</div>

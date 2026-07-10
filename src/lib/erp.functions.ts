@@ -1264,6 +1264,25 @@ export const updateCustomerServiceStatus = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const updateProjectDeadline = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string; deadline: string | null }) =>
+    z
+      .object({
+        id: z.string().uuid(),
+        deadline: z.string().nullable(),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("projects")
+      .update({ deadline: data.deadline })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 export const updateProjectManager = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { id: string; project_manager_id: string }) =>

@@ -37,16 +37,22 @@ function ProjectsList() {
     },
     onError: (e: Error) => toast.error(e.message),
   });
+  const now = new Date();
+  const projects = data.map((p: any) => {
+    const isOverdue = p.status !== "completed" && p.status !== "deployed" && p.deadline && new Date(p.deadline) < now;
+    return { ...p, status: isOverdue ? "overdue" : p.status };
+  });
+
   const kpis = {
-    total: data.length,
-    inProgress: data.filter((p: any) => p.status === "in_progress").length,
-    completed: data.filter((p: any) => p.status === "completed").length,
-    overdue: data.filter((p: any) => p.status === "overdue").length,
+    total: projects.length,
+    inProgress: projects.filter((p: any) => p.status === "in_progress").length,
+    completed: projects.filter((p: any) => p.status === "completed" || p.status === "deployed").length,
+    overdue: projects.filter((p: any) => p.status === "overdue").length,
   };
   const donut = ["planning", "in_progress", "testing", "completed", "deployed", "on_hold", "overdue"].map(
     (s) => ({
       name: s,
-      value: data.filter((p: any) => p.status === s).length,
+      value: projects.filter((p: any) => p.status === s).length,
     }),
   );
 
@@ -67,9 +73,9 @@ function ProjectsList() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <Card className="p-6 lg:col-span-2">
+        <Card className="p-6 md:col-span-2">
           <h2 className="font-medium mb-4">All projects</h2>
-          {data.length === 0 ? (
+          {projects.length === 0 ? (
             <div className="text-sm text-muted-foreground py-8 text-center">No projects yet</div>
           ) : (
             <Table>
@@ -84,7 +90,7 @@ function ProjectsList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((p: any) => (
+                {projects.map((p: any) => (
                   <TableRow key={p.id}>
                     <TableCell>
                       <Link
