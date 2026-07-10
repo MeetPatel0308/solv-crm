@@ -141,7 +141,7 @@ function ProjectDetail() {
         <div className="flex items-center gap-4 overflow-x-auto pb-2">
           {STAGES.map((s, i) => {
             const ev = getStageEvent(s);
-            const prevCompleted = i === 0 || !!getStageEvent(STAGES[i - 1]);
+            const prevCompleted = STAGES.slice(0, i).every((prevStage) => !!getStageEvent(prevStage));
             return (
               <button
                 key={s}
