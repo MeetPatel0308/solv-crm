@@ -13,15 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Users, FolderKanban, TicketCheck, Sparkles } from "lucide-react";
-import {
-  LineChart,
-  Line,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-} from "recharts";
+import { Progress } from "@/components/ui/progress";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — solv." }] }),
@@ -30,14 +22,9 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function DashboardPage() {
   const statsFn = useServerFn(getDashboardStats);
-  const seriesFn = useServerFn(getLeadsSeries);
   const { data: stats } = useSuspenseQuery({
     queryKey: ["dashboard-stats"],
     queryFn: () => statsFn(),
-  });
-  const { data: series } = useSuspenseQuery({
-    queryKey: ["leads-series"],
-    queryFn: () => seriesFn(),
   });
 
   return (
@@ -56,33 +43,26 @@ function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <Card className="p-6 lg:col-span-2">
-          <div className="flex items-baseline justify-between mb-4">
-            <h2 className="font-medium">Leads overview</h2>
-            <div className="text-sm text-muted-foreground">
-              Total value{" "}
-              <span className="font-medium text-foreground">
-                ${series.totalValue.toLocaleString()}
-              </span>{" "}
-              · Conversion{" "}
-              <span className="font-medium text-foreground">{series.conversionRate}%</span>
+          <h2 className="font-medium mb-6">Lead Performance</h2>
+          <div className="grid grid-cols-2 gap-8">
+            <div className="space-y-2">
+              <div className="text-sm text-muted-foreground">Conversion Rate</div>
+              <div className="text-2xl font-semibold">{stats.leadPerformance?.conversionRate ?? 0}%</div>
+              <Progress value={stats.leadPerformance?.conversionRate ?? 0} className="h-1.5 [&>div]:bg-emerald-500" />
             </div>
-          </div>
-          <div className="h-56">
-            <ResponsiveContainer>
-              <LineChart data={series.series}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis dataKey="date" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis fontSize={11} tickLine={false} axisLine={false} />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="count"
-                  stroke="var(--color-brand)"
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <div className="space-y-2">
+              <div className="text-sm text-muted-foreground">Average Time to Convert</div>
+              <div className="text-2xl font-semibold">{stats.leadPerformance?.avgTimeToConvert ?? 0} Days</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-sm text-muted-foreground">Lost Rate</div>
+              <div className="text-2xl font-semibold">{stats.leadPerformance?.lostRate ?? 0}%</div>
+              <Progress value={stats.leadPerformance?.lostRate ?? 0} className="h-1.5 [&>div]:bg-red-500" />
+            </div>
+            <div className="space-y-2">
+              <div className="text-sm text-muted-foreground">New Leads This Month</div>
+              <div className="text-2xl font-semibold">{stats.leadPerformance?.newLeadsThisMonth ?? 0}</div>
+            </div>
           </div>
         </Card>
 

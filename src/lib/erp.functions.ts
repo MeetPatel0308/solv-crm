@@ -52,13 +52,33 @@ export const getDashboardStats = createServerFn({ method: "GET" })
     ]);
     const { data: pipeline } = await context.supabase
       .from("leads")
-      .select("stage")
+      .select("stage, created_at, converted_at")
       .is("deleted_at", null);
     const stages = ["cold", "warm", "hot", "converted"] as string[];
     const pipelineCounts = stages.map((s) => ({
       stage: s,
       count: (pipeline ?? []).filter((r) => (r.stage as string) === s).length,
     }));
+
+    const convertedLeads = (pipeline ?? []).filter(l => l.stage === 'converted');
+    const lostLeadsCount = (pipeline ?? []).filter(l => l.stage === 'lost').length;
+    const convertedLeadsCount = convertedLeads.length;
+    const totalFinished = convertedLeadsCount + lostLeadsCount;
+    
+    const conversionRate = totalFinished > 0 ? Math.round((convertedLeadsCount / totalFinished) * 100) : 0;
+    const lostRate = totalFinished > 0 ? Math.round((lostLeadsCount / totalFinished) * 100) : 0;
+    
+    let totalDaysToConvert = 0;
+    let leadsWithValidDates = 0;
+    convertedLeads.forEach(l => {
+      if (l.created_at && l.converted_at) {
+        const diffTime = Math.abs(new Date(l.converted_at).getTime() - new Date(l.created_at).getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        totalDaysToConvert += diffDays;
+        leadsWithValidDates++;
+      }
+    });
+    const avgTimeToConvert = leadsWithValidDates > 0 ? Math.round(totalDaysToConvert / leadsWithValidDates) : 0;
     const { data: openTickets } = await context.supabase
       .from("tickets")
       .select(
@@ -75,6 +95,12 @@ export const getDashboardStats = createServerFn({ method: "GET" })
       leadsCount: leads.count ?? 0,
       pipelineCounts,
       openTickets: openTickets ?? [],
+      leadPerformance: {
+        conversionRate,
+        lostRate,
+        avgTimeToConvert,
+        newLeadsThisMonth: leads.count ?? 0,
+      }
     };
   });
 
