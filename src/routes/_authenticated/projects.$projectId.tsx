@@ -141,18 +141,25 @@ function ProjectDetail() {
         <div className="flex items-center gap-4 overflow-x-auto pb-2">
           {STAGES.map((s, i) => {
             const ev = getStageEvent(s);
+            const prevCompleted = i === 0 || !!getStageEvent(STAGES[i - 1]);
             return (
               <button
                 key={s}
-                onClick={() => setSelectedStage(s)}
-                className="flex-1 min-w-[120px] flex flex-col items-center hover:bg-secondary/50 p-2.5 rounded-lg transition-all border border-transparent hover:border-border cursor-pointer group text-center"
+                onClick={() => {
+                  if (!prevCompleted) {
+                    toast.error("Please complete previous stages first");
+                    return;
+                  }
+                  setSelectedStage(s);
+                }}
+                className={`flex-1 min-w-[120px] flex flex-col items-center p-2.5 rounded-lg transition-all border border-transparent text-center ${prevCompleted ? "hover:bg-secondary/50 hover:border-border cursor-pointer group" : "opacity-50 cursor-not-allowed"}`}
               >
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold border-2 transition-all ${ev ? "bg-brand border-brand text-brand-foreground shadow-[0_0_10px_rgba(var(--brand-rgb),0.3)]" : "bg-background border-muted-foreground text-muted-foreground group-hover:border-brand"}`}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold border-2 transition-all ${ev ? "bg-brand border-brand text-brand-foreground shadow-[0_0_10px_rgba(var(--brand-rgb),0.3)]" : (prevCompleted ? "bg-background border-muted-foreground text-muted-foreground group-hover:border-brand" : "bg-muted border-muted-foreground text-muted-foreground")}`}
                 >
                   {i + 1}
                 </div>
-                <div className="text-xs mt-2 font-medium text-foreground group-hover:text-brand transition-colors">
+                <div className={`text-xs mt-2 font-medium transition-colors ${ev || !prevCompleted ? "text-foreground" : "text-foreground group-hover:text-brand"}`}>
                   {s}
                 </div>
                 <div className="text-[10px] text-muted-foreground mt-1">
