@@ -122,7 +122,7 @@ function LeadsList() {
   const conversionRate = closedLeadsCount === 0 ? 0 : Math.round((convertedCount / closedLeadsCount) * 100);
 
   const serviceCounts: Record<string, number> = {};
-  const summaryLeads = activeLeads;
+  const summaryLeads = data.filter((l: any) => l.stage !== "lost");
   summaryLeads.forEach((l: any) => {
     l.lead_services?.forEach((ls: any) => {
       const name = ls.services?.name;

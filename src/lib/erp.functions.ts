@@ -572,6 +572,49 @@ export const getLead = createServerFn({ method: "GET" })
     return { lead, services };
   });
 
+export const markLeadAsLost = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string; reason: string; notes?: string }) => z.object({
+    id: z.string().uuid(),
+    reason: z.string().min(1),
+    notes: z.string().optional()
+  }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { data: lead } = await context.supabase.from("leads").select("notes").eq("id", data.id).single();
+    let updatedNotes = lead?.notes || "";
+    if (data.notes) {
+      updatedNotes = updatedNotes ? `${updatedNotes}\n\n[Lost]: ${data.notes}` : `[Lost]: ${data.notes}`;
+    }
+
+    const { error } = await context.supabase
+      .from("leads")
+      .update({ 
+        stage: "lost", 
+        lost_at: new Date().toISOString(),
+        loss_reason: data.reason,
+        notes: updatedNotes
+      })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const reopenLead = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("leads")
+      .update({ 
+        stage: "cold",
+        lost_at: null,
+        loss_reason: null
+      } as any)
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 export const convertLeadToCustomer = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: {

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { getLead, updateLeadDates, updateLead, convertLeadToCustomer, getMyRoles } from "@/lib/erp.functions";
+import { getLead, updateLeadDates, updateLead, convertLeadToCustomer, getMyRoles, markLeadAsLost, reopenLead } from "@/lib/erp.functions";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, User, Building, Mail, Phone, Handshake, DollarSign, Target, CalendarIcon } from "lucide-react";
@@ -75,6 +89,18 @@ function LeadProfile() {
   const { data, isLoading } = useQuery({
     queryKey: ["lead", leadId],
     queryFn: () => fn({ data: { id: leadId } }),
+  });
+  
+  const [showLostDialog, setShowLostDialog] = useState(false);
+  const reopenFn = useServerFn(reopenLead);
+  const reopenMut = useMutation({
+    mutationFn: () => reopenFn({ data: { id: leadId } }),
+    onSuccess: () => {
+      toast.success("Lead reopened successfully");
+      qc.invalidateQueries({ queryKey: ["lead", leadId] });
+      qc.invalidateQueries({ queryKey: ["leads"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const updateFn = useServerFn(updateLeadDates);
@@ -160,7 +186,17 @@ function LeadProfile() {
                   : "Active Lead"}
             </p>
           </div>
-          <Badge variant="outline" className="capitalize px-4 py-1 text-sm">{lead.stage.replace("_", " ")}</Badge>
+          <div className="flex items-center gap-3">
+            <Badge variant="outline" className={`capitalize px-4 py-1 text-sm ${isLost ? "bg-red-100 text-red-700 border-red-200" : ""}`}>
+              {lead.stage.replace("_", " ")}
+            </Badge>
+            {!isLost && lead.stage !== "converted" && (
+               <Button variant="destructive" size="sm" onClick={() => setShowLostDialog(true)}>Mark as Lost</Button>
+            )}
+            {isLost && (
+               <Button variant="outline" size="sm" onClick={() => reopenMut.mutate()} disabled={reopenMut.isPending}>Reopen Lead</Button>
+            )}
+          </div>
         </div>
 
         <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between overflow-x-auto pb-6">
@@ -246,10 +282,19 @@ function LeadProfile() {
             <div className="flex items-start gap-3">
               <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5" />
               <div>
-                <p className="text-sm font-medium">Estimated Value</p>
-                <p className="text-sm text-muted-foreground">${Number(lead.value || 0).toLocaleString()}</p>
+                <p className="text-sm font-medium">Value</p>
+                <p className="text-sm text-muted-foreground">${lead.value?.toLocaleString() || "0"}</p>
               </div>
             </div>
+            {isLost && lead.loss_reason && (
+              <div className="flex items-start gap-3 text-red-700 bg-red-50 p-4 rounded-md mt-4 border border-red-200">
+                <div className="mt-0.5 font-bold">!</div>
+                <div>
+                  <p className="text-sm font-semibold">Loss Reason</p>
+                  <p className="text-sm">{lead.loss_reason}</p>
+                </div>
+              </div>
+            )}
           </div>
         </Card>
 
@@ -284,7 +329,91 @@ function LeadProfile() {
       {lead.stage === "converted" && (
         <ConvertSection lead={lead} services={services} />
       )}
+      
+      {showLostDialog && (
+        <MarkAsLostDialog 
+          leadId={lead.id} 
+          onClose={() => setShowLostDialog(false)} 
+          onSave={() => setShowLostDialog(false)} 
+        />
+      )}
     </div>
+  );
+}
+
+function MarkAsLostDialog({ leadId, onClose, onSave }: any) {
+  const [reason, setReason] = useState("Budget");
+  const [otherReason, setOtherReason] = useState("");
+  const [notes, setNotes] = useState("");
+  const [isPending, setIsPending] = useState(false);
+  const markFn = useServerFn(markLeadAsLost);
+  const qc = useQueryClient();
+
+  const handleSave = async () => {
+    const finalReason = reason === "Other" ? otherReason : reason;
+    if (!finalReason) {
+      toast.error("Please provide a reason");
+      return;
+    }
+    setIsPending(true);
+    try {
+      await markFn({ data: { id: leadId, reason: finalReason, notes: notes || undefined } });
+      toast.success("Lead marked as lost");
+      qc.invalidateQueries({ queryKey: ["lead", leadId] });
+      qc.invalidateQueries({ queryKey: ["leads"] });
+      onSave();
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  return (
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[400px]">
+        <DialogHeader>
+          <DialogTitle>Mark as Lost</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label>Loss Reason *</Label>
+            <Select value={reason} onValueChange={setReason}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Budget">Budget</SelectItem>
+                <SelectItem value="Competitor">Competitor</SelectItem>
+                <SelectItem value="No Response">No Response</SelectItem>
+                <SelectItem value="Timing">Timing</SelectItem>
+                <SelectItem value="Not a Good Fit">Not a Good Fit</SelectItem>
+                <SelectItem value="Other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {reason === "Other" && (
+            <div className="space-y-2">
+              <Label>Specify Reason *</Label>
+              <Input value={otherReason} onChange={(e) => setOtherReason(e.target.value)} placeholder="Enter reason..." />
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label>Additional Notes (Optional)</Label>
+            <Textarea 
+              value={notes} 
+              onChange={(e) => setNotes(e.target.value)} 
+              placeholder="Any details to remember..."
+              className="resize-none h-24"
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={onClose} disabled={isPending}>Cancel</Button>
+          <Button variant="destructive" onClick={handleSave} disabled={isPending}>Confirm</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
