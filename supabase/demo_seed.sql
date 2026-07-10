@@ -7,366 +7,398 @@
 -- 1. Create Users
 -- We insert into auth.users directly. Note: these users cannot log in.
 INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at) 
-VALUES ('955126bf-a3df-4d47-8812-747adbc7e961', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'alice.sales@example.com', '', now(), now(), now())
+VALUES ('b1eb441d-746d-420f-9600-48aa10f81a04', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'alice.sales@example.com', '', now(), now(), now())
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.profiles (id, full_name, email, job_title, created_at, updated_at) 
-VALUES ('955126bf-a3df-4d47-8812-747adbc7e961', 'Alice Smith', 'alice.sales@example.com', 'Sales Manager', now(), now())
+VALUES ('b1eb441d-746d-420f-9600-48aa10f81a04', 'Alice Smith', 'alice.sales@example.com', 'Sales Manager', now(), now())
 ON CONFLICT (id) DO UPDATE SET full_name = EXCLUDED.full_name, job_title = EXCLUDED.job_title;
 INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at) 
-VALUES ('0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'bob.account@example.com', '', now(), now(), now())
+VALUES ('ff83ba29-7621-45a6-8a24-8e2f6f6268aa', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'bob.account@example.com', '', now(), now(), now())
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.profiles (id, full_name, email, job_title, created_at, updated_at) 
-VALUES ('0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', 'Bob Johnson', 'bob.account@example.com', 'Account Manager', now(), now())
+VALUES ('ff83ba29-7621-45a6-8a24-8e2f6f6268aa', 'Bob Johnson', 'bob.account@example.com', 'Account Manager', now(), now())
 ON CONFLICT (id) DO UPDATE SET full_name = EXCLUDED.full_name, job_title = EXCLUDED.job_title;
 INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, created_at, updated_at) 
-VALUES ('b63a5145-cbca-4b3a-b631-bc0b46a792ae', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'charlie.tech@example.com', '', now(), now(), now())
+VALUES ('8fed7298-cbca-4301-9fdd-8894ff4223a7', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'charlie.tech@example.com', '', now(), now(), now())
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.profiles (id, full_name, email, job_title, created_at, updated_at) 
-VALUES ('b63a5145-cbca-4b3a-b631-bc0b46a792ae', 'Charlie Davis', 'charlie.tech@example.com', 'Lead Developer', now(), now())
+VALUES ('8fed7298-cbca-4301-9fdd-8894ff4223a7', 'Charlie Davis', 'charlie.tech@example.com', 'Lead Developer', now(), now())
 ON CONFLICT (id) DO UPDATE SET full_name = EXCLUDED.full_name, job_title = EXCLUDED.job_title;
 
 -- 2. Services
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('f5c175c7-b950-4223-9bb4-e8989dad28ab', 'KIBO', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('eb6eba4f-fb1c-48cc-940d-81f72b789918', 'AI Sales App', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('730e827d-cd83-481f-ba75-d25865adf928', 'Website Development', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('b079400f-263e-451d-a90b-33333df24b70', 'Hosting', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('c1d8d30b-5027-4154-8450-31414fe9e525', 'SEO', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('5cb08880-4d0c-4eb4-9c46-24402b266d2b', 'Meta Ads Management', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('d790350c-4a34-44fc-8896-9977099d933f', 'Google Ads Management', now(), now()) ON CONFLICT DO NOTHING;
-INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('5bb5df8b-294c-463c-a2bb-d94abc82460f', 'Broadcast Messaging', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('999426a8-7e15-4917-9a28-001db2efc9cb', 'KIBO', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('5d803265-e44f-4f68-8272-d6fec4edbb02', 'AI Sales App', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('d259cbaa-2b5e-49c2-839e-07c757d79b98', 'Website Development', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('b390b768-17dc-4fcb-9566-dab252e00cf2', 'Hosting', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1', 'SEO', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'Meta Ads Management', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('090a356a-c1d5-4005-bc85-0f839c2240cb', 'Google Ads Management', now(), now()) ON CONFLICT DO NOTHING;
+INSERT INTO public.services (id, name, created_at, updated_at) VALUES ('2c9323d9-efc8-4434-9d91-e6e66c6e8796', 'Broadcast Messaging', now(), now()) ON CONFLICT DO NOTHING;
 
 -- 3. Customers, Sales & Customer Services
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('0e203a2c-9961-4a20-8f2a-512784f896bb', 'Acme Corp', 'contact@acme corp.com', 'Real Estate', '955126bf-a3df-4d47-8812-747adbc7e961', 'active', now() - interval '13 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('a53577e1-3aba-4d13-a7fd-fb4e5b41bfa0', 'Acme Corp', 'contact@acme corp.com', 'Real Estate', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', 'active', now() - interval '62 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('0e203a2c-9961-4a20-8f2a-512784f896bb', 'eb6eba4f-fb1c-48cc-940d-81f72b789918', 'AI Sales App', 'retainer', 1093, 'active', current_date, now() - interval '18 days');
+VALUES ('a53577e1-3aba-4d13-a7fd-fb4e5b41bfa0', 'd259cbaa-2b5e-49c2-839e-07c757d79b98', 'Website Development', 'one-off', 1789, 'active', current_date, now() - interval '29 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('0e203a2c-9961-4a20-8f2a-512784f896bb', 'eb6eba4f-fb1c-48cc-940d-81f72b789918', 'active', current_date, now());
+VALUES ('a53577e1-3aba-4d13-a7fd-fb4e5b41bfa0', 'd259cbaa-2b5e-49c2-839e-07c757d79b98', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('0e203a2c-9961-4a20-8f2a-512784f896bb', 'b079400f-263e-451d-a90b-33333df24b70', 'Hosting', 'retainer', 741, 'active', current_date, now() - interval '30 days');
+VALUES ('a53577e1-3aba-4d13-a7fd-fb4e5b41bfa0', '1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1', 'SEO', 'retainer', 245, 'active', current_date, now() - interval '14 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('0e203a2c-9961-4a20-8f2a-512784f896bb', 'b079400f-263e-451d-a90b-33333df24b70', 'active', current_date, now());
+VALUES ('a53577e1-3aba-4d13-a7fd-fb4e5b41bfa0', '1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('637c74e5-4d3e-4360-a1d1-90cf149841ac', 'Globex Corporation', 'contact@globex corporation.com', 'Finance', '955126bf-a3df-4d47-8812-747adbc7e961', 'active', now() - interval '52 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('3cf22c56-6adb-41b2-b470-099c86cb7c1a', 'Globex Corporation', 'contact@globex corporation.com', 'Healthcare', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'active', now() - interval '43 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('637c74e5-4d3e-4360-a1d1-90cf149841ac', 'd790350c-4a34-44fc-8896-9977099d933f', 'Google Ads Management', 'retainer', 1351, 'active', current_date, now() - interval '4 days');
+VALUES ('3cf22c56-6adb-41b2-b470-099c86cb7c1a', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'Hosting', 'one-off', 6563, 'active', current_date, now() - interval '3 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('637c74e5-4d3e-4360-a1d1-90cf149841ac', 'd790350c-4a34-44fc-8896-9977099d933f', 'active', current_date, now());
+VALUES ('3cf22c56-6adb-41b2-b470-099c86cb7c1a', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('637c74e5-4d3e-4360-a1d1-90cf149841ac', 'b079400f-263e-451d-a90b-33333df24b70', 'Hosting', 'one-off', 3700, 'active', current_date, now() - interval '15 days');
+VALUES ('3cf22c56-6adb-41b2-b470-099c86cb7c1a', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'Google Ads Management', 'retainer', 819, 'active', current_date, now() - interval '2 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('637c74e5-4d3e-4360-a1d1-90cf149841ac', 'b079400f-263e-451d-a90b-33333df24b70', 'active', current_date, now());
+VALUES ('3cf22c56-6adb-41b2-b470-099c86cb7c1a', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('637c74e5-4d3e-4360-a1d1-90cf149841ac', '730e827d-cd83-481f-ba75-d25865adf928', 'Website Development', 'retainer', 531, 'active', current_date, now() - interval '6 days');
+VALUES ('3cf22c56-6adb-41b2-b470-099c86cb7c1a', '1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1', 'SEO', 'retainer', 1352, 'active', current_date, now() - interval '4 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('637c74e5-4d3e-4360-a1d1-90cf149841ac', '730e827d-cd83-481f-ba75-d25865adf928', 'active', current_date, now());
+VALUES ('3cf22c56-6adb-41b2-b470-099c86cb7c1a', '1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('e4d2ec47-f1fb-4a18-8ebf-195d8f550967', 'Soylent Corp', 'contact@soylent corp.com', 'Education', '955126bf-a3df-4d47-8812-747adbc7e961', 'active', now() - interval '64 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('1b90c958-0a34-4723-b086-2bb93fdad45c', 'Soylent Corp', 'contact@soylent corp.com', 'Finance', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', 'active', now() - interval '68 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('e4d2ec47-f1fb-4a18-8ebf-195d8f550967', 'c1d8d30b-5027-4154-8450-31414fe9e525', 'SEO', 'one-off', 5922, 'active', current_date, now() - interval '18 days');
+VALUES ('1b90c958-0a34-4723-b086-2bb93fdad45c', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'Meta Ads Management', 'one-off', 6952, 'active', current_date, now() - interval '12 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('e4d2ec47-f1fb-4a18-8ebf-195d8f550967', 'c1d8d30b-5027-4154-8450-31414fe9e525', 'active', current_date, now());
+VALUES ('1b90c958-0a34-4723-b086-2bb93fdad45c', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('e4d2ec47-f1fb-4a18-8ebf-195d8f550967', 'eb6eba4f-fb1c-48cc-940d-81f72b789918', 'AI Sales App', 'one-off', 7127, 'active', current_date, now() - interval '26 days');
+VALUES ('1b90c958-0a34-4723-b086-2bb93fdad45c', '999426a8-7e15-4917-9a28-001db2efc9cb', 'KIBO', 'retainer', 792, 'active', current_date, now() - interval '11 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('e4d2ec47-f1fb-4a18-8ebf-195d8f550967', 'eb6eba4f-fb1c-48cc-940d-81f72b789918', 'active', current_date, now());
+VALUES ('1b90c958-0a34-4723-b086-2bb93fdad45c', '999426a8-7e15-4917-9a28-001db2efc9cb', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('e4d2ec47-f1fb-4a18-8ebf-195d8f550967', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'KIBO', 'retainer', 1441, 'active', current_date, now() - interval '8 days');
+VALUES ('1b90c958-0a34-4723-b086-2bb93fdad45c', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'Hosting', 'one-off', 3793, 'active', current_date, now() - interval '30 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('e4d2ec47-f1fb-4a18-8ebf-195d8f550967', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'active', current_date, now());
+VALUES ('1b90c958-0a34-4723-b086-2bb93fdad45c', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('964d9373-b616-418b-894f-57f827951e18', 'Initech', 'contact@initech.com', 'Real Estate', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', 'active', now() - interval '65 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('d5f6e3f8-3e39-4548-9f85-d19283880edd', 'Initech', 'contact@initech.com', 'Logistics', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', 'active', now() - interval '95 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('964d9373-b616-418b-894f-57f827951e18', '5cb08880-4d0c-4eb4-9c46-24402b266d2b', 'Meta Ads Management', 'one-off', 4683, 'active', current_date, now() - interval '27 days');
+VALUES ('d5f6e3f8-3e39-4548-9f85-d19283880edd', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'Google Ads Management', 'retainer', 579, 'active', current_date, now() - interval '12 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('964d9373-b616-418b-894f-57f827951e18', '5cb08880-4d0c-4eb4-9c46-24402b266d2b', 'active', current_date, now());
+VALUES ('d5f6e3f8-3e39-4548-9f85-d19283880edd', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('964d9373-b616-418b-894f-57f827951e18', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'KIBO', 'one-off', 7159, 'active', current_date, now() - interval '16 days');
+VALUES ('d5f6e3f8-3e39-4548-9f85-d19283880edd', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'Hosting', 'retainer', 1286, 'active', current_date, now() - interval '6 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('964d9373-b616-418b-894f-57f827951e18', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'active', current_date, now());
+VALUES ('d5f6e3f8-3e39-4548-9f85-d19283880edd', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('d5f6e3f8-3e39-4548-9f85-d19283880edd', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'AI Sales App', 'one-off', 8995, 'active', current_date, now() - interval '6 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('d5f6e3f8-3e39-4548-9f85-d19283880edd', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('6528f4c0-3064-4abb-a1dd-0b20b9770b6b', 'Umbrella Corporation', 'contact@umbrella corporation.com', 'Healthcare', '955126bf-a3df-4d47-8812-747adbc7e961', 'active', now() - interval '85 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('d577d59f-b25e-41dd-84e8-67569bf26259', 'Umbrella Corporation', 'contact@umbrella corporation.com', 'Education', '8fed7298-cbca-4301-9fdd-8894ff4223a7', 'active', now() - interval '11 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('6528f4c0-3064-4abb-a1dd-0b20b9770b6b', '5cb08880-4d0c-4eb4-9c46-24402b266d2b', 'Meta Ads Management', 'one-off', 7304, 'active', current_date, now() - interval '5 days');
+VALUES ('d577d59f-b25e-41dd-84e8-67569bf26259', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'Meta Ads Management', 'retainer', 1468, 'active', current_date, now() - interval '13 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('6528f4c0-3064-4abb-a1dd-0b20b9770b6b', '5cb08880-4d0c-4eb4-9c46-24402b266d2b', 'active', current_date, now());
+VALUES ('d577d59f-b25e-41dd-84e8-67569bf26259', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('d577d59f-b25e-41dd-84e8-67569bf26259', '2c9323d9-efc8-4434-9d91-e6e66c6e8796', 'Broadcast Messaging', 'one-off', 8851, 'active', current_date, now() - interval '19 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('d577d59f-b25e-41dd-84e8-67569bf26259', '2c9323d9-efc8-4434-9d91-e6e66c6e8796', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('d577d59f-b25e-41dd-84e8-67569bf26259', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'Google Ads Management', 'one-off', 2690, 'active', current_date, now() - interval '20 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('d577d59f-b25e-41dd-84e8-67569bf26259', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('d0a514f5-58e2-4c2a-ac2f-5a221479f1bc', 'Stark Industries', 'contact@stark industries.com', 'Technology', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', 'active', now() - interval '33 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('2bd9e247-43c8-4670-8045-725e62b38e95', 'Stark Industries', 'contact@stark industries.com', 'Finance', '8fed7298-cbca-4301-9fdd-8894ff4223a7', 'active', now() - interval '88 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('d0a514f5-58e2-4c2a-ac2f-5a221479f1bc', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'KIBO', 'one-off', 5278, 'active', current_date, now() - interval '15 days');
+VALUES ('2bd9e247-43c8-4670-8045-725e62b38e95', 'd259cbaa-2b5e-49c2-839e-07c757d79b98', 'Website Development', 'retainer', 1479, 'active', current_date, now() - interval '21 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('d0a514f5-58e2-4c2a-ac2f-5a221479f1bc', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'active', current_date, now());
+VALUES ('2bd9e247-43c8-4670-8045-725e62b38e95', 'd259cbaa-2b5e-49c2-839e-07c757d79b98', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('d0a514f5-58e2-4c2a-ac2f-5a221479f1bc', '730e827d-cd83-481f-ba75-d25865adf928', 'Website Development', 'retainer', 1144, 'active', current_date, now() - interval '14 days');
+VALUES ('2bd9e247-43c8-4670-8045-725e62b38e95', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'Meta Ads Management', 'retainer', 859, 'active', current_date, now() - interval '23 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('d0a514f5-58e2-4c2a-ac2f-5a221479f1bc', '730e827d-cd83-481f-ba75-d25865adf928', 'active', current_date, now());
+VALUES ('2bd9e247-43c8-4670-8045-725e62b38e95', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('2bd9e247-43c8-4670-8045-725e62b38e95', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'AI Sales App', 'retainer', 825, 'active', current_date, now() - interval '30 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('2bd9e247-43c8-4670-8045-725e62b38e95', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('68d3e665-01da-4931-a295-e39f67e0c7ab', 'Wayne Enterprises', 'contact@wayne enterprises.com', 'Healthcare', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', 'active', now() - interval '95 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('6bba8827-7f63-4262-b2c5-716ccafa6f4d', 'Wayne Enterprises', 'contact@wayne enterprises.com', 'Technology', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'active', now() - interval '18 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('68d3e665-01da-4931-a295-e39f67e0c7ab', 'c1d8d30b-5027-4154-8450-31414fe9e525', 'SEO', 'one-off', 6788, 'active', current_date, now() - interval '21 days');
+VALUES ('6bba8827-7f63-4262-b2c5-716ccafa6f4d', '2c9323d9-efc8-4434-9d91-e6e66c6e8796', 'Broadcast Messaging', 'retainer', 862, 'active', current_date, now() - interval '24 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('68d3e665-01da-4931-a295-e39f67e0c7ab', 'c1d8d30b-5027-4154-8450-31414fe9e525', 'active', current_date, now());
+VALUES ('6bba8827-7f63-4262-b2c5-716ccafa6f4d', '2c9323d9-efc8-4434-9d91-e6e66c6e8796', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('6bba8827-7f63-4262-b2c5-716ccafa6f4d', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'Google Ads Management', 'one-off', 3006, 'active', current_date, now() - interval '30 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('6bba8827-7f63-4262-b2c5-716ccafa6f4d', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('cda4105e-5623-4e2d-b817-a430e7d5ef9d', 'Cyberdyne Systems', 'contact@cyberdyne systems.com', 'Technology', '955126bf-a3df-4d47-8812-747adbc7e961', 'active', now() - interval '38 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('de9aaa36-ad18-4ce5-9ce5-2df3dde4430a', 'Cyberdyne Systems', 'contact@cyberdyne systems.com', 'Logistics', '8fed7298-cbca-4301-9fdd-8894ff4223a7', 'active', now() - interval '90 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('cda4105e-5623-4e2d-b817-a430e7d5ef9d', '5bb5df8b-294c-463c-a2bb-d94abc82460f', 'Broadcast Messaging', 'one-off', 4121, 'active', current_date, now() - interval '22 days');
+VALUES ('de9aaa36-ad18-4ce5-9ce5-2df3dde4430a', '2c9323d9-efc8-4434-9d91-e6e66c6e8796', 'Broadcast Messaging', 'one-off', 2842, 'active', current_date, now() - interval '11 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('cda4105e-5623-4e2d-b817-a430e7d5ef9d', '5bb5df8b-294c-463c-a2bb-d94abc82460f', 'active', current_date, now());
+VALUES ('de9aaa36-ad18-4ce5-9ce5-2df3dde4430a', '2c9323d9-efc8-4434-9d91-e6e66c6e8796', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('cda4105e-5623-4e2d-b817-a430e7d5ef9d', '5cb08880-4d0c-4eb4-9c46-24402b266d2b', 'Meta Ads Management', 'retainer', 860, 'active', current_date, now() - interval '28 days');
+VALUES ('de9aaa36-ad18-4ce5-9ce5-2df3dde4430a', 'd259cbaa-2b5e-49c2-839e-07c757d79b98', 'Website Development', 'one-off', 5881, 'active', current_date, now() - interval '6 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('cda4105e-5623-4e2d-b817-a430e7d5ef9d', '5cb08880-4d0c-4eb4-9c46-24402b266d2b', 'active', current_date, now());
+VALUES ('de9aaa36-ad18-4ce5-9ce5-2df3dde4430a', 'd259cbaa-2b5e-49c2-839e-07c757d79b98', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('492f20c8-a30f-4b94-a1a5-5e950c382fb0', 'Massive Dynamic', 'contact@massive dynamic.com', 'Real Estate', '955126bf-a3df-4d47-8812-747adbc7e961', 'active', now() - interval '16 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('c34749b3-ab98-4c68-8af8-f28dc8b4017e', 'Massive Dynamic', 'contact@massive dynamic.com', 'Education', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', 'active', now() - interval '23 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('492f20c8-a30f-4b94-a1a5-5e950c382fb0', 'c1d8d30b-5027-4154-8450-31414fe9e525', 'SEO', 'retainer', 800, 'active', current_date, now() - interval '15 days');
+VALUES ('c34749b3-ab98-4c68-8af8-f28dc8b4017e', '999426a8-7e15-4917-9a28-001db2efc9cb', 'KIBO', 'retainer', 247, 'active', current_date, now() - interval '14 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('492f20c8-a30f-4b94-a1a5-5e950c382fb0', 'c1d8d30b-5027-4154-8450-31414fe9e525', 'active', current_date, now());
+VALUES ('c34749b3-ab98-4c68-8af8-f28dc8b4017e', '999426a8-7e15-4917-9a28-001db2efc9cb', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('492f20c8-a30f-4b94-a1a5-5e950c382fb0', '730e827d-cd83-481f-ba75-d25865adf928', 'Website Development', 'one-off', 6424, 'active', current_date, now() - interval '8 days');
+VALUES ('c34749b3-ab98-4c68-8af8-f28dc8b4017e', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'AI Sales App', 'one-off', 1296, 'active', current_date, now() - interval '15 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('492f20c8-a30f-4b94-a1a5-5e950c382fb0', '730e827d-cd83-481f-ba75-d25865adf928', 'active', current_date, now());
+VALUES ('c34749b3-ab98-4c68-8af8-f28dc8b4017e', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('5131e7e4-247b-4304-be55-cef0dceae9b4', 'Genco Pura Olive Oil', 'contact@genco pura olive oil.com', 'Logistics', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', 'active', now() - interval '62 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('c4b73686-223b-462d-8a36-0edbedc6fbf6', 'Genco Pura Olive Oil', 'contact@genco pura olive oil.com', 'Healthcare', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'active', now() - interval '27 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('5131e7e4-247b-4304-be55-cef0dceae9b4', 'd790350c-4a34-44fc-8896-9977099d933f', 'Google Ads Management', 'one-off', 1021, 'active', current_date, now() - interval '17 days');
+VALUES ('c4b73686-223b-462d-8a36-0edbedc6fbf6', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'Hosting', 'retainer', 1072, 'active', current_date, now() - interval '27 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('5131e7e4-247b-4304-be55-cef0dceae9b4', 'd790350c-4a34-44fc-8896-9977099d933f', 'active', current_date, now());
+VALUES ('c4b73686-223b-462d-8a36-0edbedc6fbf6', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('c4b73686-223b-462d-8a36-0edbedc6fbf6', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'AI Sales App', 'retainer', 833, 'active', current_date, now() - interval '29 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('c4b73686-223b-462d-8a36-0edbedc6fbf6', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('c4b73686-223b-462d-8a36-0edbedc6fbf6', '2c9323d9-efc8-4434-9d91-e6e66c6e8796', 'Broadcast Messaging', 'retainer', 1005, 'active', current_date, now() - interval '21 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('c4b73686-223b-462d-8a36-0edbedc6fbf6', '2c9323d9-efc8-4434-9d91-e6e66c6e8796', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('95b1fe0a-2fda-4aeb-9855-8eb7a0608172', 'LexCorp', 'contact@lexcorp.com', 'Retail', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', 'active', now() - interval '20 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('b079540a-d0d7-48a3-a430-9303df6f9599', 'LexCorp', 'contact@lexcorp.com', 'Technology', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', 'active', now() - interval '74 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('95b1fe0a-2fda-4aeb-9855-8eb7a0608172', 'd790350c-4a34-44fc-8896-9977099d933f', 'Google Ads Management', 'one-off', 9372, 'active', current_date, now() - interval '29 days');
+VALUES ('b079540a-d0d7-48a3-a430-9303df6f9599', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'Meta Ads Management', 'one-off', 9280, 'active', current_date, now() - interval '6 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('95b1fe0a-2fda-4aeb-9855-8eb7a0608172', 'd790350c-4a34-44fc-8896-9977099d933f', 'active', current_date, now());
+VALUES ('b079540a-d0d7-48a3-a430-9303df6f9599', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('b079540a-d0d7-48a3-a430-9303df6f9599', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'Hosting', 'retainer', 674, 'active', current_date, now() - interval '27 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('b079540a-d0d7-48a3-a430-9303df6f9599', 'b390b768-17dc-4fcb-9566-dab252e00cf2', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('cdde504e-90bd-40ba-8278-c35898fe0136', 'Oceanic Airlines', 'contact@oceanic airlines.com', 'Healthcare', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', 'active', now() - interval '45 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('da125edb-a8e1-40b3-ac9d-497a4328418c', 'Oceanic Airlines', 'contact@oceanic airlines.com', 'Technology', '8fed7298-cbca-4301-9fdd-8894ff4223a7', 'active', now() - interval '93 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('cdde504e-90bd-40ba-8278-c35898fe0136', '730e827d-cd83-481f-ba75-d25865adf928', 'Website Development', 'retainer', 201, 'active', current_date, now() - interval '29 days');
+VALUES ('da125edb-a8e1-40b3-ac9d-497a4328418c', 'd259cbaa-2b5e-49c2-839e-07c757d79b98', 'Website Development', 'retainer', 803, 'active', current_date, now() - interval '5 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('cdde504e-90bd-40ba-8278-c35898fe0136', '730e827d-cd83-481f-ba75-d25865adf928', 'active', current_date, now());
-INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('cdde504e-90bd-40ba-8278-c35898fe0136', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'KIBO', 'retainer', 860, 'active', current_date, now() - interval '14 days');
-INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('cdde504e-90bd-40ba-8278-c35898fe0136', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'active', current_date, now());
+VALUES ('da125edb-a8e1-40b3-ac9d-497a4328418c', 'd259cbaa-2b5e-49c2-839e-07c757d79b98', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('560e81d1-3983-4641-abf5-aa6a0791ec0a', 'Wonka Industries', 'contact@wonka industries.com', 'Technology', '955126bf-a3df-4d47-8812-747adbc7e961', 'active', now() - interval '65 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('9cf2bdbd-eba1-4d69-88b1-b276dff0fc42', 'Wonka Industries', 'contact@wonka industries.com', 'Education', '8fed7298-cbca-4301-9fdd-8894ff4223a7', 'active', now() - interval '94 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('560e81d1-3983-4641-abf5-aa6a0791ec0a', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'KIBO', 'retainer', 1216, 'active', current_date, now() - interval '12 days');
+VALUES ('9cf2bdbd-eba1-4d69-88b1-b276dff0fc42', '1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1', 'SEO', 'one-off', 1432, 'active', current_date, now() - interval '30 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('560e81d1-3983-4641-abf5-aa6a0791ec0a', 'f5c175c7-b950-4223-9bb4-e8989dad28ab', 'active', current_date, now());
+VALUES ('9cf2bdbd-eba1-4d69-88b1-b276dff0fc42', '1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
+INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
+VALUES ('9cf2bdbd-eba1-4d69-88b1-b276dff0fc42', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'AI Sales App', 'retainer', 468, 'active', current_date, now() - interval '4 days');
+INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
+VALUES ('9cf2bdbd-eba1-4d69-88b1-b276dff0fc42', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('471237b9-cb41-4421-bae5-580b0d7d2611', 'Oscorp', 'contact@oscorp.com', 'Logistics', '955126bf-a3df-4d47-8812-747adbc7e961', 'active', now() - interval '99 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('9c1687aa-8f53-4eed-b80f-2d3e848a8947', 'Oscorp', 'contact@oscorp.com', 'Education', '8fed7298-cbca-4301-9fdd-8894ff4223a7', 'active', now() - interval '81 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('471237b9-cb41-4421-bae5-580b0d7d2611', '730e827d-cd83-481f-ba75-d25865adf928', 'Website Development', 'retainer', 1207, 'active', current_date, now() - interval '24 days');
+VALUES ('9c1687aa-8f53-4eed-b80f-2d3e848a8947', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'AI Sales App', 'retainer', 811, 'active', current_date, now() - interval '21 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('471237b9-cb41-4421-bae5-580b0d7d2611', '730e827d-cd83-481f-ba75-d25865adf928', 'active', current_date, now());
+VALUES ('9c1687aa-8f53-4eed-b80f-2d3e848a8947', '5d803265-e44f-4f68-8272-d6fec4edbb02', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.customers (id, name, contact_email, industry, account_manager_id, status, created_at) 
-VALUES ('9e1c678c-f396-4baa-91fb-1ad667592a73', 'Hooli', 'contact@hooli.com', 'Logistics', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', 'active', now() - interval '80 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('e05b53b0-f808-4748-bf8e-e64c90e8b2de', 'Hooli', 'contact@hooli.com', 'Real Estate', '8fed7298-cbca-4301-9fdd-8894ff4223a7', 'active', now() - interval '51 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('9e1c678c-f396-4baa-91fb-1ad667592a73', '5bb5df8b-294c-463c-a2bb-d94abc82460f', 'Broadcast Messaging', 'one-off', 8699, 'active', current_date, now() - interval '13 days');
+VALUES ('e05b53b0-f808-4748-bf8e-e64c90e8b2de', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'Meta Ads Management', 'retainer', 800, 'active', current_date, now() - interval '8 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('9e1c678c-f396-4baa-91fb-1ad667592a73', '5bb5df8b-294c-463c-a2bb-d94abc82460f', 'active', current_date, now());
+VALUES ('e05b53b0-f808-4748-bf8e-e64c90e8b2de', '1ce0f3ee-b9de-41c4-b558-362ff50299f4', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('9e1c678c-f396-4baa-91fb-1ad667592a73', 'd790350c-4a34-44fc-8896-9977099d933f', 'Google Ads Management', 'one-off', 9112, 'active', current_date, now() - interval '20 days');
+VALUES ('e05b53b0-f808-4748-bf8e-e64c90e8b2de', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'Google Ads Management', 'retainer', 706, 'active', current_date, now() - interval '2 days');
 INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('9e1c678c-f396-4baa-91fb-1ad667592a73', 'd790350c-4a34-44fc-8896-9977099d933f', 'active', current_date, now());
-INSERT INTO public.sales (customer_id, service_id, description, billing_type, value, status, start_date, created_at) 
-VALUES ('9e1c678c-f396-4baa-91fb-1ad667592a73', 'eb6eba4f-fb1c-48cc-940d-81f72b789918', 'AI Sales App', 'retainer', 798, 'active', current_date, now() - interval '21 days');
-INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('9e1c678c-f396-4baa-91fb-1ad667592a73', 'eb6eba4f-fb1c-48cc-940d-81f72b789918', 'active', current_date, now());
+VALUES ('e05b53b0-f808-4748-bf8e-e64c90e8b2de', '090a356a-c1d5-4005-bc85-0f839c2240cb', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;
 
 -- 4. Leads & Lead Services
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('b5bf72c0-988f-4a4b-9db4-b918d2b44c75', 'Contact 15', 'Oceanic Airlines', 'contact15@example.com', 'converted', 3277, 'Cold Call', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', now() - interval '3 days', NULL, NULL, now() - interval '22 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('b5bf72c0-988f-4a4b-9db4-b918d2b44c75', 'f5c175c7-b950-4223-9bb4-e8989dad28ab') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('b5bf72c0-988f-4a4b-9db4-b918d2b44c75', 'd790350c-4a34-44fc-8896-9977099d933f') ON CONFLICT DO NOTHING;
+VALUES ('cc739cf6-8d5a-482d-9bf4-69511ef56863', 'Contact 15', 'Pied Piper (Lead)', 'contact15@example.com', 'cold', 4189, 'Trade Show', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, NULL, NULL, now() - interval '33 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('cc739cf6-8d5a-482d-9bf4-69511ef56863', '1ce0f3ee-b9de-41c4-b558-362ff50299f4') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('d215b617-2ae0-402c-9402-7853ddb45163', 'Contact 16', 'Dunder Mifflin (Lead)', 'contact16@example.com', 'cold', 607, 'Referral', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, NULL, NULL, now() - interval '39 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d215b617-2ae0-402c-9402-7853ddb45163', '5bb5df8b-294c-463c-a2bb-d94abc82460f') ON CONFLICT DO NOTHING;
+VALUES ('1d6323de-5339-403e-8bc2-001dada12d03', 'Contact 16', 'Dunder Mifflin (Lead)', 'contact16@example.com', 'hot', 2113, 'Trade Show', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '14 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('1d6323de-5339-403e-8bc2-001dada12d03', '5d803265-e44f-4f68-8272-d6fec4edbb02') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('5c02e478-6fc8-41e3-bad4-da16ce768381', 'Contact 17', 'Aperture Science (Lead)', 'contact17@example.com', 'hot', 3780, 'Social Media', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, NULL, NULL, now() - interval '35 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('5c02e478-6fc8-41e3-bad4-da16ce768381', 'f5c175c7-b950-4223-9bb4-e8989dad28ab') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('5c02e478-6fc8-41e3-bad4-da16ce768381', 'c1d8d30b-5027-4154-8450-31414fe9e525') ON CONFLICT DO NOTHING;
+VALUES ('c16aebaa-a237-4cf1-ba86-247d77297ef2', 'Contact 17', 'Aperture Science (Lead)', 'contact17@example.com', 'converted', 4808, 'Website', '8fed7298-cbca-4301-9fdd-8894ff4223a7', now() - interval '6 days', NULL, NULL, now() - interval '17 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('c16aebaa-a237-4cf1-ba86-247d77297ef2', 'b390b768-17dc-4fcb-9566-dab252e00cf2') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('c16aebaa-a237-4cf1-ba86-247d77297ef2', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('ed0b4ee9-3c78-43e6-a17e-fe94909164f3', 'Contact 18', 'Veidt Enterprises (Lead)', 'contact18@example.com', 'negotiation', 2171, 'Referral', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, NULL, NULL, now() - interval '38 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('ed0b4ee9-3c78-43e6-a17e-fe94909164f3', 'c1d8d30b-5027-4154-8450-31414fe9e525') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('ed0b4ee9-3c78-43e6-a17e-fe94909164f3', 'eb6eba4f-fb1c-48cc-940d-81f72b789918') ON CONFLICT DO NOTHING;
+VALUES ('de946da4-7129-4b9b-a893-eb5713b4d301', 'Contact 18', 'Acme Corp', 'contact18@example.com', 'converted', 2474, 'Cold Call', '8fed7298-cbca-4301-9fdd-8894ff4223a7', now() - interval '1 days', NULL, NULL, now() - interval '33 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('de946da4-7129-4b9b-a893-eb5713b4d301', '2c9323d9-efc8-4434-9d91-e6e66c6e8796') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('de946da4-7129-4b9b-a893-eb5713b4d301', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('a13d8944-cb3c-4afb-94fa-48606a97bc27', 'Contact 19', 'Gringotts (Lead)', 'contact19@example.com', 'warm', 694, 'Website', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, NULL, NULL, now() - interval '21 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('a13d8944-cb3c-4afb-94fa-48606a97bc27', 'd790350c-4a34-44fc-8896-9977099d933f') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('a13d8944-cb3c-4afb-94fa-48606a97bc27', '730e827d-cd83-481f-ba75-d25865adf928') ON CONFLICT DO NOTHING;
+VALUES ('7664115f-dbca-404f-bb5d-8d258508dfad', 'Contact 19', 'Gringotts (Lead)', 'contact19@example.com', 'cold', 2888, 'Social Media', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '20 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7664115f-dbca-404f-bb5d-8d258508dfad', '1ce0f3ee-b9de-41c4-b558-362ff50299f4') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('db6f7731-bb66-4abb-828a-f636c45e0710', 'Contact 20', 'Ollivanders (Lead)', 'contact20@example.com', 'proposal', 4458, 'Cold Call', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, NULL, NULL, now() - interval '20 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('db6f7731-bb66-4abb-828a-f636c45e0710', 'c1d8d30b-5027-4154-8450-31414fe9e525') ON CONFLICT DO NOTHING;
+VALUES ('901c7a5a-19a1-417d-a775-e56b1763e051', 'Contact 20', 'Cyberdyne Systems', 'contact20@example.com', 'hot', 2349, 'Trade Show', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '29 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('901c7a5a-19a1-417d-a775-e56b1763e051', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('901c7a5a-19a1-417d-a775-e56b1763e051', '1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('4a3bea1a-b2cd-4645-974e-418bc04df99d', 'Contact 21', 'Hooli', 'contact21@example.com', 'lost', 4918, 'Cold Call', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, now() - interval '9 days', 'Budget', now() - interval '26 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('4a3bea1a-b2cd-4645-974e-418bc04df99d', 'f5c175c7-b950-4223-9bb4-e8989dad28ab') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('4a3bea1a-b2cd-4645-974e-418bc04df99d', '5cb08880-4d0c-4eb4-9c46-24402b266d2b') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('4a3bea1a-b2cd-4645-974e-418bc04df99d', 'b079400f-263e-451d-a90b-33333df24b70') ON CONFLICT DO NOTHING;
+VALUES ('8bf71c55-be83-48f4-917b-a0096efa6e5f', 'Contact 21', 'Virtucon (Lead)', 'contact21@example.com', 'warm', 2757, 'Cold Call', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, NULL, NULL, now() - interval '36 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('8bf71c55-be83-48f4-917b-a0096efa6e5f', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('8bf71c55-be83-48f4-917b-a0096efa6e5f', '999426a8-7e15-4917-9a28-001db2efc9cb') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('8bf71c55-be83-48f4-917b-a0096efa6e5f', '1ce0f3ee-b9de-41c4-b558-362ff50299f4') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('1e7da069-cd8a-4ef2-bd40-433ac16ea4e0', 'Contact 22', 'MomCorp (Lead)', 'contact22@example.com', 'hot', 4866, 'Trade Show', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, NULL, NULL, now() - interval '13 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('1e7da069-cd8a-4ef2-bd40-433ac16ea4e0', 'eb6eba4f-fb1c-48cc-940d-81f72b789918') ON CONFLICT DO NOTHING;
+VALUES ('484189a3-6d9d-4872-b04d-cae6d94b64c1', 'Contact 22', 'MomCorp (Lead)', 'contact22@example.com', 'proposal', 2943, 'Social Media', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '19 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('484189a3-6d9d-4872-b04d-cae6d94b64c1', 'b390b768-17dc-4fcb-9566-dab252e00cf2') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('484189a3-6d9d-4872-b04d-cae6d94b64c1', '2c9323d9-efc8-4434-9d91-e6e66c6e8796') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('74b2fb80-4038-4d0c-ba87-720bdf06168d', 'Contact 23', 'Slurm (Lead)', 'contact23@example.com', 'warm', 3303, 'Referral', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, NULL, NULL, now() - interval '25 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('74b2fb80-4038-4d0c-ba87-720bdf06168d', 'eb6eba4f-fb1c-48cc-940d-81f72b789918') ON CONFLICT DO NOTHING;
+VALUES ('e31cf471-da7b-4ff7-aae7-75e803d0eea0', 'Contact 23', 'Slurm (Lead)', 'contact23@example.com', 'cold', 1190, 'Cold Call', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '20 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e31cf471-da7b-4ff7-aae7-75e803d0eea0', '2c9323d9-efc8-4434-9d91-e6e66c6e8796') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e31cf471-da7b-4ff7-aae7-75e803d0eea0', '1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e31cf471-da7b-4ff7-aae7-75e803d0eea0', '1ce0f3ee-b9de-41c4-b558-362ff50299f4') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('0d90e021-7b65-4e6a-b11a-e315fb3167dc', 'Contact 24', 'Nuka-Cola (Lead)', 'contact24@example.com', 'lost', 1894, 'Trade Show', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, now() - interval '9 days', 'Not a Good Fit', now() - interval '20 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('0d90e021-7b65-4e6a-b11a-e315fb3167dc', 'f5c175c7-b950-4223-9bb4-e8989dad28ab') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('0d90e021-7b65-4e6a-b11a-e315fb3167dc', 'd790350c-4a34-44fc-8896-9977099d933f') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('0d90e021-7b65-4e6a-b11a-e315fb3167dc', '5cb08880-4d0c-4eb4-9c46-24402b266d2b') ON CONFLICT DO NOTHING;
+VALUES ('b8ad668e-911f-4019-a35a-04ad8fdbf936', 'Contact 24', 'Nuka-Cola (Lead)', 'contact24@example.com', 'warm', 4591, 'Social Media', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, NULL, NULL, now() - interval '11 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('b8ad668e-911f-4019-a35a-04ad8fdbf936', '090a356a-c1d5-4005-bc85-0f839c2240cb') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('b8ad668e-911f-4019-a35a-04ad8fdbf936', '5d803265-e44f-4f68-8272-d6fec4edbb02') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('8720efb3-4ed5-48b4-83db-158e25182e1b', 'Contact 25', 'Wonka Industries', 'contact25@example.com', 'hot', 3824, 'Cold Call', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, NULL, NULL, now() - interval '22 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('8720efb3-4ed5-48b4-83db-158e25182e1b', 'f5c175c7-b950-4223-9bb4-e8989dad28ab') ON CONFLICT DO NOTHING;
+VALUES ('d6e16d60-d449-4b99-88dd-b5f8486dcaea', 'Contact 25', 'Acme Corp (Lead)', 'contact25@example.com', 'cold', 1927, 'Referral', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '15 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d6e16d60-d449-4b99-88dd-b5f8486dcaea', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d6e16d60-d449-4b99-88dd-b5f8486dcaea', '5d803265-e44f-4f68-8272-d6fec4edbb02') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('4bba5e83-1c74-461b-ade3-d6accc97204c', 'Contact 26', 'Cyberdyne Systems', 'contact26@example.com', 'warm', 4402, 'Trade Show', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, NULL, NULL, now() - interval '40 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('4bba5e83-1c74-461b-ade3-d6accc97204c', 'c1d8d30b-5027-4154-8450-31414fe9e525') ON CONFLICT DO NOTHING;
+VALUES ('116daf72-6295-4de6-abca-df1e8d0d6d97', 'Contact 26', 'Globex Corporation (Lead)', 'contact26@example.com', 'warm', 1932, 'Cold Call', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, NULL, NULL, now() - interval '16 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('116daf72-6295-4de6-abca-df1e8d0d6d97', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('116daf72-6295-4de6-abca-df1e8d0d6d97', '090a356a-c1d5-4005-bc85-0f839c2240cb') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('116daf72-6295-4de6-abca-df1e8d0d6d97', '2c9323d9-efc8-4434-9d91-e6e66c6e8796') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('a0fd7b48-466f-4a91-a565-9cea09cd3413', 'Contact 27', 'Soylent Corp (Lead)', 'contact27@example.com', 'converted', 3481, 'Website', '955126bf-a3df-4d47-8812-747adbc7e961', now() - interval '5 days', NULL, NULL, now() - interval '12 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('a0fd7b48-466f-4a91-a565-9cea09cd3413', 'c1d8d30b-5027-4154-8450-31414fe9e525') ON CONFLICT DO NOTHING;
+VALUES ('b4870c69-03ab-40fc-a44d-6153ccc5d63f', 'Contact 27', 'Soylent Corp (Lead)', 'contact27@example.com', 'lost', 1482, 'Referral', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '3 days', 'Timing', now() - interval '33 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('b4870c69-03ab-40fc-a44d-6153ccc5d63f', '1e4cbb00-1287-4a1b-ac26-a09d2a3be0b1') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('3d521f97-34a2-496c-b001-5ada84ef1506', 'Contact 28', 'Initech (Lead)', 'contact28@example.com', 'lost', 4534, 'Referral', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, now() - interval '4 days', 'Budget', now() - interval '15 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('3d521f97-34a2-496c-b001-5ada84ef1506', '730e827d-cd83-481f-ba75-d25865adf928') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('3d521f97-34a2-496c-b001-5ada84ef1506', 'f5c175c7-b950-4223-9bb4-e8989dad28ab') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('3d521f97-34a2-496c-b001-5ada84ef1506', 'c1d8d30b-5027-4154-8450-31414fe9e525') ON CONFLICT DO NOTHING;
+VALUES ('8a76628a-9cac-4e7b-abe8-9e481a2f0a1d', 'Contact 28', 'Initech (Lead)', 'contact28@example.com', 'converted', 2950, 'Trade Show', '8fed7298-cbca-4301-9fdd-8894ff4223a7', now() - interval '5 days', NULL, NULL, now() - interval '28 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('8a76628a-9cac-4e7b-abe8-9e481a2f0a1d', 'b390b768-17dc-4fcb-9566-dab252e00cf2') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('492d48e7-b332-435b-babe-932fa3954919', 'Contact 29', 'Umbrella Corporation (Lead)', 'contact29@example.com', 'converted', 815, 'Social Media', '955126bf-a3df-4d47-8812-747adbc7e961', now() - interval '10 days', NULL, NULL, now() - interval '24 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('492d48e7-b332-435b-babe-932fa3954919', 'c1d8d30b-5027-4154-8450-31414fe9e525') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('492d48e7-b332-435b-babe-932fa3954919', '5bb5df8b-294c-463c-a2bb-d94abc82460f') ON CONFLICT DO NOTHING;
+VALUES ('ddc9298f-e3fa-4e71-b0c5-ce5e23873072', 'Contact 29', 'Umbrella Corporation (Lead)', 'contact29@example.com', 'warm', 3975, 'Social Media', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '18 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('ddc9298f-e3fa-4e71-b0c5-ce5e23873072', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('c1d278bb-401f-4c2b-8ecf-3a23077068e3', 'Contact 30', 'Stark Industries (Lead)', 'contact30@example.com', 'negotiation', 4915, 'Referral', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, NULL, NULL, now() - interval '38 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('c1d278bb-401f-4c2b-8ecf-3a23077068e3', 'b079400f-263e-451d-a90b-33333df24b70') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('c1d278bb-401f-4c2b-8ecf-3a23077068e3', '5bb5df8b-294c-463c-a2bb-d94abc82460f') ON CONFLICT DO NOTHING;
+VALUES ('485d78d1-bd04-4ded-b164-7e9c64084c16', 'Contact 30', 'Stark Industries (Lead)', 'contact30@example.com', 'warm', 4377, 'Social Media', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '30 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('485d78d1-bd04-4ded-b164-7e9c64084c16', '999426a8-7e15-4917-9a28-001db2efc9cb') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('485d78d1-bd04-4ded-b164-7e9c64084c16', '090a356a-c1d5-4005-bc85-0f839c2240cb') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('485d78d1-bd04-4ded-b164-7e9c64084c16', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('771f8d80-211d-411e-b341-6224cc160fa2', 'Contact 31', 'Wayne Enterprises (Lead)', 'contact31@example.com', 'lost', 1039, 'Referral', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, now() - interval '3 days', 'Competitor', now() - interval '18 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('771f8d80-211d-411e-b341-6224cc160fa2', 'eb6eba4f-fb1c-48cc-940d-81f72b789918') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('771f8d80-211d-411e-b341-6224cc160fa2', '5bb5df8b-294c-463c-a2bb-d94abc82460f') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('771f8d80-211d-411e-b341-6224cc160fa2', 'd790350c-4a34-44fc-8896-9977099d933f') ON CONFLICT DO NOTHING;
+VALUES ('2d31ab58-7f3b-4094-92d7-77a8941aa27c', 'Contact 31', 'Wayne Enterprises (Lead)', 'contact31@example.com', 'lost', 4133, 'Cold Call', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '4 days', 'Timing', now() - interval '29 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('2d31ab58-7f3b-4094-92d7-77a8941aa27c', '1ce0f3ee-b9de-41c4-b558-362ff50299f4') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('2d31ab58-7f3b-4094-92d7-77a8941aa27c', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('00e149f4-d010-4940-a5c5-5b4568f5f2f8', 'Contact 32', 'Cyberdyne Systems (Lead)', 'contact32@example.com', 'negotiation', 1338, 'Trade Show', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, NULL, NULL, now() - interval '29 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('00e149f4-d010-4940-a5c5-5b4568f5f2f8', 'eb6eba4f-fb1c-48cc-940d-81f72b789918') ON CONFLICT DO NOTHING;
+VALUES ('e223cfe2-6f70-43bc-97be-c3faabdedc1b', 'Contact 32', 'Cyberdyne Systems (Lead)', 'contact32@example.com', 'proposal', 2856, 'Website', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, NULL, NULL, now() - interval '21 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e223cfe2-6f70-43bc-97be-c3faabdedc1b', '2c9323d9-efc8-4434-9d91-e6e66c6e8796') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e223cfe2-6f70-43bc-97be-c3faabdedc1b', '1ce0f3ee-b9de-41c4-b558-362ff50299f4') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('e223cfe2-6f70-43bc-97be-c3faabdedc1b', '999426a8-7e15-4917-9a28-001db2efc9cb') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('66ba48a7-6b5c-437e-9ac4-9077e0b5c241', 'Contact 33', 'Massive Dynamic (Lead)', 'contact33@example.com', 'converted', 3343, 'Trade Show', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', now() - interval '2 days', NULL, NULL, now() - interval '35 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('66ba48a7-6b5c-437e-9ac4-9077e0b5c241', 'c1d8d30b-5027-4154-8450-31414fe9e525') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('66ba48a7-6b5c-437e-9ac4-9077e0b5c241', 'b079400f-263e-451d-a90b-33333df24b70') ON CONFLICT DO NOTHING;
+VALUES ('22602208-a63b-4ee8-b77d-b3ad2aefb448', 'Contact 33', 'Massive Dynamic', 'contact33@example.com', 'proposal', 4074, 'Trade Show', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, NULL, NULL, now() - interval '30 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('22602208-a63b-4ee8-b77d-b3ad2aefb448', '5d803265-e44f-4f68-8272-d6fec4edbb02') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('22602208-a63b-4ee8-b77d-b3ad2aefb448', '999426a8-7e15-4917-9a28-001db2efc9cb') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('a7e12ce4-110e-4cf9-b462-979c41c3048e', 'Contact 34', 'Genco Pura Olive Oil (Lead)', 'contact34@example.com', 'warm', 4982, 'Referral', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, NULL, NULL, now() - interval '27 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('a7e12ce4-110e-4cf9-b462-979c41c3048e', '5bb5df8b-294c-463c-a2bb-d94abc82460f') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('a7e12ce4-110e-4cf9-b462-979c41c3048e', 'f5c175c7-b950-4223-9bb4-e8989dad28ab') ON CONFLICT DO NOTHING;
+VALUES ('f20deca4-2c57-4419-9f14-d5ce94ee645a', 'Contact 34', 'Umbrella Corporation', 'contact34@example.com', 'proposal', 1178, 'Referral', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, NULL, NULL, now() - interval '19 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('f20deca4-2c57-4419-9f14-d5ce94ee645a', '090a356a-c1d5-4005-bc85-0f839c2240cb') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('f20deca4-2c57-4419-9f14-d5ce94ee645a', '999426a8-7e15-4917-9a28-001db2efc9cb') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('f1743872-0a22-4253-ba3e-531fb0b51bb2', 'Contact 35', 'LexCorp (Lead)', 'contact35@example.com', 'hot', 816, 'Trade Show', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, NULL, NULL, now() - interval '12 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('f1743872-0a22-4253-ba3e-531fb0b51bb2', 'eb6eba4f-fb1c-48cc-940d-81f72b789918') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('f1743872-0a22-4253-ba3e-531fb0b51bb2', '730e827d-cd83-481f-ba75-d25865adf928') ON CONFLICT DO NOTHING;
+VALUES ('472144da-6b5e-4910-9c1f-e209e1acae4e', 'Contact 35', 'Wayne Enterprises', 'contact35@example.com', 'cold', 2962, 'Social Media', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, NULL, NULL, now() - interval '30 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('472144da-6b5e-4910-9c1f-e209e1acae4e', '2c9323d9-efc8-4434-9d91-e6e66c6e8796') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('472144da-6b5e-4910-9c1f-e209e1acae4e', 'b390b768-17dc-4fcb-9566-dab252e00cf2') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('7436ab50-a51b-4ad1-9e5a-f473bfdf7c36', 'Contact 36', 'Oceanic Airlines (Lead)', 'contact36@example.com', 'warm', 565, 'Trade Show', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, NULL, NULL, now() - interval '40 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7436ab50-a51b-4ad1-9e5a-f473bfdf7c36', 'eb6eba4f-fb1c-48cc-940d-81f72b789918') ON CONFLICT DO NOTHING;
+VALUES ('3b48e8f2-a28c-4f75-86d9-f3a9c20e8d0a', 'Contact 36', 'Oceanic Airlines (Lead)', 'contact36@example.com', 'hot', 700, 'Cold Call', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '22 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('3b48e8f2-a28c-4f75-86d9-f3a9c20e8d0a', '1ce0f3ee-b9de-41c4-b558-362ff50299f4') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('d129af7f-9309-461d-b47b-e48008bf3a35', 'Contact 37', 'Wonka Industries (Lead)', 'contact37@example.com', 'warm', 1664, 'Social Media', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, NULL, NULL, now() - interval '26 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('d129af7f-9309-461d-b47b-e48008bf3a35', '5bb5df8b-294c-463c-a2bb-d94abc82460f') ON CONFLICT DO NOTHING;
+VALUES ('545ad130-c39d-4c4e-900d-9e4fc4df840b', 'Contact 37', 'Genco Pura Olive Oil', 'contact37@example.com', 'hot', 819, 'Trade Show', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, NULL, NULL, now() - interval '39 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('545ad130-c39d-4c4e-900d-9e4fc4df840b', '5d803265-e44f-4f68-8272-d6fec4edbb02') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('545ad130-c39d-4c4e-900d-9e4fc4df840b', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('7e5862ba-1f2b-418c-99b8-b2f5c8a513ec', 'Contact 38', 'Oscorp (Lead)', 'contact38@example.com', 'warm', 793, 'Social Media', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, NULL, NULL, now() - interval '33 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7e5862ba-1f2b-418c-99b8-b2f5c8a513ec', 'd790350c-4a34-44fc-8896-9977099d933f') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('7e5862ba-1f2b-418c-99b8-b2f5c8a513ec', '5bb5df8b-294c-463c-a2bb-d94abc82460f') ON CONFLICT DO NOTHING;
+VALUES ('bc996139-0f73-4b07-a93f-560ab2d9b103', 'Contact 38', 'Stark Industries', 'contact38@example.com', 'converted', 4716, 'Trade Show', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', now() - interval '4 days', NULL, NULL, now() - interval '13 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('bc996139-0f73-4b07-a93f-560ab2d9b103', 'b390b768-17dc-4fcb-9566-dab252e00cf2') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('bc996139-0f73-4b07-a93f-560ab2d9b103', '090a356a-c1d5-4005-bc85-0f839c2240cb') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('bc996139-0f73-4b07-a93f-560ab2d9b103', '2c9323d9-efc8-4434-9d91-e6e66c6e8796') ON CONFLICT DO NOTHING;
 INSERT INTO public.leads (id, name, company, email, stage, value, source, assigned_to, converted_at, lost_at, loss_reason, created_at) 
-VALUES ('a94a5aa2-f249-43fd-bffd-77edd3a2a5a8', 'Contact 39', 'Hooli (Lead)', 'contact39@example.com', 'proposal', 4769, 'Website', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, NULL, NULL, now() - interval '33 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('a94a5aa2-f249-43fd-bffd-77edd3a2a5a8', 'b079400f-263e-451d-a90b-33333df24b70') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('a94a5aa2-f249-43fd-bffd-77edd3a2a5a8', 'c1d8d30b-5027-4154-8450-31414fe9e525') ON CONFLICT DO NOTHING;
-INSERT INTO public.lead_services (lead_id, service_id) VALUES ('a94a5aa2-f249-43fd-bffd-77edd3a2a5a8', 'd790350c-4a34-44fc-8896-9977099d933f') ON CONFLICT DO NOTHING;
+VALUES ('1a15b787-4edc-477f-abd2-992600b16ebd', 'Contact 39', 'Hooli (Lead)', 'contact39@example.com', 'proposal', 3435, 'Cold Call', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, NULL, NULL, now() - interval '18 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('1a15b787-4edc-477f-abd2-992600b16ebd', 'd259cbaa-2b5e-49c2-839e-07c757d79b98') ON CONFLICT DO NOTHING;
+INSERT INTO public.lead_services (lead_id, service_id) VALUES ('1a15b787-4edc-477f-abd2-992600b16ebd', '5d803265-e44f-4f68-8272-d6fec4edbb02') ON CONFLICT DO NOTHING;
 
 -- 5. Projects
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('e8763893-f5a5-4283-8958-dfde595f3c7f', '5131e7e4-247b-4304-be55-cef0dceae9b4', 'Implementation Project 1', 'completed', current_date + interval '30 days', now() - interval '3 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('e8763893-f5a5-4283-8958-dfde595f3c7f', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af') ON CONFLICT DO NOTHING;
+VALUES ('7bead47e-82a1-4d7f-9747-28e3e33dfc1d', '3cf22c56-6adb-41b2-b470-099c86cb7c1a', 'Implementation Project 1', 'testing', current_date + interval '28 days', now() - interval '1 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('7bead47e-82a1-4d7f-9747-28e3e33dfc1d', 'b1eb441d-746d-420f-9600-48aa10f81a04') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('adf5c04c-de34-4dbe-b4e7-8c82ea6d8416', 'd0a514f5-58e2-4c2a-ac2f-5a221479f1bc', 'Implementation Project 2', 'planning', current_date + interval '19 days', now() - interval '18 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('adf5c04c-de34-4dbe-b4e7-8c82ea6d8416', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae') ON CONFLICT DO NOTHING;
+VALUES ('eaad913c-b53a-4c83-a791-f148bc38d987', 'd577d59f-b25e-41dd-84e8-67569bf26259', 'Implementation Project 2', 'testing', current_date + interval '5 days', now() - interval '3 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('eaad913c-b53a-4c83-a791-f148bc38d987', '8fed7298-cbca-4301-9fdd-8894ff4223a7') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('2855faf8-b4f2-477d-bea9-d0bf9e1a4b39', '6528f4c0-3064-4abb-a1dd-0b20b9770b6b', 'Implementation Project 3', 'in_progress', current_date + interval '5 days', now() - interval '9 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('2855faf8-b4f2-477d-bea9-d0bf9e1a4b39', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae') ON CONFLICT DO NOTHING;
+VALUES ('1358fcde-fe7d-4e03-8ada-3f0921a13ab6', 'd5f6e3f8-3e39-4548-9f85-d19283880edd', 'Implementation Project 3', 'planning', current_date + interval '6 days', now() - interval '9 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('1358fcde-fe7d-4e03-8ada-3f0921a13ab6', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('c253354e-cad6-4fb0-a2d6-da83dce24209', '637c74e5-4d3e-4360-a1d1-90cf149841ac', 'Implementation Project 4', 'in_progress', current_date + interval '26 days', now() - interval '18 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('c253354e-cad6-4fb0-a2d6-da83dce24209', '955126bf-a3df-4d47-8812-747adbc7e961') ON CONFLICT DO NOTHING;
+VALUES ('f1251d49-11bc-4fd4-b45c-ae8781327735', 'b079540a-d0d7-48a3-a430-9303df6f9599', 'Implementation Project 4', 'planning', current_date + interval '8 days', now() - interval '15 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('f1251d49-11bc-4fd4-b45c-ae8781327735', '8fed7298-cbca-4301-9fdd-8894ff4223a7') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('67396742-17ea-4e5e-92b9-f2df3072fb93', 'cda4105e-5623-4e2d-b817-a430e7d5ef9d', 'Implementation Project 5', 'planning', current_date + interval '19 days', now() - interval '13 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('67396742-17ea-4e5e-92b9-f2df3072fb93', '955126bf-a3df-4d47-8812-747adbc7e961') ON CONFLICT DO NOTHING;
+VALUES ('ffa4cadf-84c6-4a68-8ac0-70265ad4edde', '1b90c958-0a34-4723-b086-2bb93fdad45c', 'Implementation Project 5', 'completed', current_date + interval '23 days', now() - interval '1 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('ffa4cadf-84c6-4a68-8ac0-70265ad4edde', '8fed7298-cbca-4301-9fdd-8894ff4223a7') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('01db3d7a-3d61-4763-81fc-fcbfce6e5421', '9e1c678c-f396-4baa-91fb-1ad667592a73', 'Implementation Project 6', 'planning', current_date + interval '15 days', now() - interval '15 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('01db3d7a-3d61-4763-81fc-fcbfce6e5421', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae') ON CONFLICT DO NOTHING;
+VALUES ('116a8051-6cfc-4c4b-80a6-4340e82c3ed1', 'e05b53b0-f808-4748-bf8e-e64c90e8b2de', 'Implementation Project 6', 'planning', current_date + interval '26 days', now() - interval '9 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('116a8051-6cfc-4c4b-80a6-4340e82c3ed1', 'b1eb441d-746d-420f-9600-48aa10f81a04') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('374ae0b1-2e3d-4361-961b-70ac0b0d8cca', '0e203a2c-9961-4a20-8f2a-512784f896bb', 'Implementation Project 7', 'in_progress', current_date + interval '15 days', now() - interval '4 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('374ae0b1-2e3d-4361-961b-70ac0b0d8cca', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af') ON CONFLICT DO NOTHING;
+VALUES ('5a79d23e-ca36-47e1-8936-6099ac587fe9', '2bd9e247-43c8-4670-8045-725e62b38e95', 'Implementation Project 7', 'in_progress', current_date + interval '5 days', now() - interval '20 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('5a79d23e-ca36-47e1-8936-6099ac587fe9', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('5efbb82c-15df-4cfd-a2e7-bd99d5daff04', 'e4d2ec47-f1fb-4a18-8ebf-195d8f550967', 'Implementation Project 8', 'in_progress', current_date + interval '20 days', now() - interval '18 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('5efbb82c-15df-4cfd-a2e7-bd99d5daff04', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af') ON CONFLICT DO NOTHING;
+VALUES ('56aec0ed-50e0-4002-8d0e-f62044019dda', 'a53577e1-3aba-4d13-a7fd-fb4e5b41bfa0', 'Implementation Project 8', 'completed', current_date + interval '19 days', now() - interval '17 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('56aec0ed-50e0-4002-8d0e-f62044019dda', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('5b5b5a3f-6e0f-4cd2-9a19-3fe6fe0007b5', '95b1fe0a-2fda-4aeb-9855-8eb7a0608172', 'Implementation Project 9', 'planning', current_date + interval '13 days', now() - interval '3 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('5b5b5a3f-6e0f-4cd2-9a19-3fe6fe0007b5', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af') ON CONFLICT DO NOTHING;
+VALUES ('d8deede8-decd-4803-ac61-d2a524aa503c', 'da125edb-a8e1-40b3-ac9d-497a4328418c', 'Implementation Project 9', 'testing', current_date + interval '9 days', now() - interval '2 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('d8deede8-decd-4803-ac61-d2a524aa503c', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('1469fe05-eded-49bb-b293-b3376deb1ace', '492f20c8-a30f-4b94-a1a5-5e950c382fb0', 'Implementation Project 10', 'testing', current_date + interval '11 days', now() - interval '10 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('1469fe05-eded-49bb-b293-b3376deb1ace', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae') ON CONFLICT DO NOTHING;
+VALUES ('1ab52e45-fa0d-4dd8-b660-0d84f9138144', '3cf22c56-6adb-41b2-b470-099c86cb7c1a', 'Implementation Project 10', 'testing', current_date + interval '30 days', now() - interval '17 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('1ab52e45-fa0d-4dd8-b660-0d84f9138144', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('73c8ac60-5449-4ead-ab94-abd5ecd8af1e', '471237b9-cb41-4421-bae5-580b0d7d2611', 'Implementation Project 11', 'testing', current_date + interval '13 days', now() - interval '4 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('73c8ac60-5449-4ead-ab94-abd5ecd8af1e', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af') ON CONFLICT DO NOTHING;
+VALUES ('ae471e55-3b26-4c4e-bbc8-86b00ea9bc3d', 'e05b53b0-f808-4748-bf8e-e64c90e8b2de', 'Implementation Project 11', 'in_progress', current_date + interval '25 days', now() - interval '16 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('ae471e55-3b26-4c4e-bbc8-86b00ea9bc3d', 'b1eb441d-746d-420f-9600-48aa10f81a04') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('695b2771-2b5f-467e-89c8-01a7bf50f470', '492f20c8-a30f-4b94-a1a5-5e950c382fb0', 'Implementation Project 12', 'testing', current_date + interval '6 days', now() - interval '18 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('695b2771-2b5f-467e-89c8-01a7bf50f470', '955126bf-a3df-4d47-8812-747adbc7e961') ON CONFLICT DO NOTHING;
+VALUES ('365bd960-df92-4eaf-b42a-3b899cb1959c', 'd577d59f-b25e-41dd-84e8-67569bf26259', 'Implementation Project 12', 'in_progress', current_date + interval '12 days', now() - interval '14 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('365bd960-df92-4eaf-b42a-3b899cb1959c', '8fed7298-cbca-4301-9fdd-8894ff4223a7') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('fbd0eb4e-ea26-4e6f-9385-c791d16110dc', '964d9373-b616-418b-894f-57f827951e18', 'Implementation Project 13', 'completed', current_date + interval '14 days', now() - interval '3 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('fbd0eb4e-ea26-4e6f-9385-c791d16110dc', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae') ON CONFLICT DO NOTHING;
+VALUES ('147db378-6052-44a7-a774-c9bbf6edb0fd', 'b079540a-d0d7-48a3-a430-9303df6f9599', 'Implementation Project 13', 'completed', current_date + interval '9 days', now() - interval '15 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('147db378-6052-44a7-a774-c9bbf6edb0fd', 'b1eb441d-746d-420f-9600-48aa10f81a04') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('fa7e53ec-a27e-4f72-b80b-ad69a534f6cc', 'cda4105e-5623-4e2d-b817-a430e7d5ef9d', 'Implementation Project 14', 'planning', current_date + interval '14 days', now() - interval '19 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('fa7e53ec-a27e-4f72-b80b-ad69a534f6cc', '955126bf-a3df-4d47-8812-747adbc7e961') ON CONFLICT DO NOTHING;
+VALUES ('d032f711-1e7a-47ff-99a7-f3b0d449b65f', '9c1687aa-8f53-4eed-b80f-2d3e848a8947', 'Implementation Project 14', 'testing', current_date + interval '17 days', now() - interval '15 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('d032f711-1e7a-47ff-99a7-f3b0d449b65f', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa') ON CONFLICT DO NOTHING;
 INSERT INTO public.projects (id, customer_id, name, status, deadline, created_at) 
-VALUES ('f46aa48c-b8fc-4726-b88a-707fff9b7809', '471237b9-cb41-4421-bae5-580b0d7d2611', 'Implementation Project 15', 'in_progress', current_date + interval '11 days', now() - interval '9 days') ON CONFLICT (id) DO NOTHING;
-INSERT INTO public.project_members (project_id, user_id) VALUES ('f46aa48c-b8fc-4726-b88a-707fff9b7809', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af') ON CONFLICT DO NOTHING;
+VALUES ('773b031c-e004-47e5-ae80-7fdcc5d9c6fe', 'e05b53b0-f808-4748-bf8e-e64c90e8b2de', 'Implementation Project 15', 'planning', current_date + interval '12 days', now() - interval '17 days') ON CONFLICT (id) DO NOTHING;
+INSERT INTO public.project_members (project_id, user_id) VALUES ('773b031c-e004-47e5-ae80-7fdcc5d9c6fe', 'b1eb441d-746d-420f-9600-48aa10f81a04') ON CONFLICT DO NOTHING;
 
 -- 6. Tickets
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('d10cc6a3-b0f9-4177-892c-323f2950e732', '560e81d1-3983-4641-abf5-aa6a0791ec0a', 'fbd0eb4e-ea26-4e6f-9385-c791d16110dc', 'Support Request 1', 'Client needs help with configuration.', 'resolved', 'low', '955126bf-a3df-4d47-8812-747adbc7e961', '955126bf-a3df-4d47-8812-747adbc7e961', now() - interval '4 days', now() - interval '14 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('0eef99f9-5841-4c85-a355-7f724a9b8d18', 'de9aaa36-ad18-4ce5-9ce5-2df3dde4430a', NULL, 'Support Request 1', 'Client needs help with configuration.', 'waiting', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, now() - interval '12 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('f5b212ac-d1b7-4186-97e6-8fd168efde5d', '0e203a2c-9961-4a20-8f2a-512784f896bb', NULL, 'Support Request 2', 'Client needs help with configuration.', 'in_progress', 'medium', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, now() - interval '12 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('2c22606d-0aae-4236-b754-3afecbbe538c', 'd5f6e3f8-3e39-4548-9f85-d19283880edd', NULL, 'Support Request 2', 'Client needs help with configuration.', 'waiting', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, now() - interval '13 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('3c1183b7-76b5-476c-a00f-b40ae779718e', '964d9373-b616-418b-894f-57f827951e18', NULL, 'Support Request 3', 'Client needs help with configuration.', 'new', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, now() - interval '4 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('fcf29918-810a-469b-bdc9-0e9eb94e815f', '3cf22c56-6adb-41b2-b470-099c86cb7c1a', NULL, 'Support Request 3', 'Client needs help with configuration.', 'resolved', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'b1eb441d-746d-420f-9600-48aa10f81a04', now() - interval '2 days', now() - interval '3 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('ea17e6c0-d66c-4bfe-8093-2bb714bef5c5', '471237b9-cb41-4421-bae5-580b0d7d2611', NULL, 'Support Request 4', 'Client needs help with configuration.', 'resolved', 'high', '955126bf-a3df-4d47-8812-747adbc7e961', '955126bf-a3df-4d47-8812-747adbc7e961', now() - interval '5 days', now() - interval '8 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('05e911db-340f-4ec2-b7f9-a28cb552e52c', 'b079540a-d0d7-48a3-a430-9303df6f9599', '365bd960-df92-4eaf-b42a-3b899cb1959c', 'Support Request 4', 'Client needs help with configuration.', 'in_progress', 'high', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, now() - interval '11 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('67ddf4c7-9bf6-4e5b-81a4-abe938ab9b48', 'cda4105e-5623-4e2d-b817-a430e7d5ef9d', NULL, 'Support Request 5', 'Client needs help with configuration.', 'waiting', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, now() - interval '15 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('a5d47127-4780-41cf-8291-26a43efd25d7', 'c4b73686-223b-462d-8a36-0edbedc6fbf6', '1ab52e45-fa0d-4dd8-b660-0d84f9138144', 'Support Request 5', 'Client needs help with configuration.', 'in_progress', 'high', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, now() - interval '7 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('feb26d0c-2fc7-43b0-95cf-7511f95f3939', '6528f4c0-3064-4abb-a1dd-0b20b9770b6b', 'c253354e-cad6-4fb0-a2d6-da83dce24209', 'Support Request 6', 'Client needs help with configuration.', 'new', 'low', '955126bf-a3df-4d47-8812-747adbc7e961', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, now() - interval '1 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('d0038f07-d066-4e8c-ae80-d14727d67c3f', 'c34749b3-ab98-4c68-8af8-f28dc8b4017e', '5a79d23e-ca36-47e1-8936-6099ac587fe9', 'Support Request 6', 'Client needs help with configuration.', 'in_progress', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '10 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('b872216a-40f9-42d5-aeb1-d9a31b1033ff', '0e203a2c-9961-4a20-8f2a-512784f896bb', NULL, 'Support Request 7', 'Client needs help with configuration.', 'waiting', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, now() - interval '11 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('9f69a9b1-fb5c-4d24-9543-3a533b5ec722', '6bba8827-7f63-4262-b2c5-716ccafa6f4d', NULL, 'Support Request 7', 'Client needs help with configuration.', 'new', 'urgent', 'b1eb441d-746d-420f-9600-48aa10f81a04', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, now() - interval '14 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('3c7f49eb-22eb-4030-80dd-28e9e93d6e70', '9e1c678c-f396-4baa-91fb-1ad667592a73', 'adf5c04c-de34-4dbe-b4e7-8c82ea6d8416', 'Support Request 8', 'Client needs help with configuration.', 'in_progress', 'medium', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, now() - interval '5 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('e404d26e-aa59-4496-8df8-34042a3f5faa', 'd577d59f-b25e-41dd-84e8-67569bf26259', NULL, 'Support Request 8', 'Client needs help with configuration.', 'in_progress', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, now() - interval '5 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('e7fb1d2a-8559-47cf-9410-42759590f9f1', '560e81d1-3983-4641-abf5-aa6a0791ec0a', NULL, 'Support Request 9', 'Client needs help with configuration.', 'waiting', 'high', '955126bf-a3df-4d47-8812-747adbc7e961', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, now() - interval '5 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('82233acc-7eaa-4037-b868-2f6f3fd1d927', '9cf2bdbd-eba1-4d69-88b1-b276dff0fc42', NULL, 'Support Request 9', 'Client needs help with configuration.', 'waiting', 'urgent', 'b1eb441d-746d-420f-9600-48aa10f81a04', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, now() - interval '9 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('dc913fa8-d7a9-4ebb-a83c-eb20a0037f99', '5131e7e4-247b-4304-be55-cef0dceae9b4', '1469fe05-eded-49bb-b293-b3376deb1ace', 'Support Request 10', 'Client needs help with configuration.', 'waiting', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, now() - interval '15 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('43656bc0-fae7-4f01-9b23-446c95abd813', 'd5f6e3f8-3e39-4548-9f85-d19283880edd', NULL, 'Support Request 10', 'Client needs help with configuration.', 'new', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '10 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('be2e35eb-e8fd-4bf3-9367-198b6112947f', '6528f4c0-3064-4abb-a1dd-0b20b9770b6b', '2855faf8-b4f2-477d-bea9-d0bf9e1a4b39', 'Support Request 11', 'Client needs help with configuration.', 'resolved', 'medium', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', now() - interval '1 days', now() - interval '5 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('839be35f-b840-445e-b320-7f64e3c08dab', '1b90c958-0a34-4723-b086-2bb93fdad45c', NULL, 'Support Request 11', 'Client needs help with configuration.', 'new', 'high', 'b1eb441d-746d-420f-9600-48aa10f81a04', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, now() - interval '14 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('260ec2d9-722c-457d-9d02-922271e9004c', 'cda4105e-5623-4e2d-b817-a430e7d5ef9d', 'fa7e53ec-a27e-4f72-b80b-ad69a534f6cc', 'Support Request 12', 'Client needs help with configuration.', 'resolved', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', now() - interval '3 days', now() - interval '10 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('010944c7-bba4-43e3-aede-5ded9b6375d6', 'da125edb-a8e1-40b3-ac9d-497a4328418c', '773b031c-e004-47e5-ae80-7fdcc5d9c6fe', 'Support Request 12', 'Client needs help with configuration.', 'in_progress', 'medium', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '12 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('e8b0cdb5-31c6-423e-9dba-683455cedbaf', '95b1fe0a-2fda-4aeb-9855-8eb7a0608172', '695b2771-2b5f-467e-89c8-01a7bf50f470', 'Support Request 13', 'Client needs help with configuration.', 'resolved', 'low', '955126bf-a3df-4d47-8812-747adbc7e961', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', now() - interval '4 days', now() - interval '3 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('5eb49ffe-f87e-4d00-94ad-b66f30e02c35', '1b90c958-0a34-4723-b086-2bb93fdad45c', NULL, 'Support Request 13', 'Client needs help with configuration.', 'in_progress', 'medium', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, now() - interval '7 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('58b83b39-7b67-4728-b3c2-5ab3d8db3c25', 'cda4105e-5623-4e2d-b817-a430e7d5ef9d', '374ae0b1-2e3d-4361-961b-70ac0b0d8cca', 'Support Request 14', 'Client needs help with configuration.', 'in_progress', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, now() - interval '12 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('d502d520-87f1-4aad-9885-59f8adbd426d', '9cf2bdbd-eba1-4d69-88b1-b276dff0fc42', NULL, 'Support Request 14', 'Client needs help with configuration.', 'resolved', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', now() - interval '2 days', now() - interval '9 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('1ff03d22-6d93-4f0f-aea4-2746126fb9bb', '95b1fe0a-2fda-4aeb-9855-8eb7a0608172', '2855faf8-b4f2-477d-bea9-d0bf9e1a4b39', 'Support Request 15', 'Client needs help with configuration.', 'resolved', 'medium', '955126bf-a3df-4d47-8812-747adbc7e961', '955126bf-a3df-4d47-8812-747adbc7e961', now() - interval '1 days', now() - interval '11 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('79a88712-4d43-4a1e-8afe-c79241291dcc', '9cf2bdbd-eba1-4d69-88b1-b276dff0fc42', NULL, 'Support Request 15', 'Client needs help with configuration.', 'in_progress', 'medium', 'b1eb441d-746d-420f-9600-48aa10f81a04', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, now() - interval '9 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('9b6470dd-c768-499a-80af-7285b2c43742', '0e203a2c-9961-4a20-8f2a-512784f896bb', 'adf5c04c-de34-4dbe-b4e7-8c82ea6d8416', 'Support Request 16', 'Client needs help with configuration.', 'new', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, now() - interval '12 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('20e98323-3bc3-4ffe-8486-f28b9bee7f23', 'e05b53b0-f808-4748-bf8e-e64c90e8b2de', 'd8deede8-decd-4803-ac61-d2a524aa503c', 'Support Request 16', 'Client needs help with configuration.', 'in_progress', 'medium', 'b1eb441d-746d-420f-9600-48aa10f81a04', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, now() - interval '6 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('dcd7940d-a13e-4c8d-a7da-ac488b6e4af4', '0e203a2c-9961-4a20-8f2a-512784f896bb', NULL, 'Support Request 17', 'Client needs help with configuration.', 'new', 'low', '955126bf-a3df-4d47-8812-747adbc7e961', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, now() - interval '3 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('aa261c59-ac66-45c5-be74-9bb28079b936', '6bba8827-7f63-4262-b2c5-716ccafa6f4d', NULL, 'Support Request 17', 'Client needs help with configuration.', 'new', 'urgent', 'b1eb441d-746d-420f-9600-48aa10f81a04', '8fed7298-cbca-4301-9fdd-8894ff4223a7', NULL, now() - interval '6 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('28d3ce28-8b35-48cf-9a2a-ee4ce417e063', '5131e7e4-247b-4304-be55-cef0dceae9b4', NULL, 'Support Request 18', 'Client needs help with configuration.', 'resolved', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', now() - interval '5 days', now() - interval '11 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('5eb166d5-a340-4286-bd92-c318083d44ea', '1b90c958-0a34-4723-b086-2bb93fdad45c', '1358fcde-fe7d-4e03-8ada-3f0921a13ab6', 'Support Request 18', 'Client needs help with configuration.', 'resolved', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'b1eb441d-746d-420f-9600-48aa10f81a04', now() - interval '4 days', now() - interval '6 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('0bf447b1-27f6-4479-9ae9-e8d5f66032be', '560e81d1-3983-4641-abf5-aa6a0791ec0a', NULL, 'Support Request 19', 'Client needs help with configuration.', 'new', 'low', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, now() - interval '8 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('3a3b2eac-be96-4932-984b-e8c8a96c1fae', 'de9aaa36-ad18-4ce5-9ce5-2df3dde4430a', 'd032f711-1e7a-47ff-99a7-f3b0d449b65f', 'Support Request 19', 'Client needs help with configuration.', 'in_progress', 'medium', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '2 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('8bc4ebc7-1b82-4d6f-90b9-8221f533f0db', 'cdde504e-90bd-40ba-8278-c35898fe0136', NULL, 'Support Request 20', 'Client needs help with configuration.', 'resolved', 'medium', '955126bf-a3df-4d47-8812-747adbc7e961', '955126bf-a3df-4d47-8812-747adbc7e961', now() - interval '5 days', now() - interval '4 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('0f8c7332-1b13-40db-a698-0e5b5e65299d', 'b079540a-d0d7-48a3-a430-9303df6f9599', '5a79d23e-ca36-47e1-8936-6099ac587fe9', 'Support Request 20', 'Client needs help with configuration.', 'new', 'urgent', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '12 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('cd6e3cce-2177-4c38-9cd1-f7dc408270f7', '6528f4c0-3064-4abb-a1dd-0b20b9770b6b', NULL, 'Support Request 21', 'Client needs help with configuration.', 'new', 'low', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, now() - interval '7 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('db3bfc94-6f5f-4fb9-aa23-6cd31d0395cb', 'da125edb-a8e1-40b3-ac9d-497a4328418c', NULL, 'Support Request 21', 'Client needs help with configuration.', 'waiting', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, now() - interval '8 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('d21405df-535d-4239-abfa-87b16db86f91', '964d9373-b616-418b-894f-57f827951e18', NULL, 'Support Request 22', 'Client needs help with configuration.', 'waiting', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', '0e9f255a-3b7c-4508-95fd-cfd2b9ff42af', NULL, now() - interval '3 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('dc4d6faa-51a4-4866-b4af-b8947502cedd', '2bd9e247-43c8-4670-8045-725e62b38e95', 'ffa4cadf-84c6-4a68-8ac0-70265ad4edde', 'Support Request 22', 'Client needs help with configuration.', 'new', 'high', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '1 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('689e4ca6-d18d-472f-b1ec-fee080fd0eb8', '95b1fe0a-2fda-4aeb-9855-8eb7a0608172', 'fbd0eb4e-ea26-4e6f-9385-c791d16110dc', 'Support Request 23', 'Client needs help with configuration.', 'in_progress', 'urgent', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, now() - interval '11 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('2b86dbba-ef66-4aa3-9e28-3659b971b60f', 'e05b53b0-f808-4748-bf8e-e64c90e8b2de', '7bead47e-82a1-4d7f-9747-28e3e33dfc1d', 'Support Request 23', 'Client needs help with configuration.', 'waiting', 'low', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '5 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('300d9066-dbc5-4310-8bc4-c102f998fc37', '5131e7e4-247b-4304-be55-cef0dceae9b4', NULL, 'Support Request 24', 'Client needs help with configuration.', 'new', 'low', '955126bf-a3df-4d47-8812-747adbc7e961', '955126bf-a3df-4d47-8812-747adbc7e961', NULL, now() - interval '5 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('ab5cde82-9b55-4fde-95a0-3570aedf21f8', '9c1687aa-8f53-4eed-b80f-2d3e848a8947', NULL, 'Support Request 24', 'Client needs help with configuration.', 'waiting', 'urgent', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'b1eb441d-746d-420f-9600-48aa10f81a04', NULL, now() - interval '6 days') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.tickets (id, customer_id, project_id, title, description, status, priority, created_by, assigned_to, resolved_at, created_at) 
-VALUES ('be7223d4-15de-4ff7-bc72-0d2bf469f6b5', '492f20c8-a30f-4b94-a1a5-5e950c382fb0', 'fa7e53ec-a27e-4f72-b80b-ad69a534f6cc', 'Support Request 25', 'Client needs help with configuration.', 'in_progress', 'low', '955126bf-a3df-4d47-8812-747adbc7e961', 'b63a5145-cbca-4b3a-b631-bc0b46a792ae', NULL, now() - interval '13 days') ON CONFLICT (id) DO NOTHING;
+VALUES ('aa00953b-87a4-4b3b-b1fc-4300180dc858', 'a53577e1-3aba-4d13-a7fd-fb4e5b41bfa0', NULL, 'Support Request 25', 'Client needs help with configuration.', 'in_progress', 'high', 'b1eb441d-746d-420f-9600-48aa10f81a04', 'ff83ba29-7621-45a6-8a24-8e2f6f6268aa', NULL, now() - interval '13 days') ON CONFLICT (id) DO NOTHING;

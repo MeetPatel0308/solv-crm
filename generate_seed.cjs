@@ -96,7 +96,7 @@ VALUES ('${cId}', '${cName}', 'contact@${cName.replace(/\\s+/g, '').toLowerCase(
 VALUES ('${cId}', '${srv.id}', '${srv.name}', '${billType}', ${val}, 'active', current_date, now() - interval '${randInt(1, 30)} days');\n`;
 
         sql += `INSERT INTO public.customer_services (customer_id, service_id, status, start_date, created_at) 
-VALUES ('${cId}', '${srv.id}', 'active', current_date, now());\n`;
+VALUES ('${cId}', '${srv.id}', 'active', current_date, now()) ON CONFLICT ON CONSTRAINT customer_services_customer_id_service_id_key DO NOTHING;\n`;
     });
 }
 
