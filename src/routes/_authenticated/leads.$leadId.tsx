@@ -339,7 +339,7 @@ function LeadProfile() {
       </div>
 
       {lead.stage === "converted" && (
-        <ConvertSection lead={lead} services={services} />
+        <ConvertSection lead={lead} services={services} isAdmin={isAdmin} />
       )}
       
       {showLostDialog && (
@@ -456,7 +456,7 @@ function LeadDatePicker({
   );
 }
 
-function ConvertSection({ lead, services }: { lead: any; services: any[] }) {
+function ConvertSection({ lead, services, isAdmin }: { lead: any; services: any[]; isAdmin?: boolean }) {
   const qc = useQueryClient();
   const nav = useNavigate({ from: Route.fullPath });
   const [salesData, setSalesData] = useState(
@@ -511,7 +511,7 @@ function ConvertSection({ lead, services }: { lead: any; services: any[] }) {
         </p>
       </div>
 
-      {salesData.length === 0 ? (
+      {!isAdmin ? null : salesData.length === 0 ? (
         <div className="text-sm text-muted-foreground mb-4">No services selected during lead creation.</div>
       ) : (
         <div className="space-y-4 mb-6">
